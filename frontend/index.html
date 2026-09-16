@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Fitness AI Chatbot</title>
+  <link rel="stylesheet" href="/static/styles.css">
+</head>
+<body>
+  <!-- ============ CHAT SCREEN (No Login) ============ -->
+  <div id="screen-chat" class="screen active">
+    <!-- Top Bar -->
+    <header class="chat-header">
+      <div class="header-left">
+        <h2>Fitness AI</h2>
+      </div>
+      <div class="header-right">
+        <button class="btn-icon" id="btn-summary" title="Daily Summary">&#x1F4CA;</button>
+        <button class="btn-icon" id="btn-profile" title="Profile">&#x1F464;</button>
+      </div>
+    </header>
+
+    <!-- Messages Area -->
+    <main class="chat-messages" id="chat-messages">
+    </main>
+
+    <!-- Input Area -->
+    <footer class="chat-input-area">
+      <div class="input-row">
+        <button class="btn-voice" id="btn-voice" title="Hold to speak">&#x1F3A4;</button>
+        <input type="text" id="chat-input" placeholder="Type in any Indian language..." autocomplete="off">
+        <button class="btn-send" id="btn-send" title="Send">&#x27A4;</button>
+      </div>
+      <div class="voice-indicator hidden" id="voice-indicator">
+        <span class="pulse"></span> Recording... click mic to stop
+      </div>
+    </footer>
+
+    <!-- Summary Modal -->
+    <div class="modal hidden" id="modal-summary">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h3>Daily Summary</h3>
+          <button class="btn-close" id="close-summary">&times;</button>
+        </div>
+        <div class="modal-body" id="summary-body"></div>
+      </div>
+    </div>
+
+    <!-- Profile Modal -->
+    <div class="modal hidden" id="modal-profile">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h3>My Profile</h3>
+          <button class="btn-close" id="close-profile">&times;</button>
+        </div>
+        <div class="modal-body" id="profile-body"></div>
+      </div>
+    </div>
+  </div>
+
+  <script src="/static/api.js"></script>
+  <script src="/static/app.js"></script>
+</body>
+</html>

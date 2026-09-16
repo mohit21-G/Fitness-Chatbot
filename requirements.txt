@@ -1,0 +1,23 @@
+# Fitness AI Chatbot — Python Dependencies
+
+# Core Framework
+fastapi>=0.115.0
+uvicorn[standard]>=0.27.0
+python-multipart>=0.0.6
+
+# Database (MongoDB)
+motor>=3.7.1
+pymongo>=4.16.0
+
+# Fuzzy Matching
+rapidfuzz>=3.14.5
+
+# Validation
+pydantic>=2.5.3
+pydantic-settings>=2.1.0
+
+# HTTP Client (for Groq STT + Cloudflare LLM + External APIs)
+httpx>=0.26.0
+
+# Environment
+python-dotenv>=1.0.0

@@ -1,0 +1,12 @@
+{
+  "name": "fitness-chatbot-frontend",
+  "version": "1.0.0",
+  "description": "Fitness AI Chatbot — static frontend dev server",
+  "scripts": {
+    "dev": "npx serve . -p 3000 --cors",
+    "start": "npx serve . -p 3000 --cors"
+  },
+  "devDependencies": {
+    "serve": "^14.2.4"
+  }
+}

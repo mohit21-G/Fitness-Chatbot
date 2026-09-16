@@ -1,0 +1,2528 @@
+food_id,alias,alias_type,language
+food_57429107,aamat,primary,en
+food_f624445a,acai bowl,primary,en
+food_81384845,achari baingan,primary,en
+food_d552ff0f,afghani chicken,primary,en
+food_4448a9f7,aioli,primary,en
+food_a32d862a,aji amarillo paste,primary,en
+food_31d87ea8,akki roti,primary,en
+food_c7991802,al yakhani,primary,en
+food_966eb51e,alfajores,primary,en
+food_23c13167,almond biscuit,primary,en
+food_23c13167,badam ke biscuit,regional,hi
+food_5c025a1f,almond cardamom cake,primary,en
+food_5c025a1f,badam elaichi cake,regional,hi
+food_09eca945,almond milk,primary,en
+food_b1121429,almond soup,primary,en
+food_b1121429,badam ka soup,regional,hi
+food_4d198123,almonds,primary,en
+food_710e45a6,aloo chokha,primary,en
+food_d2ac3ee0,aloo gobi,primary,en
+food_8b46239e,aloo ke gutke,primary,en
+food_4b31b807,aloo kulcha,primary,en
+food_8735b2c8,aloo matar,primary,en
+food_c504b018,aloo methi,primary,en
+food_7d6c3581,aloo paratha,primary,en
+food_886a0a8e,aloo phalliyaan,primary,en
+food_4a33dad3,aloo pitika,primary,en
+food_baf21756,aloo posto,primary,en
+food_5965f28b,aloo puri,primary,en
+food_e8990f9e,aloo roti,primary,en
+food_514e15c9,aloo shimla mirch,primary,en
+food_24f2aa76,aloo tikki,primary,en
+food_f1d1a7a0,aloo tuk,primary,en
+food_5ed1a5ab,alu pitika,primary,en
+food_ae520167,amaranth ladoo,primary,en
+food_ae520167,rajgira ladoo,regional,hi
+food_f8404fe8,amaretti cookie,primary,en
+food_b1adff20,american frosting,primary,en
+food_2f6a19ba,amritsari fish,primary,en
+food_210e077d,amritsari kulcha,primary,en
+food_38a00078,amti,primary,en
+food_08c761b5,ananas menaskai,primary,en
+food_e1c824d7,andhra chicken curry,primary,en
+food_00e956f0,andhra fish curry,primary,en
+food_77101aea,angakar roti,primary,en
+food_2b4b0743,angel hair pasta,primary,en
+food_f6ff23ed,angostura bitters,primary,en
+food_56248e32,ants on a log,primary,en
+food_3dfb75fc,aperol spritz,primary,en
+food_75eb2b6f,appam,primary,en
+food_c7adc428,appam with egg curry,primary,en
+food_0c66abe2,apple,primary,en
+food_ac01d2ab,apple and honey sorbet,primary,en
+food_ac01d2ab,seb aur shehad ka sharbat,regional,hi
+food_efe92d6c,apple banana pie,primary,en
+food_78387c82,apple cake,primary,en
+food_78387c82,seb ka cake,regional,hi
+food_45e16a5d,apple cider,primary,en
+food_a9878e3c,apple cinnamon pie,primary,en
+food_34326f91,apple crumb pudding,primary,en
+food_783ce2b5,apple jam,primary,en
+food_783ce2b5,seb ka murabba,regional,hi
+food_11826d00,apple jelly,primary,en
+food_11826d00,seb ki jelly,regional,hi
+food_488b46a2,apple kheer,primary,en
+food_488b46a2,seb ki kheer,regional,hi
+food_371a8874,apple mousse,primary,en
+food_ae0bda22,apple oats chia seed smoothie,primary,en
+food_c75e3a95,apple pie,primary,en
+food_99f6dcd4,apple sago payasam,primary,en
+food_99f6dcd4,seb aur sabudana ki kheer,regional,hi
+food_be6c39ab,apple snowballs,primary,en
+food_6c9f7b31,apricot fool,primary,en
+food_ee28fe9c,arancini,primary,en
+food_4addcd11,arhar with spinach,primary,en
+food_4addcd11,arhar dal aur palak,regional,hi
+food_6faba4cd,ariselu,primary,en
+food_388dcd36,arsa roti,primary,en
+food_a0b0f266,artichoke,primary,en
+food_6fc4ab30,arugula,primary,en
+food_2f4a068d,asparagus,primary,en
+food_3fb8d6f1,assorted pastry,primary,en
+food_28afaec3,atta dal burfi,primary,en
+food_531cfbee,attu,primary,en
+food_5becd6a3,avial,primary,en
+food_4fa6d529,avocado,primary,en
+food_fb6b5b29,avocado toast,primary,en
+food_3ab478c2,awadhi biryani,primary,en
+food_91068dfd,awandru,primary,en
+food_3c488dce,axone pork,primary,en
+food_4420ac72,baati,primary,en
+food_3ef00b3b,baba ganoush,primary,en
+food_c4ad47d6,babru,primary,en
+food_920527ed,bacon,primary,en
+food_dbbc6485,bacon and mushroom pancake,primary,en
+food_44ad9557,bafauri,primary,en
+food_dfa58d73,bagara rice,primary,en
+food_18ed023e,bagel,primary,en
+food_2660d445,baguette,primary,en
+food_22417bcb,bai,primary,en
+food_c658b2f2,baida roti,primary,en
+food_653e7f76,bajra churma,primary,en
+food_8b4c267d,bajra khichdi,primary,en
+food_c818defb,bajra roti,primary,en
+food_4b614e39,bajre ki roti,primary,en
+food_b5cb6e23,bajri no rotlo,primary,en
+food_280a0dd9,bajri rotla,primary,en
+food_280a0dd9,bajra no rotlo,regional,gu
+food_280a0dd9,bajra rotlo,regional,gu
+food_280a0dd9,bajra rotla,regional,gu
+food_280a0dd9,bajra na rotla,regional,gu
+food_280a0dd9,bajri no rotlo,regional,gu
+food_280a0dd9,bajri rotlo,regional,gu
+food_280a0dd9,bajri na rotla,regional,gu
+food_280a0dd9,rotlo,regional,gu
+food_280a0dd9,rotla,regional,gu
+food_8c24c9f6,jowar rotlo,regional,en
+food_8c24c9f6,jowar no rotlo,regional,en
+food_8c24c9f6,juvar rotlo,regional,gu
+food_8c24c9f6,juvar rotla,regional,gu
+food_8c24c9f6,juvar na rotla,regional,gu
+food_8c24c9f6,jowar rotla,regional,en
+food_8c24c9f6,jowar na rotla,regional,en
+food_55a3e94a,baked brinjal in tomato sauce,primary,en
+food_9e50bbde,baked custard,primary,en
+food_f4ac6067,baked egg,primary,en
+food_ceecd35d,baked eggs in tomato sauce,primary,en
+food_50e91859,baked fish with cheese sauce,primary,en
+food_6b654252,baked potato,primary,en
+food_c622dc88,baked potato soup,primary,en
+food_7df0d894,baked potato with skin,primary,en
+food_b22bca8a,baked stuffed fish,primary,en
+food_0625d3c7,baked vegetables,primary,en
+food_6b7ca1ad,baked vegetables with spinach,primary,en
+food_e0c85bcc,baklava,primary,en
+food_395b4952,bal mithai,primary,en
+food_496f78b1,balsamic glaze,primary,en
+food_c234b22d,balsamic vinaigrette,primary,en
+food_e3047eeb,balushahi,primary,en
+food_b9ccd019,bamboo shoot curry,primary,en
+food_84fc8dd7,bamboo shoot fry,primary,en
+food_ec355f0f,banana,primary,en
+food_397c19cc,banana appam,primary,en
+food_08919a68,banana cake,primary,en
+food_08919a68,kele ka cake,regional,hi
+food_7fc8384e,banana chips,primary,en
+food_7fc8384e,kele ke chips,regional,hi
+food_a9ac3307,banana groundnut paste/puree,primary,en
+food_fe71e6bc,banana milkshake,primary,en
+food_fe71e6bc,kele milkshake,regional,hi
+food_f80ec029,banana milkshake with ice cream,primary,en
+food_f80ec029,kele ka milkshake ice cream ke saath,regional,hi
+food_3db19e77,banana raita,primary,en
+food_3db19e77,kele ka raita,regional,hi
+food_ecc45008,banarasi kachori,primary,en
+food_667b4729,banarasi paan,primary,en
+food_3848e75e,banarasi tamatar chaat,primary,en
+food_c3b8c25e,barbeque sauce,primary,en
+food_d4e65c5a,barfi,primary,en
+food_ede4117c,basil,primary,en
+food_a43d329b,basundi,primary,en
+food_edc90ded,batata saung,primary,en
+food_c57556e1,batata vada,primary,en
+food_8ab144bd,bathua bhujia,primary,en
+food_4d9d4212,bathua poori,primary,en
+food_6e847557,bathua raita,primary,en
+food_74e784f0,bbq sauce,primary,en
+food_de8df035,bean sprouts,primary,en
+food_67e30564,beans and macaroni,primary,en
+food_50b1a98e,beans foogath,primary,en
+food_0d90ae30,beans with coconut,primary,en
+food_0d90ae30,nariyal aur sem/phali; beans thoran,regional,hi
+food_d54c906b,bebinca,primary,en
+food_d4d5f9f2,bedai,primary,en
+food_9874b4cf,beef burrito,primary,en
+food_26cfc750,beef jerky,primary,en
+food_638bb505,beef pho,primary,en
+food_af6708aa,beef steak,primary,en
+food_2e0807a8,beef stroganoff,primary,en
+food_3a465f51,beef tacos,primary,en
+food_97be720c,beef wellington,primary,en
+food_40b7c26d,beer,primary,en
+food_59cc6c61,beetroot and egg salad,primary,en
+food_59cc6c61,chukandar aur ande ka salad,regional,hi
+food_b3cf3718,beetroot poori,primary,en
+food_b3cf3718,chukandar ki poori,regional,hi
+food_c3b9a017,beets,primary,en
+food_38fa0305,bell pepper,primary,en
+food_fc4e89f8,bell peppers & onions,primary,en
+food_0ae451ba,bengal 5 spice blend,primary,en
+food_0ae451ba,panch phoran,regional,hi
+food_cbab93ff,bengal fish curry,primary,en
+food_cbab93ff,bengali machli curry,regional,hi
+food_1178a240,bengena pitika,primary,en
+food_2a2759a2,berma chutney,primary,en
+food_a1a994d5,berry coulis,primary,en
+food_d504a9e7,besan and spinach parantha/paratha,primary,en
+food_d504a9e7,besan aur palak ka parantha/paratha,regional,hi
+food_2dadd020,besan bathua chilla/cheela,primary,en
+food_b8d1c5a7,besan gatte curry,primary,en
+food_b64bdfc0,besan kadhi with pakodies,primary,en
+food_028f3eac,besara,primary,en
+food_080adeea,bhaang ki chutney,primary,en
+food_a268310c,bhaji,primary,en
+food_b611d77a,bhajji,primary,en
+food_3e87e32c,bhakri,primary,en
+food_cb5165ac,bhangui,primary,en
+food_3426804d,bharli vangi,primary,en
+food_b028e842,bhatt ki churkani,primary,en
+food_41f75510,bhatura,primary,en
+food_fd067479,bhel puri,primary,en
+food_6cec63a3,bhey,primary,en
+food_3fc108be,bhindi masala,primary,en
+food_c1b9d298,bhopali chicken,primary,en
+food_8ee4750d,bhopali gosht,primary,en
+food_0f60b170,bhutte ka kees,primary,en
+food_79698fc3,bihari chicken curry,primary,en
+food_1e382ab4,bihari mutton curry,primary,en
+food_404005cd,bilahi maas,primary,en
+food_1e46772a,biryani,primary,en
+food_ea4ffc67,biscotti,primary,en
+food_b21f9573,biscuits and gravy,primary,en
+food_1cf3f08e,bisi bele bath,primary,en
+food_d1ad5d63,bison burger,primary,en
+food_6e2050ad,black beans,primary,en
+food_29d503fe,black channa curry/bengal gram curry,primary,en
+food_29d503fe,kale chane ki curry,regional,hi
+food_674e90bd,black channa pulao/ bengal gram pulao,primary,en
+food_674e90bd,kale chane ka pulao,regional,hi
+food_d42fad59,black forest gateau,primary,en
+food_73d9ae41,black forest pastry,primary,en
+food_52029816,black pepper,primary,en
+food_b0b6f968,black rice,primary,en
+food_160226d4,black rice kheer,primary,en
+food_160226d4,chak-hao kheer,regional,hi
+food_2fa6ea1f,blackberries,primary,en
+food_ce86eb5d,blue cheese,primary,en
+food_9fc24df5,blue cheese dressing,primary,en
+food_2364c64a,blueberries,primary,en
+food_572a7016,bobbatlu,primary,en
+food_27b48c51,bobotie,primary,en
+food_2dcf0f73,boiled egg,primary,en
+food_2dcf0f73,ubla anda,regional,hi
+food_b51e5ac0,boiled rice,primary,en
+food_b51e5ac0,uble chawal,regional,hi
+food_489bac08,bok choy,primary,en
+food_be045cea,bombay duck fry,primary,en
+food_52f42cb7,bombil fry,primary,en
+food_2aed37a9,bonda,primary,en
+food_0564a014,boondi raita,primary,en
+food_f5705272,bora saul payas,primary,en
+food_d50551d4,bora sawul,primary,en
+food_f899be05,boti kebab,primary,en
+food_428cf438,bottle gourd burfi,primary,en
+food_428cf438,ghiya/lauki burfi,regional,hi
+food_053116ee,bottle gourd kheer,primary,en
+food_053116ee,ghiya/lauki kheer,regional,hi
+food_143f89e6,bottle gourd raita,primary,en
+food_143f89e6,ghiya/lauki ka raita,regional,hi
+food_47b61781,bottle gourd soup,primary,en
+food_47b61781,ghiya/lauki soup,regional,hi
+food_280a93b4,bread and butter pudding,primary,en
+food_592bc123,bread pakora,primary,en
+food_cc6971e6,bread pakora/pakoda,primary,en
+food_927cb281,bread roll,primary,en
+food_54b3c004,bread sauce,primary,en
+food_f586f60e,bread upma,primary,en
+food_4668971c,breadcrumbs,primary,en
+food_ddbd4cb9,breadstick,primary,en
+food_1b081778,brie cheese,primary,en
+food_a97b8029,brinjal bhartha,primary,en
+food_a97b8029,baingan ka bhartha,regional,hi
+food_3f7373c1,brinjal pickle,primary,en
+food_3f7373c1,baingan ka achaar,regional,hi
+food_3f3770c7,broccoli chicken ala king,primary,en
+food_e854a052,broccoli delight,primary,en
+food_926d0a2a,brown rice,primary,en
+food_b45064c0,brown sauce,primary,en
+food_208ce7b4,brown stock,primary,en
+food_0d3bd965,bruschetta,primary,en
+food_7813b170,bubble tea,primary,en
+food_f21ff810,buckwheat pancake,primary,en
+food_f21ff810,khura,regional,hi
+food_5aee2775,bulgur,primary,en
+food_ec597a91,bun,primary,en
+food_6350982b,burger,primary,en
+food_6a11c050,butter,primary,en
+food_5843291e,butter chicken,primary,en
+food_a8c123e7,butter icing,primary,en
+food_1cd74f94,butterfly biscuit,primary,en
+food_7315941e,buttermilk biscuit,primary,en
+food_a108a9cb,cabbage and peas,primary,en
+food_a108a9cb,pattagobhi aur matar,regional,hi
+food_eaf10d92,cabbage kheer,primary,en
+food_eaf10d92,pattagobhi ki kheer,regional,hi
+food_5e9207a9,cabbage kofta curry,primary,en
+food_5e9207a9,pattagobhi kofta curry,regional,hi
+food_a90e9a26,cabbage manchurian,primary,en
+food_a90e9a26,pattagobhi manchurian,regional,hi
+food_2b29cd9e,cabbage raita,primary,en
+food_2b29cd9e,pattagobhi raita,regional,hi
+food_ac52cd31,cabbage rolls,primary,en
+food_85c4125d,rajma rice,regional,en
+food_e22510a5,veg biryani,primary,en
+food_3fc108be,bhindi nu shaak,regional,gu
+food_3fc108be,bhindi nu shak,regional,gu
+food_3fc108be,bhindi sabji,regional,hi
+food_3fc108be,bhindi sabzi,regional,hi
+food_39caefa7,cabbage slaw,primary,en
+food_ccf734ac,cacio e pepe,primary,en
+food_da854a01,caesar salad,primary,en
+food_4a5c11da,cajun chicken,primary,en
+food_4376bf3e,calamari,primary,en
+food_e2530fb2,campari,primary,en
+food_954eb04a,campari & soda,primary,en
+food_46e8a7c7,canadian bacon,primary,en
+food_976b885e,candied fruit,primary,en
+food_147d463f,canjee,primary,en
+food_79bbef8a,cannellini beans,primary,en
+food_00210fd8,cannoli,primary,en
+food_616592e6,capers,primary,en
+food_358a42ad,caponata,primary,en
+food_e9397a36,caprese salad,primary,en
+food_ab6bdab2,caramel custard,primary,en
+food_ab6bdab2,steamed,regional,hi
+food_ab6bdab2,baked,regional,hi
+food_8b540b61,caramel ice cream,primary,en
+food_8847889d,caramel sauce,primary,en
+food_5f635d64,carbonara,primary,en
+food_bbdf08e4,cardamom,primary,en
+food_d928b8ba,cardamom cookies,primary,en
+food_d928b8ba,elaichi cookies,regional,hi
+food_c658790d,carrot,primary,en
+food_be2ee2c4,carrot and cabbage with coconut,primary,en
+food_be2ee2c4,nariyal ke saath pattagobhi aur gajar,regional,hi
+food_44784ebb,carrot and fenugreek leaves,primary,en
+food_44784ebb,gajar methi,regional,hi
+food_7419814a,carrot and spinach raita,primary,en
+food_7419814a,gajar aur palak ka raita,regional,hi
+food_b8ec487a,carrot apple sandwich,primary,en
+food_b8ec487a,gajar aur seb ka sandwich,regional,hi
+food_b8dbdae4,carrot cake,primary,en
+food_b8dbdae4,gajar ka cake,regional,hi
+food_4a0fc6f3,carrot halwa,primary,en
+food_4a0fc6f3,gajar ka halwa,regional,hi
+food_7c1b3b78,carrot kheer,primary,en
+food_7c1b3b78,gajar ki kheer,regional,hi
+food_79cca756,carrot murabba,primary,en
+food_79cca756,gajar ka murabba,regional,hi
+food_c1f5aad7,carrot raita,primary,en
+food_c1f5aad7,gajar ka raita,regional,hi
+food_caeffb20,carrot sticks,primary,en
+food_9b5dd951,cashewnut burfi,primary,en
+food_9b5dd951,kaju burfi/kaju katli,regional,hi
+food_6534554f,cashews,primary,en
+food_3541f61d,cauliflower au gratin,primary,en
+food_fefb5f11,cauliflower basket,primary,en
+food_5b61a412,cauliflower canjee,primary,en
+food_5b61a412,phoolgobhi ki canjee,regional,hi
+food_d2539a5a,cauliflower kheer,primary,en
+food_d2539a5a,phoolgobhi ki kheer,regional,hi
+food_6143e217,cauliflower kofta curry,primary,en
+food_6143e217,phoolgobhi kofta curry,regional,hi
+food_4ec52828,cauliflower musallam,primary,en
+food_4ec52828,phoolgobhi musallam,regional,hi
+food_e18b18c0,cauliflower pakora/pakoda,primary,en
+food_e18b18c0,phoolgobhi ke pakode,regional,hi
+food_8cc769c2,cauliflower parantha/paratha,primary,en
+food_8cc769c2,phoolgobhi ka parantha/paratha,regional,hi
+food_d09d68f3,cauliflower potato canjee,primary,en
+food_14aa6d5c,cauliflower with coconut,primary,en
+food_14aa6d5c,nariyal ke saath phoolgobhi,regional,hi
+food_74ec1084,"cauliflower, pea and potato bhujia",primary,en
+food_74ec1084,phoolgobhi,regional,hi
+food_74ec1084,matar aur aloo bhujia,regional,hi
+food_330c4bc5,celery,primary,en
+food_6c7eec50,celery sticks,primary,en
+food_4b9be161,century egg,primary,en
+food_3b66caa7,cereal,primary,en
+food_631ad096,cereal bar,primary,en
+food_9816eb66,cereal mix,primary,en
+food_a15382a9,cereal pulse mix with amylase rice flour,primary,en
+food_67da7f62,ceviche,primary,en
+food_a189474e,chaat,primary,en
+food_5714af7e,chai latte,primary,en
+food_25676b1c,chainsoo,primary,en
+food_8e561b7e,chak hao,primary,en
+food_1f4512e0,chak-hao kheer,primary,en
+food_359eb8e0,chakhwi,primary,en
+food_2fb81e30,chakri,primary,en
+food_21595ac4,chamthong,primary,en
+food_7ce3810a,chana dal fara,primary,en
+food_844ea84e,chana ghugni,primary,en
+food_a2bc2e06,chana masala,primary,en
+food_dfd95d55,channa murmura premix,primary,en
+food_096cfd3c,chapati,primary,en
+food_e1ebe936,chapati/roti,primary,en
+food_4bc50a56,charlotte rousse,primary,en
+food_debf837d,chat masala,primary,en
+food_3e01a67f,chausela,primary,en
+food_3d315ca1,checker board sandwich,primary,en
+food_bc87b9ab,cheddar cheese,primary,en
+food_813708dc,cheera doi,primary,en
+food_6efdf30a,cheese and chilli sandwich,primary,en
+food_0872e59c,cheese and mushroom omelette/omlet,primary,en
+food_93f40e89,cheese and mushroom tart,primary,en
+food_1e9f509e,cheese and pineapple sandwich,primary,en
+food_1e9f509e,cheese aur ananas ka sandwich,regional,hi
+food_546ae9b5,cheese and tomato pancake,primary,en
+food_c411e151,cheese and tomato sandwich,primary,en
+food_c411e151,cheese aur tamatar ke sandwich,regional,hi
+food_c411e151,toasted,regional,hi
+food_52eba4e1,cheese balls,primary,en
+food_b8a93d3e,cheese danish,primary,en
+food_3d643c2c,cheese noodle ring,primary,en
+food_d6e6d9a7,cheese open sandwich,primary,en
+food_d51900cc,cheese patties,primary,en
+food_6a62d94b,cheese pizza,primary,en
+food_d002404f,cheese pudding,primary,en
+food_eef4bb72,cheese sauce,primary,en
+food_e006bb17,cheese soup,primary,en
+food_3ec9024b,cheese straws,primary,en
+food_13b6f2cb,cheese toast,primary,en
+food_24ecc98c,cheese whiz,primary,en
+food_e263a9d2,cheesecake,primary,en
+food_05da61e5,cheesy grits,primary,en
+food_5e827b20,chenna murki,primary,en
+food_5342fc25,cherries,primary,en
+food_377e3858,cherry and walnut cookies,primary,en
+food_c65a25d2,chettinad chicken,primary,en
+food_a7d18989,chettinad mutton,primary,en
+food_0ad4c0e6,chettinadu chicken,primary,en
+food_101dbe07,chevdo,primary,en
+food_4a806110,chha gosht,primary,en
+food_7da8cc2e,chhena gaja,primary,en
+food_4e53ec9d,chhena poda,primary,en
+food_a6a00046,chhenagaja,primary,en
+food_ff1a76a9,chhenapoda,primary,en
+food_c739013d,chhum han,primary,en
+food_c64d6d6f,chhurpi,primary,en
+food_eefbef10,chicken & rice soup,primary,en
+food_cd76fece,chicken 65,primary,en
+food_ce2ed4f4,chicken alfredo,primary,en
+food_9eacbe8f,chicken and cheese souffle,primary,en
+food_86de4bf7,chicken and corn open sandwich,primary,en
+food_9edecd14,chicken and tomato towers,primary,en
+food_082328ef,chicken biryani,primary,en
+food_def88537,chicken breast,primary,en
+food_ad757aef,chicken cafreal,primary,en
+food_757293a7,chicken chowmein,primary,en
+food_46695a87,chicken consomme,primary,en
+food_46695a87,clear chicken soup,regional,hi
+food_b55b15c4,chicken curry,primary,en
+food_240c5ac7,chicken jhol,primary,en
+food_c3ce6dd7,chicken kebab,primary,en
+food_a9a2c925,chicken korma,primary,en
+food_daf10085,chicken kosha,primary,en
+food_071e65e8,chicken lasagne,primary,en
+food_6a99df6e,chicken liver,primary,en
+food_ab1c8f11,chicken manchurian,primary,en
+food_b48f6612,chicken mcnuggets,primary,en
+food_3cdbd182,chicken milanesa,primary,en
+food_dc688f61,chicken momos,primary,en
+food_a883c7e9,chicken noodle soup,primary,en
+food_58338ece,chicken pakora/pakoda,primary,en
+food_57667577,chicken parm sandwich,primary,en
+food_f21d5dda,chicken piccata,primary,en
+food_0a5c01c0,chicken pulao,primary,en
+food_7e82ae80,chicken rezala,primary,en
+food_59f63e7e,chicken salad,primary,en
+food_b5b20d98,chicken salad sandwich,primary,en
+food_a6317d5f,chicken sandwich,primary,en
+food_a6317d5f,toasted,regional,hi
+food_cc806b16,chicken stew,primary,en
+food_5d404ba4,chicken stock,primary,en
+food_7fa4e484,chicken sukka,primary,en
+food_b769a46e,chicken sweet and sour,primary,en
+food_856e471c,chicken sweet corn soup,primary,en
+food_0331a630,chicken thigh,primary,en
+food_cae03818,chicken thukpa,primary,en
+food_276cd6fc,chicken tikka,primary,en
+food_e1e09c91,chicken tikka masala,primary,en
+food_6c952c23,chicken walnut sandwich,primary,en
+food_6c952c23,chicken aur akhrot ke sandwich,regional,hi
+food_1bc00e76,chicken wrap,primary,en
+food_8e45c283,chicken yakhni,primary,en
+food_3a4fc10b,chickpea flour cookies,primary,en
+food_3a4fc10b,sweet besan rounds/cookies,regional,hi
+food_d81face4,chickpeas,primary,en
+food_d2ba968e,chickpeas curry,primary,en
+food_d2ba968e,safed channa curry,regional,hi
+food_dfa1acbd,chila,primary,en
+food_4018db29,chili powder,primary,en
+food_58ff7e53,chilka roti,primary,en
+food_78e4266e,chilli chicken,primary,en
+food_28ff6515,chilli paneer,primary,en
+food_0f62b013,chimichurri,primary,en
+food_53ae8201,chinese cabbage and meat ball soup,primary,en
+food_a0400ddb,chinese fried rice,primary,en
+food_995cb49c,chingri malai curry,primary,en
+food_13fdf4af,chingudi malai,primary,en
+food_5c4648d5,chitranna,primary,en
+food_10bcd78c,chocochip ice cream,primary,en
+food_264f48a9,chocolate,primary,en
+food_461694e1,chocolate biscuit,primary,en
+food_79044358,chocolate burfi,primary,en
+food_32bb7057,chocolate butter icing,primary,en
+food_1447dbf4,chocolate cake,primary,en
+food_72b97036,chocolate chiffon cake,primary,en
+food_52cbf738,chocolate chip cookie,primary,en
+food_3eaffe92,chocolate chip cookies,primary,en
+food_a14fb75b,chocolate cream shells,primary,en
+food_577989d7,chocolate croissant,primary,en
+food_cc1af00a,chocolate donut,primary,en
+food_a478f141,chocolate eclairs,primary,en
+food_652b9bc6,chocolate eggless cake,primary,en
+food_686488f0,chocolate glace icing,primary,en
+food_8cdf0af1,chocolate ice cream,primary,en
+food_06250c84,chocolate meringue pie,primary,en
+food_d8897164,chocolate milk,primary,en
+food_4dd18afc,chocolate pastry,primary,en
+food_01f24b2b,chocolate pudding,primary,en
+food_15f26e82,chocolate sauce,primary,en
+food_577a4604,chocolate souffle,primary,en
+food_14f41e55,chocolate sponge cake,primary,en
+food_ae286dc0,chocolate swiss roll,primary,en
+food_a26aac8f,chocolate walnut cookies,primary,en
+food_a26aac8f,chocolate aur akhrot ke cookies,regional,hi
+food_1f6a1002,choconut ice cream,primary,en
+food_c4ba8d9c,cholafali,primary,en
+food_bf788aa1,cholar dal,primary,en
+food_cdb52753,chole bhature,primary,en
+food_2007ffbe,chole kulche,primary,en
+food_b1e4202d,chorafali,primary,en
+food_28c3269c,choripan,primary,en
+food_5b2c9221,chorizo,primary,en
+food_6b7c69b8,choux pastry,primary,en
+food_bbe3465e,choux swans,primary,en
+food_f7c31854,christmas bell biscuit,primary,en
+food_7d613ee2,christmas biscuit,primary,en
+food_b85efc68,christmas cake,primary,en
+food_018e8dab,christmas star biscuit,primary,en
+food_38cadd43,christmas tree biscuit,primary,en
+food_b366d133,christmas wreath biscuit,primary,en
+food_c95956c8,chum chum,primary,en
+food_94008fec,chura sabzi,primary,en
+food_ddd55962,churma,primary,en
+food_82fc4f25,churma ladoo,primary,en
+food_f97e11cc,churros,primary,en
+food_3f83e2ee,chutney,primary,en
+food_4d4eed3c,cilantro,primary,en
+food_c41374b5,cinnamon sugar,primary,en
+food_ba4edf9e,clam chowder,primary,en
+food_611e0e11,classic club sandwich,primary,en
+food_dfb627da,classic italian pasta,primary,en
+food_83a862cf,classic seasoned black beans,primary,en
+food_a22684aa,clear tomato soup,primary,en
+food_a22684aa,tamatar ka soup,regional,hi
+food_a0215c87,club sandwich,primary,en
+food_623160e6,club soda,primary,en
+food_a6da1c77,coarse salt,primary,en
+food_c8ff6da9,cobb salad,primary,en
+food_4ceaf758,cocktail sauce,primary,en
+food_ad63075e,coco pine cooler,primary,en
+food_94333352,coconut,primary,en
+food_099a91a6,coconut biscuit,primary,en
+food_099a91a6,nariyal ke biscuit,regional,hi
+food_d672d1c4,coconut burfi,primary,en
+food_d672d1c4,nariyal ki burfi,regional,hi
+food_4f191d66,coconut chutney,primary,en
+food_4f191d66,nariyal ki chutney,regional,hi
+food_87607a74,coconut finger,primary,en
+food_5a07b8a0,coconut flakes,primary,en
+food_01b7554f,coconut kheer,primary,en
+food_01b7554f,nariyal ki kheer,regional,hi
+food_077dfaa1,coconut milk,primary,en
+food_d50a7572,coconut pickle,primary,en
+food_d50a7572,nariyal ka aachar,regional,hi
+food_6188290e,coconut shrimp,primary,en
+food_52179bb8,coconut water,primary,en
+food_5677dbd9,cod,primary,en
+food_2f05b2e8,coffee,primary,en
+food_1ab2ada8,coffee beans,primary,en
+food_b147c329,coffee biscuit,primary,en
+food_0717bb42,coffee drops,primary,en
+food_6cea188b,coffee ice cream,primary,en
+food_68e28492,coffee liqueur,primary,en
+food_bd7e1121,coffee pear alaska,primary,en
+food_c343de52,cold chocolate souffle,primary,en
+food_81232ad9,cold coffee,primary,en
+food_81232ad9,with cream,regional,hi
+food_a32173ad,cold coffee with ice cream,primary,en
+food_365f4731,cold cucumber cream soup,primary,en
+food_4cc62226,cold cucumber soup,primary,en
+food_4cc62226,thanda kheere ka soup,regional,hi
+food_76bfc23b,cold lemon souffle,primary,en
+food_5fc442cd,cold orange souffle,primary,en
+food_d24d39cb,cold pineapple souffle,primary,en
+food_551cc20f,cold summer garden soup,primary,en
+food_fdb572f0,cold tomato soup,primary,en
+food_97da20a3,cold vanilla souffle,primary,en
+food_3c1454dd,coleslaw,primary,en
+food_0f9d20a1,collard greens,primary,en
+food_e6f4a28b,congee,primary,en
+food_cabd6d28,consomme au julienne,primary,en
+food_c898cd34,consomme au vermicelli,primary,en
+food_009757af,coriander,primary,en
+food_8696416e,coriander chutney,primary,en
+food_8696416e,hare dhaniye ki chutney,regional,hi
+food_483ac450,corn,primary,en
+food_594a568f,corn flakes,primary,en
+food_6ff2b980,corn nuts,primary,en
+food_49f3a795,corn omelette/omlet,primary,en
+food_633ef6f5,corn on the cob,primary,en
+food_911e269e,corn tortilla,primary,en
+food_f3561f3f,cornflakes with milk,primary,en
+food_74127256,cottage cheese,primary,en
+food_b03ea636,cottage cheese pie,primary,en
+food_f6344f16,crab cakes,primary,en
+food_8c868dcc,cracked wheat and green gram dal premix,primary,en
+food_8c868dcc,dalia moong dal premix,regional,hi
+food_54bf9ca5,cracked wheat khichri/khichdi,primary,en
+food_54bf9ca5,dalia khichri/khichdi,regional,hi
+food_eb273cd4,cracked wheat porridge,primary,en
+food_eb273cd4,meetha daliya,regional,hi
+food_07d4fbb2,crackers,primary,en
+food_f8360882,cranberry cookies,primary,en
+food_fc0b0515,cranberry juice,primary,en
+food_c9f91dd5,cream buns,primary,en
+food_0e39b15b,cream cheese,primary,en
+food_91fa7588,cream horns,primary,en
+food_f702af8b,cream of broccoli soup,primary,en
+food_713f3b93,cream of carrot soup,primary,en
+food_c307f197,cream of green peas soup,primary,en
+food_12faf41e,cream of mixed vegetable soup,primary,en
+food_eec4140a,cream of mushroom soup,primary,en
+food_64eaea4a,cream of potato soup,primary,en
+food_54e214e5,cream of spinach soup,primary,en
+food_cdfdbe83,cream of tomato soup,primary,en
+food_920f5375,cream puffs,primary,en
+food_b32793e3,creamed spinach,primary,en
+food_013bf3c7,creamed spinach and mushroom,primary,en
+food_6a5735da,creamy chicken,primary,en
+food_3ba9fb4d,creamy chocolate mousse,primary,en
+food_89a22a59,crepe,primary,en
+food_926c24a9,crispy baked fish,primary,en
+food_55e6bf0f,crispy okra/crispy lady's fingers,primary,en
+food_55e6bf0f,karare bhindi,regional,hi
+food_b7dda908,croutons,primary,en
+food_1c4db41c,crunchy butterscotch,primary,en
+food_400b8498,crushed tomatoes,primary,en
+food_6428a52d,cucumber,primary,en
+food_59dc426b,cucumber and yogurt salad,primary,en
+food_59dc426b,kheere aur dahi ka salad,regional,hi
+food_b9cf5949,cucumber raita,primary,en
+food_b9cf5949,kheere ka raita,regional,hi
+food_6be542e4,cucumber salad,primary,en
+food_86d81dec,cucumber sandwich,primary,en
+food_86d81dec,kheere ka sandwich,regional,hi
+food_5485b995,cucumber sharbat,primary,en
+food_5485b995,kheere ka sharbat,regional,hi
+food_f6bc0b24,cucumber slices,primary,en
+food_6e33525c,cumin,primary,en
+food_1b58c4bd,cumin infused water,primary,en
+food_1b58c4bd,jeere/zeere ka pani,regional,hi
+food_cc2ff545,cumin pulao,primary,en
+food_cc2ff545,jeera/zeera pulao,regional,hi
+food_f302fca2,cumin seeds baghar,primary,en
+food_f302fca2,jeera baghar/tadka,regional,hi
+food_6c991947,cupcake,primary,en
+food_975b5f2e,curd dip,primary,en
+food_2fa54acf,curd dressing,primary,en
+food_01a63f63,curd mint dip,primary,en
+food_79446515,curd rice,primary,en
+food_79446515,dahi bhaat/dahi chawal/ perugu annam/daddojanam/thayir saadam,regional,hi
+food_b513358d,curd vegetable dip,primary,en
+food_0431d464,curd with potatoes,primary,en
+food_0431d464,dahi aloo,regional,hi
+food_599416b6,curried cauliflower soup,primary,en
+food_69d6c0d9,currivepillai sadam,primary,en
+food_6094d3ca,custard,primary,en
+food_37f38a13,custard tart,primary,en
+food_e6a04d06,daab chingri,primary,en
+food_f2d9efa9,daal baati churma,primary,en
+food_2d7fe498,daal dhokli,primary,en
+food_df9cdd56,dabeli,primary,en
+food_54c35be0,dahi bhalla,primary,en
+food_f575814e,dahi pakhala,primary,en
+food_f34ae28a,dahi vada,primary,en
+food_872bf55a,dahi vadas/dahi bhalla,primary,en
+food_a6ba7bd0,dahibara aloodum,primary,en
+food_c4f80c17,dal,primary,en
+food_53b0c9a2,dal baati,primary,en
+food_c4ac2417,dal baati churma,primary,en
+food_6a57bf71,dal bafla,primary,en
+food_43691976,dal dhokli,primary,en
+food_3c815f71,dal fara,primary,en
+food_2a674be3,dal makhani,primary,en
+food_46899700,dal moong,primary,en
+food_333352bf,dal pakwan,primary,en
+food_9d4b226e,dal parantha/paratha,primary,en
+food_3954889e,dal pitha,primary,en
+food_773313bd,dal stuffed poori,primary,en
+food_6bbf954f,dal tadka,primary,en
+food_18f87686,dalithoy,primary,en
+food_175c4c0f,dalma,primary,en
+food_faf06eea,dalpuri,primary,en
+food_9c560948,danedar burfi,primary,en
+food_d6be94c8,danish,primary,en
+food_735cd88f,danish cookies,primary,en
+food_1b92b9a4,danish luncheon sandwich,primary,en
+food_d691bf02,dark chocolate,primary,en
+food_e072d914,date and nut pie,primary,en
+food_6a2e3234,date pickle,primary,en
+food_6a2e3234,khajoor ka achaar,regional,hi
+food_a5377a10,dates,primary,en
+food_1280ef22,dates chutney,primary,en
+food_1280ef22,khajoor ki chutney,regional,hi
+food_5ece984d,daulat ki chaat,primary,en
+food_fd7a6d1c,dehrori,primary,en
+food_e43a6713,dessicated coconut chutney,primary,en
+food_e43a6713,sookhe kase nariyal ki chutney,regional,hi
+food_d8959a81,deviled egg,primary,en
+food_b2c582f5,dhaam mutton,primary,en
+food_481de7ac,dham,primary,en
+food_e8cc3324,dhansak,primary,en
+food_e8cc3324,vegetarian,regional,hi
+food_db842f83,dharwad peda,primary,en
+food_3d967f27,dhokla,primary,en
+food_19aef351,dhoper chop,primary,en
+food_27d5dc06,dhup pitha,primary,en
+food_dc33a004,dhuska,primary,en
+food_2dabd7d8,dibba rotti,primary,en
+food_85354f77,diet soda,primary,en
+food_99685ddb,dil bahar,primary,en
+food_05dd10a3,dim sum,primary,en
+food_6bfb2afa,dodol,primary,en
+food_805f434d,dohjem,primary,en
+food_f59a4716,dohkhlieh,primary,en
+food_9fca07a7,dohneiihong,primary,en
+food_7e7232bf,doi maach,primary,en
+food_cadbd68b,doodhpak,primary,en
+food_47690408,dosa,primary,en
+food_efa288d5,double ka meetha,primary,en
+food_f301c54c,dry arbi,primary,en
+food_f301c54c,sookhi arbi,regional,hi
+food_e7fcac0a,dry mango chutney,primary,en
+food_e7fcac0a,sookhe aam ki chutney,regional,hi
+food_39e65ba7,dry masala chops,primary,en
+food_81311948,dry potato,primary,en
+food_81311948,sookhe aloo,regional,hi
+food_3b062963,dry washed urad,primary,en
+food_da5a265c,dubki kadhi,primary,en
+food_3824d34b,ducheese potato,primary,en
+food_5b83601e,duck,primary,en
+food_b3a14cf7,duck curry,primary,en
+food_75ea649b,duck with black sesame,primary,en
+food_f37ec63e,dudhi muthiya,primary,en
+food_ba94d96b,dudhi no halwo,primary,en
+food_fd6b9697,dulce de leche,primary,en
+food_afcf47d8,dum aaloo,primary,en
+food_36834678,dum aloo,primary,en
+food_182fb57c,dundee cake,primary,en
+food_4b1a6d18,edamame,primary,en
+food_d83c1afd,egg and tomato sandwich,primary,en
+food_d83c1afd,ande aur tamatar ka sandwich,regional,hi
+food_2764a35d,egg curry,primary,en
+food_2764a35d,anda curry,regional,hi
+food_7c146fa0,egg cutlet,primary,en
+food_7c146fa0,anda cutlet,regional,hi
+food_f9f62414,egg drop soup,primary,en
+food_340347da,egg halwa,primary,en
+food_340347da,ande ka halwa,regional,hi
+food_eb6a9934,egg in a pepper,primary,en
+food_d3d461a5,egg kothu parotta,primary,en
+food_b04e8059,egg nog,primary,en
+food_88925974,egg noodles,primary,en
+food_2a2a46c9,egg pakora/pakoda,primary,en
+food_2a2a46c9,ande ke pakode,regional,hi
+food_d503fe12,egg sandwich,primary,en
+food_d503fe12,ande ka sandwich,regional,hi
+food_e7bd5c2e,egg sauce,primary,en
+food_b61e2edf,egg white,primary,en
+food_75b50583,egg yolk,primary,en
+food_e30cd01f,eggless cake,primary,en
+food_28425544,eggo waffle,primary,en
+food_a535c56c,eggplant,primary,en
+food_1410e889,eggplant/brinjal rice,primary,en
+food_1410e889,vangi bhat,regional,hi
+food_ff4883a4,eggs benedict,primary,en
+food_3403bca2,empanada,primary,en
+food_8eec77d7,english muffin,primary,en
+food_731b726f,ennai kathirikkai,primary,en
+food_8acfd32c,eromba,primary,en
+food_f611ea2b,espreso coffee,primary,en
+food_c3a59461,espresso,primary,en
+food_48f1fce9,espresso martini,primary,en
+food_1dfd9a1f,fafda,primary,en
+food_b18ae2ea,fafda jalebi,primary,en
+food_62ca8dd6,falafel,primary,en
+food_52c4491f,fara,primary,en
+food_4e55d8aa,farsi puri,primary,en
+food_c0a41738,fattoush salad,primary,en
+food_24800973,fermented bamboo shoot pickle,primary,en
+food_24800973,mesu pickle,regional,hi
+food_8d0216ec,fermented bengal gram vada,primary,en
+food_8d0216ec,khameerikrit/ufna hua channa dal ka vada,regional,hi
+food_6e7edc5c,feta cheese,primary,en
+food_5413c895,fettuccine with spinach sauce,primary,en
+food_245e85da,figs,primary,en
+food_485f54d1,finger millet biscuit,primary,en
+food_485f54d1,ragi biscuit,regional,hi
+food_1b610560,finger millet cake,primary,en
+food_1b610560,ragi cake,regional,hi
+food_1e85fbb8,fiorentina steak,primary,en
+food_c3f23bb7,fish curry,primary,en
+food_c3f23bb7,machli curry,regional,hi
+food_ddd93ed5,fish cutlet,primary,en
+food_ddd93ed5,machli ka cutlet,regional,hi
+food_91cbc6f2,fish finger,primary,en
+food_fff7e1c6,fish fry,primary,en
+food_d93be601,fish in coconut milk,primary,en
+food_d93be601,nariyal ke doodh ke saath machli,regional,hi
+food_46242695,fish orly,primary,en
+food_a1a05ef2,fish pakora/pakoda,primary,en
+food_ef0e5609,fish pie,primary,en
+food_09a385a6,fish recheado,primary,en
+food_82352a76,fish sandwich,primary,en
+food_751fca09,fish sauce,primary,en
+food_fd6e9061,fish souffle,primary,en
+food_f4f854d4,fish tacos,primary,en
+food_5bb63877,fish tikka,primary,en
+food_c5f1e072,fish with bamboo shoot,primary,en
+food_f33d8bd2,flaky pastry,primary,en
+food_9b44b2c2,flan,primary,en
+food_eab3232f,flan pastry,primary,en
+food_bda69e12,flattened rice cutlet,primary,en
+food_bda69e12,chirwa cutlet/chivda cutlet/poha cutlet,regional,hi
+food_abc2c031,flavoured milkshake,primary,en
+food_a0ea4b5c,focaccia,primary,en
+food_c4828187,french bread,primary,en
+food_ee002835,french dressing,primary,en
+food_02217e13,french fries,primary,en
+food_859e4f7f,french omelette/omlet,primary,en
+food_2d7c022f,french onion soup,primary,en
+food_82b5dfcb,french sandwich,primary,en
+food_82b5dfcb,toasted,regional,hi
+food_e3cf6c0f,fresh mozzarella,primary,en
+food_6899c81e,fricassee of mushroom,primary,en
+food_ccf6209b,fried chicken with tomato sauce,primary,en
+food_ccf6209b,fried chicken tamatar ki chutney kay saath,regional,hi
+food_5025ab30,fried egg,primary,en
+food_e670df18,fried fish,primary,en
+food_e670df18,indian style,regional,hi
+food_85156ab7,fried fish and chips,primary,en
+food_85156ab7,english style,regional,hi
+food_afd9ebc4,fried okra,primary,en
+food_ed96090e,fried pita,primary,en
+food_5a020d68,frosting,primary,en
+food_94aa3562,frozen frosty fruit salad,primary,en
+food_94aa3562,phalon ka salaad,regional,hi
+food_4acab52e,fruit cocktail,primary,en
+food_226fbc1f,fruit delight,primary,en
+food_6bcd7927,fruit flan,primary,en
+food_331c16a7,fruit ice cream,primary,en
+food_331c16a7,phalon ka ice cream,regional,hi
+food_e2b59b75,fruit loaf,primary,en
+food_dcf18f6f,fruit punch,primary,en
+food_dcf18f6f,with fresh juices,regional,hi
+food_dcf18f6f,with squashes,regional,hi
+food_6b680ca3,fruit puree tart,primary,en
+food_65235dd8,fruit salad,primary,en
+food_65235dd8,phalon ka salaad,regional,hi
+food_9fa6ba2c,gajar halwa,primary,en
+food_17fbb01d,gajar halwo,primary,en
+food_16e771f4,gajar matar aloo,primary,en
+food_2798bc2b,gajar pak,primary,en
+food_5bfee0ae,galho,primary,en
+food_dee311e8,galouti kebab,primary,en
+food_2ffc157b,garadu,primary,en
+food_cb00547d,garam masala,primary,en
+food_41d962e0,garelu,primary,en
+food_20b59994,garlic,primary,en
+food_b8ef001f,garlic bread,primary,en
+food_5145ff44,garlic chickpea soup,primary,en
+food_5145ff44,lahasun aur chane ka shoraba,regional,hi
+food_c977ddb5,garlic chutney/poondu chutney,primary,en
+food_c977ddb5,lahasun ki chutney,regional,hi
+food_effee2f2,garlic pickle,primary,en
+food_effee2f2,lahasun ka achar,regional,hi
+food_09c8ab2b,garlic sauce,primary,en
+food_2a125d59,garlic soup,primary,en
+food_2946d83b,gathiya,primary,en
+food_10acf834,gatta curry,primary,en
+food_e153d3de,gatte ki sabzi,primary,en
+food_542f7f09,gazpacho,primary,en
+food_19ae8e79,gelato,primary,en
+food_1217a84d,ghari,primary,en
+food_ae99cfb2,gheela pitha,primary,en
+food_803f0709,ghevar,primary,en
+food_85794db4,ghila pitha,primary,en
+food_37d6ef56,ghiya/lauki kofta curry,primary,en
+food_85e432df,ghooghra,primary,en
+food_737a7644,ghujia/lavang latika,primary,en
+food_da0e675f,gin,primary,en
+food_ce5bedb9,gin & tonic,primary,en
+food_b1769eb3,ginger ale,primary,en
+food_6b45457d,ginger biscuit,primary,en
+food_6b45457d,adarak ke biscuit,regional,hi
+food_e1190443,ginger bread man,primary,en
+food_7ffcd147,ginger candy,primary,en
+food_7ffcd147,adrak ki candy,regional,hi
+food_743f963e,ginger chicken,primary,en
+food_bd4bf7e3,gingerman biscuit,primary,en
+food_c39058dc,gingo,primary,en
+food_731b62d1,glace icing,primary,en
+food_f637d40e,gnocchi,primary,en
+food_26ab97f1,gnocchi alla sorrentina,primary,en
+food_d961a46d,goan fish curry,primary,en
+food_e1c815c2,goan prawn curry,primary,en
+food_9e5f0553,goat cheese,primary,en
+food_24d85a88,gobhi matar,primary,en
+food_8ea54dfa,gobi 65,primary,en
+food_b1808540,gochugaru,primary,en
+food_d800062c,gochujang,primary,en
+food_f0eb5d1c,goja,primary,en
+food_39707ddd,goli bajje,primary,en
+food_17319160,golichina mamsam,primary,en
+food_912d5d2e,gongura pachadi,primary,en
+food_a95562bb,gooseberry chutney,primary,en
+food_a95562bb,amla chutney,regional,hi
+food_bbe2e8b7,gooseberry marmalade,primary,en
+food_bbe2e8b7,amla murabba,regional,hi
+food_dc959024,gooseberry pickle,primary,en
+food_dc959024,amla ka achaar,regional,hi
+food_f4e986ca,gorgonzola cheese,primary,en
+food_86743b63,graham cracker,primary,en
+food_58132954,gram flour and semolina chilla/cheela/savory pancake,primary,en
+food_58132954,besan suji chilla/cheela,regional,hi
+food_78861563,gram flour and semolina dhokla,primary,en
+food_78861563,besan suji dhokla,regional,hi
+food_22d3b4b6,gram flour burfi,primary,en
+food_22d3b4b6,besan burfi,regional,hi
+food_08021a4d,gram flour chilla/cheela,primary,en
+food_08021a4d,besan chilla/cheela,regional,hi
+food_b8aed78f,gram flour halwa,primary,en
+food_b8aed78f,besan halwa,regional,hi
+food_91580ac1,gram flour ladoo,primary,en
+food_91580ac1,besan ladoo,regional,hi
+food_ed239900,gram flour poori,primary,en
+food_ed239900,besan poori,regional,hi
+food_71e3c324,granola,primary,en
+food_5fd4f2f1,grape and orange whip,primary,en
+food_c7a6104b,grapefruit,primary,en
+food_6eee669d,grapes,primary,en
+food_a175036f,grapes raita,primary,en
+food_a175036f,angoor ka raita,regional,hi
+food_32b3f004,gravy for kofta,primary,en
+food_b6d64ae8,greek yogurt,primary,en
+food_b28afe31,green beans,primary,en
+food_424e3730,green chickpeas pulao,primary,en
+food_424e3730,choliya pulao/hare chane ka pulao,regional,hi
+food_b23cbef4,green chilli raita,primary,en
+food_b23cbef4,hari mirch ka raita,regional,hi
+food_f706cfd9,green chilli sauce,primary,en
+food_6a627001,green chutney,primary,en
+food_54e0069b,green curry paste,primary,en
+food_a30958af,green gram whole with baghar,primary,en
+food_a30958af,sabut moong dal with tadka,regional,hi
+food_a43d0e24,green onion,primary,en
+food_fa90e921,green pea soup,primary,en
+food_fa90e921,matar ka soup,regional,hi
+food_94d59dfd,green peas,primary,en
+food_2352bac7,green tomato pickle,primary,en
+food_2352bac7,haray tamatar ka achaar,regional,hi
+food_cc163b82,greenpea cookies,primary,en
+food_85d3130c,gremolata,primary,en
+food_c854febf,grilled cheese sandwich,primary,en
+food_056aae13,grilled chicken salad,primary,en
+food_32ba8328,grits,primary,en
+food_d936c668,ground beef,primary,en
+food_b8dad831,ground lamb,primary,en
+food_4964608f,guacamole,primary,en
+food_e9cba0d1,guanciale,primary,en
+food_1ee8d61e,guava,primary,en
+food_73c5d66f,guava jelly,primary,en
+food_73c5d66f,amrood ki jelly,regional,hi
+food_8f7ca5b7,guava raita,primary,en
+food_8f7ca5b7,amarood ka raita,regional,hi
+food_5787e53c,gud papdi,primary,en
+food_55452a9c,gudok,primary,en
+food_a71a4b3f,gujarat dal,primary,en
+food_fc484cdc,gujarati handvo,primary,en
+food_b99315d5,gujarati kadhi,primary,en
+food_98e5defa,gulab jamun,primary,en
+food_d1934491,gulab jamun with khoya,primary,en
+food_993a1100,gulab jamun with milk powder,primary,en
+food_5d9fd902,gum icing,primary,en
+food_a99b9718,gummy bears,primary,en
+food_262c9676,gun powder chutney,primary,en
+food_01ca1de1,gundruk soup,primary,en
+food_bff3bcc1,gunjia,primary,en
+food_bc9e659a,gur,primary,en
+food_c22d628b,gushtaba,primary,en
+food_229579a2,gutti vankaya,primary,en
+food_a5d79ae8,gyapa khazi,primary,en
+food_6789bd58,gyro,primary,en
+food_c1f00dd1,haak,primary,en
+food_09e86761,haleem,primary,en
+food_92296339,halibut,primary,en
+food_7a73876d,halvasan,primary,en
+food_9c968827,halwa,primary,en
+food_5830ac19,ham,primary,en
+food_8b57d15c,ham & cheese croissant,primary,en
+food_83e37170,ham and bean soup,primary,en
+food_af16a323,handi chicken,primary,en
+food_c9910958,hando guri,primary,en
+food_d5006b66,handvo,primary,en
+food_e5179549,handwo,primary,en
+food_55dfb491,haq maas,primary,en
+food_868f740d,hara dhania cholia,primary,en
+food_26f8498c,hard-boiled egg,primary,en
+food_66dbd03b,hari mutter ka nimona,primary,en
+food_f7f4ee6d,hariyali fish tikka,primary,en
+food_3b5aa59c,haryanvi chicken curry,primary,en
+food_c7d00561,haryanvi mutton curry,primary,en
+food_cd60973d,hash browns,primary,en
+food_cb77dd6a,hawain salad,primary,en
+food_44908476,hazelnut cookies,primary,en
+food_f708823c,himachali chicken,primary,en
+food_8225786f,hoisin sauce,primary,en
+food_cde35e09,hollandaise sauce,primary,en
+food_2235e912,home made egg noodles,primary,en
+food_9d14cab8,home made plain noodles,primary,en
+food_b33876ad,honey,primary,en
+food_26261688,honey banana cream,primary,en
+food_c2f58e6a,honey cake,primary,en
+food_0d673bd7,horchata,primary,en
+food_55dcf268,horioh maas,primary,en
+food_42ff8f21,horsegram dal,primary,en
+food_42ff8f21,kulthi dal,regional,hi
+food_c04bad9d,hot and sour soup,primary,en
+food_f33b3b3b,hot cheese souffle,primary,en
+food_d21a2f7f,hot cherry sauce,primary,en
+food_e48b3e9b,hot chocolate,primary,en
+food_e06b01e3,hot chocolate souffle,primary,en
+food_d3ce9495,hot cocoa,primary,en
+food_579a1bb9,hot fish souffle,primary,en
+food_a48b85e4,hot lemon souffle,primary,en
+food_181d3ee0,hot orange souffle,primary,en
+food_602e92c6,hot potato souffle,primary,en
+food_0d09c3f8,hot sauce,primary,en
+food_ef64bd6d,hot spinach souffle,primary,en
+food_257f7c6f,hot tea,primary,en
+food_257f7c6f,garam chai,regional,hi
+food_d5370ede,hot vanilla souffle,primary,en
+food_92a2bbe7,hummus,primary,en
+food_39adc300,hummus wrap,primary,en
+food_028a4428,hurum,primary,en
+food_b60e6245,hyderabadi biryani,primary,en
+food_a7143dff,hyderabadi chicken,primary,en
+food_73ed79ac,hyderabadi khatti dal,primary,en
+food_158ea6cd,ice box cookies,primary,en
+food_44bd1053,ice cream,primary,en
+food_5f9272db,iced tea,primary,en
+food_e87b157e,idiyappam,primary,en
+food_5625b957,idli,primary,en
+food_97f72632,ilish bhape,primary,en
+food_582faf9e,imarti,primary,en
+food_8b2bd0e0,imarti with rabri,primary,en
+food_1a55c7db,indian lamb and egg curry,primary,en
+food_1a55c7db,nargisi kofta,regional,hi
+food_03fc448b,indian omelette,primary,en
+food_493a3c56,indian style egg bhujia,primary,en
+food_493a3c56,anda bhujia (indian style,regional,hi
+food_bb2f7881,indori kachori,primary,en
+food_2bfbe9f6,indori poha,primary,en
+food_8f8ff1d9,indori samosa,primary,en
+food_d2c316a9,instant coffee,primary,en
+food_9a5f9af2,instant dhokla,primary,en
+food_acd6078c,instant idli,primary,en
+food_acd6078c,with semolina,regional,hi
+food_c4d1d175,italian dressing,primary,en
+food_42a583b1,italian sausage,primary,en
+food_1328e2e7,jackfruit fritters,primary,en
+food_1328e2e7,ponsa mulik/kathal ka pakora,regional,hi
+food_16862a0f,jackfruit kofta curry,primary,en
+food_16862a0f,kathal ka kofta curry,regional,hi
+food_7f62839b,jackfruit sabzi,primary,en
+food_7f62839b,kathal ki sabzi,regional,hi
+food_0ae9b140,jackfruit/kathal,primary,en
+food_0ae9b140,dry,regional,hi
+food_4fb7b6c7,jadoh,primary,en
+food_7d5f0e93,jal jeera,primary,en
+food_034fe8da,jalapeno,primary,en
+food_f086ee2e,jaleba,primary,en
+food_55603d09,jalebi,primary,en
+food_d8413b56,jalfrezi,primary,en
+food_9b521d40,jam and fruit pancake,primary,en
+food_e5bcc11e,jam filling,primary,en
+food_a355b657,jam tart,primary,en
+food_eda285d9,jasmine rice,primary,en
+food_2767afa7,jeera aloo,primary,en
+food_8192e8ae,jellied sunshine fruit salad,primary,en
+food_327b4bda,jelly,primary,en
+food_95d159be,jelly biscuit,primary,en
+food_3f86b9d5,jhangore ki kheer,primary,en
+food_4cb366dc,jhatpat achar with carrot,primary,en
+food_4cb366dc,jhatpat achaar gajar ke saath,regional,hi
+food_19d37c6f,jicama,primary,en
+food_82790c4b,jonna roti,primary,en
+food_e3c50253,jowar dosa,primary,en
+food_ebebd4fc,junglee maas,primary,en
+food_8c24c9f6,juvar no rotlo,primary,en
+food_a3cf8e0e,kaara kozhambu,primary,en
+food_f628df43,kabiraji,primary,en
+food_61b6de9b,kabuli channa curry,primary,en
+food_ecaddc97,kachori,primary,en
+food_d2d550d4,kachori sabzi,primary,en
+food_b7c57a2f,kadai paneer,primary,en
+food_95587156,kadhai paneer,primary,en
+food_fb4e9ff4,kadhi and khichdi,primary,en
+food_5b4141d6,kadhi pakoda,primary,en
+food_6725f0e7,kadhi pakora,primary,en
+food_29dfb69b,kafuli,primary,en
+food_ed505891,kahwa,primary,en
+food_e04657c0,kakori kebab,primary,en
+food_17a844b6,kale,primary,en
+food_24d5d61e,kale salad,primary,en
+food_10a84b03,kangshoi,primary,en
+food_9dc4db70,kanji,primary,en
+food_c53cf1ed,kansar,primary,en
+food_0e70eb7a,karanji,primary,en
+food_eef2040e,karela bharta,primary,en
+food_4c027ba0,karela nu shak,primary,en
+food_1480ae2b,karimeen pollichathu,primary,en
+food_c96cffd6,kashmiri 'tahar',primary,en
+food_b380943e,kashmiri masala,primary,en
+food_bc65690a,kashmiri mutton koftas,primary,en
+food_bc65690a,gushtaba,regional,hi
+food_39cf52cb,kashmiri pulao,primary,en
+food_381a9624,kashmiri tea,primary,en
+food_381a9624,kehwa,regional,hi
+food_40bc0bce,katha meetha petha,primary,en
+food_fcbfbf74,kathi roll chicken,primary,en
+food_7a9301c1,kathi roll egg,primary,en
+food_110ef7f9,kathi roll paneer,primary,en
+food_7f3098b1,kebabs,primary,en
+food_c4797071,keema kofta curry,primary,en
+food_0e26fc3e,keema pancake,primary,en
+food_d477f033,keema parantha/paratha,primary,en
+food_cd77f470,keerai koottu,primary,en
+food_7a105a78,keerai masiyal,primary,en
+food_623f177d,keerai poriyal,primary,en
+food_c3f287ce,keerai sadam,primary,en
+food_f3616865,kefir,primary,en
+food_bf49f84a,ker sangri,primary,en
+food_537249e3,kerala beef fry,primary,en
+food_a778f3bd,kerala chicken curry,primary,en
+food_7d69afbb,kerala fish curry,primary,en
+food_c8da1a24,kerala sadya,primary,en
+food_fb71c52d,keri no ras,primary,en
+food_b888fe77,kesari bat,primary,en
+food_644ef5cb,kesari bath,primary,en
+food_07cfe496,ketchup,primary,en
+food_d993977c,khaja,primary,en
+food_7cb2d0c4,khakhra,primary,en
+food_15a57ad6,khakhra chaat,primary,en
+food_350a1462,khaman,primary,en
+food_350a1462,dhokla,regional,hi
+food_10160b40,khandvi,primary,en
+food_9a19cf69,khar,primary,en
+food_2f60b5a8,kharoli,primary,en
+food_045694d6,khasta kachori,primary,en
+food_412f2e53,khatkhate,primary,en
+food_d0373504,khatta channa,primary,en
+food_ccd7b309,kheer,primary,en
+food_616eca86,kheer makhana,primary,en
+food_25d12724,khichdi,primary,en
+food_264de14f,khichdi kadhi,primary,en
+food_8522aeb5,khichu,primary,en
+food_03ddf59d,khoa and coconut pancake,primary,en
+food_58c3e98d,khoa coconut burfi,primary,en
+food_1c621eb0,khoa ladoo,primary,en
+food_eba6a52d,khorisa,primary,en
+food_d32eb4f1,khoya paneer,primary,en
+food_2ff6ab47,khura,primary,en
+food_6d0d4cdb,kibbeh,primary,en
+food_5d6c55d9,kidney bean curry,primary,en
+food_5d6c55d9,rajmah curry,regional,hi
+food_bd4c7cb2,kidney bean sandwich with cottage cheese,primary,en
+food_9d9a0599,kimchi,primary,en
+food_88dac4a2,kimchi jjigae,primary,en
+food_7a249a75,kinema curry,primary,en
+food_578685be,kiwi granola pudding,primary,en
+food_de49831c,kiwifruit,primary,en
+food_6a99107b,kodi vepudu,primary,en
+food_4ca508d4,kodubale,primary,en
+food_4bee94ed,kofta,primary,en
+food_390ed962,koldil chicken,primary,en
+food_8239f23d,koldil duck,primary,en
+food_e944906c,kolhapuri akkha masoor dal,primary,en
+food_220979bf,kolhapuri chicken,primary,en
+food_45bf2dd2,kolhapuri misal,primary,en
+food_b64cb688,kolhapuri mutton,primary,en
+food_817da317,kolim / jawla,primary,en
+food_a561168c,kolkata biryani,primary,en
+food_4f043300,kombdi vade,primary,en
+food_2a3e6716,kombucha,primary,en
+food_ec8f10d9,konir dom,primary,en
+food_8f9e3413,koottu,primary,en
+food_6e89a277,kootu,primary,en
+food_d6f710d6,kopra paak,primary,en
+food_a6f41687,kori gassi,primary,en
+food_f85d0a46,kori rotti,primary,en
+food_14a74191,korma,primary,en
+food_951c9efd,kos kootu,primary,en
+food_a63d8853,kosambari,primary,en
+food_7ad62676,kosha mangsho,primary,en
+food_f7f1e90b,koshambri,primary,en
+food_79bfc1b0,koshimbir,primary,en
+food_2398c886,kothamali sadam,primary,en
+food_1ca2fe9d,kothimbir vadi,primary,en
+food_f1cce708,kulfi,primary,en
+food_7c7808a6,kulfi falooda,primary,en
+food_1c025328,kullu trout,primary,en
+food_f7cb4b33,kumaoni mutton,primary,en
+food_9c10db6d,kumaoni raita,primary,en
+food_64f18b46,kumol sawul,primary,en
+food_ae102559,kundapura chicken,primary,en
+food_1237c674,kuzhakkattai,primary,en
+food_baa20af2,kuzhambu,primary,en
+food_3371fea8,laal maas,primary,en
+food_159ed502,laapsi,primary,en
+food_6d61b72e,labneh,primary,en
+food_09b5c738,laddu,primary,en
+food_d28db7ed,lai haq maas,primary,en
+food_c4857d35,lasagna,primary,en
+food_ca7161e6,lasagne with meat sauce,primary,en
+food_374e35be,lasagne with vegetables,primary,en
+food_3e5d3106,lassi,primary,en
+food_3e5d3106,salted,regional,hi
+food_2084516b,lauki ke kofte,primary,en
+food_1b9046fd,lauki ki bhaaji,primary,en
+food_5e8ff6b3,lem-o-gin,primary,en
+food_50ba46db,lemon and ginger squash,primary,en
+food_50ba46db,nimbu aur adrak ka squash,regional,hi
+food_00ac6399,lemon bar,primary,en
+food_5b037542,lemon butter fish,primary,en
+food_fcf07c42,lemon cake,primary,en
+food_b99f3f7c,lemon chicken,primary,en
+food_86a9948a,lemon chiffon pie,primary,en
+food_9dd397df,lemon cookies,primary,en
+food_d6027606,lemon coriander soup,primary,en
+food_1dce7632,lemon curd filling,primary,en
+food_cb941dff,lemon green chilli pickle,primary,en
+food_cb941dff,nimboo aur hari mirch ka achaar,regional,hi
+food_f33e9c23,lemon juice,primary,en
+food_598b61c5,lemon meringue pie,primary,en
+food_5e573a9d,lemon rice,primary,en
+food_5e573a9d,pulihora,regional,hi
+food_5e573a9d,elumichai sadam,regional,hi
+food_5e573a9d,chitranna,regional,hi
+food_f275bd92,lemon slice,primary,en
+food_44c73dac,lemon souffle,primary,en
+food_b40b4b39,lemon squash,primary,en
+food_b40b4b39,nimbu ka squash,regional,hi
+food_58e36fa5,lemon tart,primary,en
+food_31df80d7,lemon wedge,primary,en
+food_1cfbc2b0,lemonade,primary,en
+food_cbf8f341,lentil soup,primary,en
+food_11c39c50,lentils and semolina porridge,primary,en
+food_11c39c50,dal suji porridge/daliya,regional,hi
+food_3da9b50b,lentils and wheat porridge,primary,en
+food_3da9b50b,dal wheat porridge/daliya,regional,hi
+food_1eb80dcb,lettuce,primary,en
+food_389535f8,lichi squash,primary,en
+food_4c93ce4e,lilva kachori,primary,en
+food_50f37078,lime,primary,en
+food_6415fb88,lime juice,primary,en
+food_eddd9161,lime wedge,primary,en
+food_cf1b4644,limoncello,primary,en
+food_6589f03d,litti,primary,en
+food_4bbd3111,litti chokha,primary,en
+food_1fdd2241,lobia curry,primary,en
+food_5399b9eb,lobiya,primary,en
+food_fd9f9f8b,lobster,primary,en
+food_ae8a1858,lobster bisque,primary,en
+food_e9989a75,locha,primary,en
+food_d8048a93,lomo saltado,primary,en
+food_40511acf,loskora,primary,en
+food_2bc7be5a,lotus seed halwa,primary,en
+food_2bc7be5a,kamal gattay ka halwa,regional,hi
+food_75280ed3,lotus stem curry,primary,en
+food_75280ed3,kamal kakdi curry,regional,hi
+food_79e900e1,lotus stem kofta curry,primary,en
+food_79e900e1,kamal kakdi kofta curry,regional,hi
+food_6055c45d,lotus stem pickle,primary,en
+food_6055c45d,kamal kakdi ka achar,regional,hi
+food_fd5337ed,low calorie quick mayonnaise,primary,en
+food_1dd2a9a8,luchi,primary,en
+food_02b0ad57,lucknowi biryani,primary,en
+food_96a6b57b,maa chaane ki dal,primary,en
+food_0914373c,maasor tenga,primary,en
+food_1537f22d,macadamia nuts,primary,en
+food_81163e15,macaroni & cheese,primary,en
+food_688560f2,macaroni salad,primary,en
+food_8b41a0f3,macha besara,primary,en
+food_add773c8,macha ghanta,primary,en
+food_c0463cad,macha tarkari,primary,en
+food_fec3550b,macher jhol,primary,en
+food_938d1436,machher jhol,primary,en
+food_306513de,machhli jhor,primary,en
+food_2debe63d,mackerel,primary,en
+food_4673036f,macroni cheese pie,primary,en
+food_97b6539f,madra,primary,en
+food_5ec0539c,mag dhokli,primary,en
+food_baab4b6d,maghaz,primary,en
+food_2d98a478,maize porridge,primary,en
+food_a280fb09,makhaan ka kheer,primary,en
+food_b079b549,makhana kheer,primary,en
+food_e76389a7,makhaniya lassi,primary,en
+food_f7520be4,makki di roti,primary,en
+food_c02a1a27,makki ki roti,primary,en
+food_d525c639,makki ki roti sarson ka saag,primary,en
+food_d9e0ac42,mal pua,primary,en
+food_dcbb0f7c,malabar chicken biryani,primary,en
+food_a29bf312,malabar parotta,primary,en
+food_97459567,malaiyo,primary,en
+food_2359f6c6,malpua,primary,en
+food_06d4174c,malva pudding,primary,en
+food_4eb05f42,malvani chicken,primary,en
+food_c9a4e94d,malvani fish curry,primary,en
+food_71028229,manakeesh,primary,en
+food_e8b3ee08,mandarin orange,primary,en
+food_e4099dd3,mandua roti,primary,en
+food_3a81fb81,mangalore buns,primary,en
+food_d2e55883,mangalorean fish curry,primary,en
+food_628ca09d,mango,primary,en
+food_72d96127,mango cheesecake,primary,en
+food_8cc0cf1d,mango ice cream,primary,en
+food_d391d5fd,mango malpua,primary,en
+food_c165de17,mango milkshake,primary,en
+food_c165de17,aam milkshake,regional,hi
+food_4cc2c677,mango milkshake with ice cream,primary,en
+food_4cc2c677,aam milkshake ice cream ke saath,regional,hi
+food_59da1929,mango mousse,primary,en
+food_1b50ab8a,mango murabba candy,primary,en
+food_8b5332df,mango pickle,primary,en
+food_8b5332df,aam ka achaar,regional,hi
+food_4d2b4306,mango raita,primary,en
+food_4d2b4306,aam ka raita,regional,hi
+food_b3a14caa,mango squash,primary,en
+food_b3a14caa,aam ka squash,regional,hi
+food_723989a6,mango vanilla custard,primary,en
+food_882e0c68,manicotti,primary,en
+food_797c504f,manipuri black rice pudding,primary,en
+food_84d5fc22,maple syrup,primary,en
+food_e1d16c11,marble cake,primary,en
+food_e27d5193,marmalade,primary,en
+food_e27d5193,murabba,regional,hi
+food_efc965bd,marshmallow,primary,en
+food_72de8875,masala arbi,primary,en
+food_841fc90b,masala biscuit,primary,en
+food_6925ee8d,masala dosa,primary,en
+food_26271e02,masala dosa mixed vegetable fillings,primary,en
+food_f93c411d,masala dosa paneer fillings,primary,en
+food_b1673ea3,masala green chilli pakora/pakoda,primary,en
+food_b1673ea3,hari mirch kay pakode,regional,hi
+food_520e99c6,masala onion pakora/pakoda,primary,en
+food_520e99c6,pyaaz ke pakode,regional,hi
+food_47ee8cab,masala souffle,primary,en
+food_bf8e1456,masala urad dal vada,primary,en
+food_d657aef5,masala vada,primary,en
+food_7d6aaaed,mashed banana with milk,primary,en
+food_d2aa36e8,mashed cauliflower,primary,en
+food_77de9473,mashed potatoes,primary,en
+food_05bf086f,masor koni,primary,en
+food_771ec51e,masor petu,primary,en
+food_baf6f970,masor tenga,primary,en
+food_f13a6f8c,matar paneer,primary,en
+food_c83064f6,matcha latte,primary,en
+food_dae25b8e,mate,primary,en
+food_e01b2460,mathri,primary,en
+food_4762bdd8,mathura peda,primary,en
+food_1955d2e3,mawa bati,primary,en
+food_be1564cb,mayonnaise,primary,en
+food_13a626c2,mayonnaise vegetable dip,primary,en
+food_dd08c5cb,mayonnaise without eggs,primary,en
+food_44fe5ef4,meat and macaroni casserole,primary,en
+food_700d227a,meat consomme,primary,en
+food_700d227a,with mutton,regional,hi
+food_34e08ad1,meat stock,primary,en
+food_7e7c2b24,meatball sub,primary,en
+food_34b75826,media luna,primary,en
+food_e97d0f49,meen kuzhambu,primary,en
+food_919cb244,melted butter,primary,en
+food_e5b93257,melting moments,primary,en
+food_af17e4a3,meringue and rice pudding,primary,en
+food_6a523a1f,methi chaman,primary,en
+food_71fdba23,methi malai paneer,primary,en
+food_1495086a,methi na gota,primary,en
+food_475a931e,methi pakora/pakoda,primary,en
+food_475a931e,methi ke pakode,regional,hi
+food_f13897fb,methi parantha/paratha,primary,en
+food_e3bfd6c0,methi poori,primary,en
+food_e427aecb,methi saag,primary,en
+food_7951130d,methi thepla,primary,en
+food_0fd46348,mexican rice,primary,en
+food_e31a794c,mignonette sauce,primary,en
+food_e119a196,milk cake,primary,en
+food_d1605f61,milk cookies,primary,en
+food_f758a692,millet lapsi,primary,en
+food_9508375b,millet soup,primary,en
+food_79323aeb,minced meat ball curry,primary,en
+food_d7f8f4dd,minced meat cutlet,primary,en
+food_82cb82c5,minced meat pancake,primary,en
+food_82cb82c5,with chicken,regional,hi
+food_74c796ea,minced meat patties,primary,en
+food_6f6e3e49,minced meat pie,primary,en
+food_7f007ff0,minced meat samosa,primary,en
+food_7f007ff0,keema ka samosa,regional,hi
+food_a8c84351,minestrone soup,primary,en
+food_81df8f3f,mint,primary,en
+food_d2c13ed3,mint and coriander chutney,primary,en
+food_d2c13ed3,pudinay aur dhaniye ki chutney,regional,hi
+food_05bf7678,mint and peanut raita,primary,en
+food_05bf7678,pudinay aur moongfali ka raita,regional,hi
+food_fad455e7,mint and peanut sandwich,primary,en
+food_dd053457,mint chutney,primary,en
+food_ab9dbb8c,mint raita,primary,en
+food_ab9dbb8c,pudinay ka raita,regional,hi
+food_26f19f64,mint tea,primary,en
+food_20a27e86,mint tomato chutney,primary,en
+food_20a27e86,pudinay aur tamatar ki chutney,regional,hi
+food_07ce8282,mintade,primary,en
+food_0bbed19b,mirchi bada,primary,en
+food_8606e8ce,mirchi bajji,primary,en
+food_6aecec2b,mirchi vada,primary,en
+food_5c446d68,misa mach poora,primary,en
+food_3ab2958c,misal pav,primary,en
+food_8012e155,mishti chholar dal,primary,en
+food_45b543ca,mishti doi,primary,en
+food_91381801,missi roti,primary,en
+food_9e7ef667,mithe chawal,primary,en
+food_d93a9403,mixed dal,primary,en
+food_3343e006,mixed nuts,primary,en
+food_46e4263e,mixed pulse and vegetable salad,primary,en
+food_f1446844,mixed stock,primary,en
+food_d78ffca3,mixed vegetable,primary,en
+food_6522ac70,mixed vegetable pakora/pakoda,primary,en
+food_6430a6fb,mixed vegetable pickle,primary,en
+food_6430a6fb,sabziyoon ka achaar,regional,hi
+food_b4bb0827,mixed vegetable pulao,primary,en
+food_140813d3,mixed vegetable salad with curd sauce,primary,en
+food_c2080694,mixed vegetable soup,primary,en
+food_b336726c,mizo chicken,primary,en
+food_8ce2fa02,mizo rice,primary,en
+food_9ae6728b,mocha latte,primary,en
+food_3368f403,modak,primary,en
+food_c18ad353,modur pulao,primary,en
+food_e5996951,mohan thaal,primary,en
+food_dcf41a95,mohanthal,primary,en
+food_987955f0,momo,primary,en
+food_168baa1b,momos,primary,en
+food_867fe4d7,mooli bhujia,primary,en
+food_0b16d51d,moong bean dosa,primary,en
+food_0b16d51d,pesarattu,regional,hi
+food_23e67a9e,moong dal halwa,primary,en
+food_2efe232c,moong dal kheer,primary,en
+food_2452a45f,moong dal ki lapsi,primary,en
+food_db6562e3,moong dal mixture,primary,en
+food_b2f109f3,moong dal stuffed cheela/chilla,primary,en
+food_b2f109f3,moong dal ka cheela/chilla,regional,hi
+food_af09d94e,moong dal with vadi,primary,en
+food_37bb1f69,mosdeng serma,primary,en
+food_5ec0f9d1,moti mahal dal,primary,en
+food_5ec0f9d1,urad rajmah mix dal,regional,hi
+food_d731d871,mozzarella,primary,en
+food_bbb27a27,muffin,primary,en
+food_418aed1a,mughlai paratha,primary,en
+food_c8809d91,mui borok,primary,en
+food_9dd9fd68,mulligatawny soup,primary,en
+food_13241d3f,murgh musallam,primary,en
+food_17bd17be,muri naaru,primary,en
+food_9cb3fc17,murmura,primary,en
+food_9cb3fc17,puffed rice,regional,hi
+food_78752af7,murmura chikki,primary,en
+food_796afc25,murukku,primary,en
+food_fa313a30,mushroom,primary,en
+food_c46e8e6d,mushroom and cheese sandwich,primary,en
+food_c46e8e6d,toasted,regional,hi
+food_d4c44bcf,mushroom do pyaza,primary,en
+food_7056bae7,mushroom matar,primary,en
+food_0086c9d1,mushroom pulao,primary,en
+food_3e9312bd,mushroom sauce,primary,en
+food_6c3b2f9b,mussels,primary,en
+food_e96553a8,mustard sauce,primary,en
+food_2216d5b9,mustard seeds baghar,primary,en
+food_2216d5b9,mustard seed tadka,regional,hi
+food_2768283b,muthia,primary,en
+food_6c51654a,muthiya,primary,en
+food_86981641,mutton biryani,primary,en
+food_7f79da2f,mutton biryani/biriyani,primary,en
+food_4648450f,mutton chops,primary,en
+food_253f28e0,mutton curry,primary,en
+food_c051685d,mutton do piaza,primary,en
+food_ac4cef0b,mutton jhol,primary,en
+food_4161b923,mutton korma,primary,en
+food_bb7bcaa9,mutton pulao,primary,en
+food_6991beb6,mutton samosa,primary,en
+food_862cdbac,mutton seekh kebab,primary,en
+food_a23df226,mutton tikka,primary,en
+food_10e8c111,mutton yakhni,primary,en
+food_67453e73,mysore masala dosa,primary,en
+food_783f8126,mysore pak,primary,en
+food_db76be5f,naan,primary,en
+food_e139c7e5,naan bread,primary,en
+food_51c466b4,naan khatai,primary,en
+food_71eb6c91,nadru yakhni,primary,en
+food_2c861d45,naga chicken,primary,en
+food_b39849e1,naga chutney,primary,en
+food_139c5c33,naga pork curry,primary,en
+food_aa8c90ad,nakham bitchi,primary,en
+food_8e7d762d,namakpara,primary,en
+food_43196eac,namkeen daliya,primary,en
+food_f42ae01b,nandu omelette,primary,en
+food_4e73004a,nannari sharbat,primary,en
+food_f4f56cbf,naralachi vadi,primary,en
+food_bf851e88,navratan pulao,primary,en
+food_9da670a0,navrattan korma,primary,en
+food_9a85b01b,neer dosa,primary,en
+food_1d0c1354,negroni,primary,en
+food_fea0c390,nethili fry,primary,en
+food_120c5c50,nga thongba,primary,en
+food_88c8bdd5,nihari,primary,en
+food_4386f7b4,nutella,primary,en
+food_046bf584,nutritional yeast,primary,en
+food_64a667dc,oat milk,primary,en
+food_5b9bfd99,oatmeal,primary,en
+food_94ca7111,oatmeal porridge,primary,en
+food_24974fa2,oats burfi,primary,en
+food_609fef55,obbattu,primary,en
+food_7968fb26,okra/lady's fingers fry,primary,en
+food_7968fb26,bhindi sabzi/sabji/subji,regional,hi
+food_0c802f64,olan,primary,en
+food_d11e0600,olive,primary,en
+food_7f976c5f,olive biscuit,primary,en
+food_fcda93c3,olive oil,primary,en
+food_974dd9a7,olives,primary,en
+food_890bd893,onion,primary,en
+food_4be3d56e,onion chutney,primary,en
+food_4be3d56e,pyaaz ki chutney/vengaya chutney,regional,hi
+food_5abb23c5,onion pakora/pakoda,primary,en
+food_5abb23c5,pyaaz ke pakode,regional,hi
+food_48869ea0,onion raita,primary,en
+food_48869ea0,pyaaz ka raita,regional,hi
+food_51e18eba,onion rings,primary,en
+food_6e4eb3c7,onion tomato baghar,primary,en
+food_6e4eb3c7,pyaaz tamatar ka tadka,regional,hi
+food_ff0411a3,onion tomato uttapam,primary,en
+food_eeac8a9b,onion-green chilli parantha/paratha,primary,en
+food_eeac8a9b,pyaaz aur hari mirch ka parantha/paratha,regional,hi
+food_fe6a5964,onions,primary,en
+food_a9a0c220,oondees,primary,en
+food_f3f37289,ooti with fish,primary,en
+food_d6242475,orange,primary,en
+food_c5c69f3c,orange and pineapple cream,primary,en
+food_ec6790f0,orange biscuit,primary,en
+food_75a6b7d2,orange cake,primary,en
+food_5ad3b62d,orange chiffon pie,primary,en
+food_3d833568,orange cream flan,primary,en
+food_30ae4999,orange cream tart,primary,en
+food_2c7a53e9,orange eggless cake,primary,en
+food_dcfa9a3e,orange gateau,primary,en
+food_f3d3297e,orange juice,primary,en
+food_a60c8204,orange marmalade,primary,en
+food_a60c8204,santray ka murabba,regional,hi
+food_f5e3b626,orange milkshake,primary,en
+food_f5e3b626,narangi milkshake,regional,hi
+food_5c870fe1,orange milkshake with ice cream,primary,en
+food_5c870fe1,narangi milkshake ice cream ke saath,regional,hi
+food_943f4a04,orange omelette/omlet,primary,en
+food_49aaf8a9,orange peel,primary,en
+food_52819346,orange sauce,primary,en
+food_9fe697ae,orange slice,primary,en
+food_d4441b98,orange souffle,primary,en
+food_14c8d111,orange squash,primary,en
+food_14c8d111,santre ka squash,regional,hi
+food_012c5665,oregano,primary,en
+food_e768c06c,osso buco,primary,en
+food_2b7d833c,ou tenga maas,primary,en
+food_295fad30,oyster,primary,en
+food_6ad71188,paaner do pyaza,primary,en
+food_ba9c82a6,pachadi,primary,en
+food_11b4ebe7,pad thai,primary,en
+food_a5a0cfff,paella,primary,en
+food_37b46dc5,pahadi chicken,primary,en
+food_92c34125,pakhala,primary,en
+food_5961c675,pakhala bhata,primary,en
+food_f8f9938c,paknam,primary,en
+food_826c7c4e,palak paneer,primary,en
+food_fa859467,pancake,primary,en
+food_1de3f736,pancakes,primary,en
+food_5e943e81,pancetta,primary,en
+food_2c1f84b4,panchmel dal,primary,en
+food_697d4f84,paneer and pea samosa,primary,en
+food_697d4f84,paneer matar ka samosa,regional,hi
+food_dab1524f,paneer butter masala,primary,en
+food_4476257d,paneer curry,primary,en
+food_7d96f0fd,paneer cutlet,primary,en
+food_60d0c1b5,paneer in butter sauce,primary,en
+food_9a0aadac,paneer kaathi roll,primary,en
+food_38e99c2f,paneer kheer,primary,en
+food_76d74a94,paneer kofta curry,primary,en
+food_164074f6,paneer lababdar,primary,en
+food_2daaf186,paneer makhana korma,primary,en
+food_d686df90,paneer pakora/pakoda,primary,en
+food_0997cc49,paneer parantha/paratha,primary,en
+food_c66b5efb,paneer patties,primary,en
+food_7d3e6d7f,paneer pea sandwich,primary,en
+food_7d3e6d7f,toasted,regional,hi
+food_f0f8c595,paneer potato cutlet,primary,en
+food_f0f8c595,paneer aloo cutlet,regional,hi
+food_9360742e,paneer pulao,primary,en
+food_9b738180,paneer shaslik/tikka,primary,en
+food_9e69f8aa,paneer soup,primary,en
+food_1d0499f3,paneer stuffed cheela/chilla,primary,en
+food_654c6acc,paneer tikka,primary,en
+food_55fbca34,paneer tikka masala,primary,en
+food_805bc038,"paneer, apple and pineapple salad",primary,en
+food_cb968738,panettone,primary,en
+food_6d389160,pani pitha,primary,en
+food_8db68534,pani puri,primary,en
+food_0082b432,pani tenga,primary,en
+food_430b384b,panipuri,primary,en
+food_01d2ab89,paniyaram,primary,en
+food_380a67ef,panjeeri,primary,en
+food_68f75dc1,panna cotta,primary,en
+food_e448c1d1,pantua,primary,en
+food_2186a3b7,papad,primary,en
+food_570ba6f8,papadum,primary,en
+food_0f927466,papaya,primary,en
+food_88105226,papdi,primary,en
+food_9432d70c,paratha,primary,en
+food_f2cccec3,paravannam,primary,en
+food_6009ee1d,parmigiano-reggiano,primary,en
+food_52126410,paro manxho,primary,en
+food_bd7d6c10,parotta,primary,en
+food_bc47cf47,parsley,primary,en
+food_dfcfdbd7,parsley potato,primary,en
+food_a3fc9889,paruppu sadam,primary,en
+food_8e34c03e,passion fruit,primary,en
+food_7ad86ac6,pasta cheese sauce,primary,en
+food_2082fc6c,pasta hot pot,primary,en
+food_b40b1822,pasta salad,primary,en
+food_62df7340,pasta spinach sauce,primary,en
+food_73a0f6b9,patande,primary,en
+food_383d93f3,pate,primary,en
+food_a32d3687,patot diya fish,primary,en
+food_4eda948c,patra,primary,en
+food_ac8a0a5c,patrode,primary,en
+food_a0a69eee,paushtik ladoo,primary,en
+food_4398a819,paushtik roti,primary,en
+food_9d3a755e,pav bhaji,primary,en
+food_0ac8495e,pav bhaji masala,primary,en
+food_e454c0a6,pavlova,primary,en
+food_17cf7597,payasam,primary,en
+food_a9f1d582,payokh,primary,en
+food_1e64d795,pea curry,primary,en
+food_1e64d795,matar ki sabzi,regional,hi
+food_d686b4c2,pea keema curry,primary,en
+food_d686b4c2,matar keema ki sabzi,regional,hi
+food_1a48c572,pea keema sandwich,primary,en
+food_1a48c572,toasted,regional,hi
+food_0cd881c1,pea kofta curry,primary,en
+food_0cd881c1,matar kofta curry,regional,hi
+food_42adc68a,pea mushroom curry,primary,en
+food_42adc68a,matar mushroom,regional,hi
+food_fbe1a72b,pea paneer curry,primary,en
+food_fbe1a72b,matar paneer,regional,hi
+food_bcca7eef,pea parantha/paratha,primary,en
+food_bcca7eef,matar ka parantha/paratha,regional,hi
+food_72f3192f,pea potato curry,primary,en
+food_72f3192f,aloo matar,regional,hi
+food_d64bfcc6,pea potato sandwich,primary,en
+food_d64bfcc6,toasted,regional,hi
+food_0b354a48,pea vadi curry,primary,en
+food_00264380,peach blueberry preserves,primary,en
+food_8744f024,peach melba ice cream,primary,en
+food_f0570d5b,peanut and tomato sandwich,primary,en
+food_f0570d5b,moongfali aur tamatar ka sandwich,regional,hi
+food_fa59db5b,peanut biscuit,primary,en
+food_75d0834f,peanut brittle,primary,en
+food_75d0834f,moongfali ki chikki,regional,hi
+food_4ab5eb7f,peanut burfi,primary,en
+food_4ab5eb7f,moongfali ki burfi,regional,hi
+food_f9aa6fa5,peanut butter,primary,en
+food_5dbf98eb,peanut butter & jelly sandwich,primary,en
+food_a6983f60,peanut butter cucumber sandwich,primary,en
+food_5fba83a9,peanut chutney,primary,en
+food_5fba83a9,mungfali ki chutney,regional,hi
+food_5f1b72b6,peanut cutlet,primary,en
+food_5f1b72b6,mungfali ke cutlet,regional,hi
+food_05ccc568,peanut pulao,primary,en
+food_e67280e1,peanut raita,primary,en
+food_e67280e1,mungfali ka raita,regional,hi
+food_c5d62b1a,peanut sago vada,primary,en
+food_c5d62b1a,sabudana mungfali vada,regional,hi
+food_42160fde,peanut sauce,primary,en
+food_8d65a588,pear,primary,en
+food_a3feab5f,pear chocholate sunday,primary,en
+food_002e1ee3,pear preserves,primary,en
+food_002e1ee3,naashpati ka murabba,regional,hi
+food_4537fc59,pearl millet infant food,primary,en
+food_4537fc59,bajra shishu aahaar,regional,hi
+food_487cc9d9,pearl millet ladoo,primary,en
+food_487cc9d9,bajra ladoo,regional,hi
+food_2b1f61e2,pearl millet mathri,primary,en
+food_2b1f61e2,bajra mathri,regional,hi
+food_840ae118,peas brinjal bhartha,primary,en
+food_840ae118,matar baingan bhartha,regional,hi
+food_8e1bc388,peas kachori,primary,en
+food_8e1bc388,matar kachori,regional,hi
+food_e0ab05f3,peas poori,primary,en
+food_e0ab05f3,matar ki poori,regional,hi
+food_b41dfeba,peas pulao,primary,en
+food_b41dfeba,matar pulao,regional,hi
+food_e4a6a6c4,pecans,primary,en
+food_999f367c,pecorino cheese,primary,en
+food_9957d34a,pecorino romano,primary,en
+food_9873dad5,peda,primary,en
+food_e5894926,penda,primary,en
+food_7cb934c9,penne platter,primary,en
+food_1ec06515,pepperoncini,primary,en
+food_a27bf5fd,pesarattu,primary,en
+food_78e05753,pesto,primary,en
+food_faaf55a4,pesto sauce,primary,en
+food_da4b9c69,petha,primary,en
+food_041ecf39,phaanu,primary,en
+food_399d1fa6,phagshapa,primary,en
+food_c3195659,philly cheesesteak,primary,en
+food_46af7c0b,phirni,primary,en
+food_251be6c0,pickle,primary,en
+food_1a5399ee,pickled cabbage,primary,en
+food_115a4889,pickled cucumber,primary,en
+food_0ea22e01,pickled mustard greens,primary,en
+food_c7103ca3,pickled radish,primary,en
+food_925d970c,pickled turnips,primary,en
+food_7fbedf67,pico de gallo,primary,en
+food_80bab1a5,pika pila,primary,en
+food_af7ca3da,pin wheel biscuit,primary,en
+food_e025c183,pin wheel sandwich,primary,en
+food_d38a58d6,pine nuts,primary,en
+food_ec5ea158,pineapple cake,primary,en
+food_6cd7acd3,pineapple jam,primary,en
+food_353903fc,pineapple milkshake,primary,en
+food_353903fc,ananas milkshake,regional,hi
+food_d96da8ed,pineapple milkshake with ice cream,primary,en
+food_d96da8ed,ananas milkshake ice cream ke saath,regional,hi
+food_f09528b7,pineapple pastry,primary,en
+food_24e3b1bf,pineapple raita,primary,en
+food_24e3b1bf,ananas ka raita,regional,hi
+food_88d83294,pineapple souffle,primary,en
+food_3dd33b4e,pineapple squash,primary,en
+food_3dd33b4e,ananas ka squash,regional,hi
+food_de9d4336,pineapple tart,primary,en
+food_4cd9ed92,pineapple upside down pudding,primary,en
+food_fcecee97,pinni,primary,en
+food_56a8c6f8,pisco sour,primary,en
+food_099c4003,pistachio,primary,en
+food_6d5bcd17,pistachios,primary,en
+food_c18942c7,pita bread,primary,en
+food_e5dbbcaa,pita crisps,primary,en
+food_234ead81,pitha,primary,en
+food_7167d434,pithla bhakri,primary,en
+food_e33d99d4,pittha,primary,en
+food_e3f8b04e,pizza,primary,en
+food_34ad5bfd,plain burfi,primary,en
+food_34ad5bfd,burfi,regional,hi
+food_e8410b2a,plain cream cake,primary,en
+food_f2627c39,plain dosa,primary,en
+food_bae7a921,plain khitchdi,primary,en
+food_bae7a921,plain khichri/khichdi,regional,hi
+food_8efbe9c9,plain omelette/omlet,primary,en
+food_f1833e88,plain parantha/paratha,primary,en
+food_9045a005,plain pulao,primary,en
+food_bbfc2e18,plain urad dal vada,primary,en
+food_bbfc2e18,uzunne vada/minapa garelu/ulundu vadai/medu vada,regional,hi
+food_d343f6be,plum chutney,primary,en
+food_d343f6be,aloo bukhara ki chutney,regional,hi
+food_f03826b1,plum jam,primary,en
+food_f03826b1,aloo bukhara jam,regional,hi
+food_19617284,plum squash,primary,en
+food_19617284,aloo bukhara squash,regional,hi
+food_904f3ea5,poached egg,primary,en
+food_fdcaf719,poha,primary,en
+food_644ec1e8,poha with curd,primary,en
+food_644ec1e8,poha aur dahi,regional,hi
+food_dc647a14,poi,primary,en
+food_ba397c09,polenta,primary,en
+food_7836c2f9,pomegranate molasses,primary,en
+food_3324bea1,pomegranate raita,primary,en
+food_3324bea1,anaar ka raita,regional,hi
+food_edfed663,pongal,primary,en
+food_0158a232,pooran-poli,primary,en
+food_3e017b28,poori,primary,en
+food_155ca862,pootharekulu,primary,en
+food_ff57cc76,popcorn,primary,en
+food_1f94bf75,poriyal,primary,en
+food_18e2385a,pork belly,primary,en
+food_df862f49,pork bun,primary,en
+food_472b47b3,pork chop,primary,en
+food_e3e5c81f,pork floss,primary,en
+food_d816b5ac,pork jarpaa jurpie,primary,en
+food_76899175,pork momos,primary,en
+food_c3d41942,pork thukpa,primary,en
+food_d7beed0f,pork vindaloo,primary,en
+food_a690fba4,poshtik chilla/cheela,primary,en
+food_855b5011,poshtik cutlet,primary,en
+food_d2213281,poshtik khichdi/khichri,primary,en
+food_917a4d7b,poshtik namak paras,primary,en
+food_e0faf783,potato,primary,en
+food_3768c4b3,potato aigrettes,primary,en
+food_02708460,potato bonda,primary,en
+food_02708460,aloo bonda,regional,hi
+food_2e4b5340,potato canjee,primary,en
+food_2e4b5340,aloo canjee,regional,hi
+food_968f3873,potato capsicum,primary,en
+food_968f3873,shimla mirch aloo,regional,hi
+food_e536d188,potato cauliflower,primary,en
+food_e536d188,aloo gobhi,regional,hi
+food_cd07952a,potato chips,primary,en
+food_7fddc154,potato curry,primary,en
+food_7fddc154,aloo ki sabzi,regional,hi
+food_27cf87af,potato fenugreek,primary,en
+food_27cf87af,aloo methi,regional,hi
+food_8f0d8c95,potato halwa,primary,en
+food_8f0d8c95,aloo ka halwa,regional,hi
+food_24b80a5e,potato kofta curry,primary,en
+food_24b80a5e,aloo kofta curry,regional,hi
+food_cf56b3ab,potato leek soup,primary,en
+food_89206f68,potato nests,primary,en
+food_48475a3a,potato pakora/pakoda,primary,en
+food_48475a3a,aloo pakoda,regional,hi
+food_cccb96cf,potato parantha/paratha,primary,en
+food_cccb96cf,aloo ka parantha/paratha,regional,hi
+food_261e2120,potato pickle,primary,en
+food_261e2120,aloo ka achaar,regional,hi
+food_b7036227,potato raita,primary,en
+food_b7036227,aloo ka raita,regional,hi
+food_0e43d4db,potato salad,primary,en
+food_0e43d4db,aloo ka salaad,regional,hi
+food_f5962b32,potato samosa,primary,en
+food_f5962b32,aloo ka samosa,regional,hi
+food_78a62220,potato stuffed poori,primary,en
+food_78a62220,aloo ki poori,regional,hi
+food_6d3a5a48,potato with curd,primary,en
+food_0fd3d882,powdered sugar,primary,en
+food_49b7bbb0,prawn balchao,primary,en
+food_ff703872,prawn curry,primary,en
+food_ff703872,with coconut,regional,hi
+food_3a4fcf4a,prawn ghee roast,primary,en
+food_ff8760e8,prawn malai curry,primary,en
+food_daf17b46,prawn masala,primary,en
+food_bcdc4c76,prawn roast,primary,en
+food_d17d9aa2,prawn sandwich,primary,en
+food_d0d1274a,pretzel bun,primary,en
+food_7c712312,pretzels,primary,en
+food_15529811,prosciutto,primary,en
+food_9a9efb12,prosecco,primary,en
+food_341364d9,protein bar,primary,en
+food_8afc9f60,protein shake,primary,en
+food_ff182e9e,provoleta,primary,en
+food_dbc4f7db,provolone cheese,primary,en
+food_afc922f7,puff pastry,primary,en
+food_02322266,puffed wheat,primary,en
+food_02322266,murmure/moori,regional,hi
+food_dea83929,puffy omelette/omlet,primary,en
+food_78cdcf7a,pukhlein,primary,en
+food_a604f746,puli sadam,primary,en
+food_33b72335,pulihora,primary,en
+food_328c01db,pulled pork sandwich,primary,en
+food_e5bb823d,pulse mix,primary,en
+food_e6ac8037,pumaloi,primary,en
+food_22abbfa2,pumpkin coconut burfi,primary,en
+food_22abbfa2,kaddu aur nariyal ki burfi,regional,hi
+food_839ca885,pumpkin cookies,primary,en
+food_587e7e35,pumpkin halwa,primary,en
+food_587e7e35,kaddu ka halwa,regional,hi
+food_054baf60,pumpkin kheer,primary,en
+food_054baf60,kaddu ki kheer,regional,hi
+food_1f8dbcf3,pumpkin raita,primary,en
+food_1f8dbcf3,kaddu ka raita,regional,hi
+food_d6aac643,pumpkin soup,primary,en
+food_a044f2b1,punugulu,primary,en
+food_1cad86dc,puran poli,primary,en
+food_f4afaab3,puri bhaji,primary,en
+food_8559c9fd,putharekulu,primary,en
+food_64be4a31,putharo,primary,en
+food_a81a1118,puttu,primary,en
+food_9f1df649,pyaaz kachori,primary,en
+food_64002be2,pyaz ki kachori,primary,en
+food_1c394323,qubani ka meetha,primary,en
+food_6824cdcf,queen of pudding,primary,en
+food_70b59cd7,quesadilla,primary,en
+food_acef9ada,quinoa,primary,en
+food_4b2706ba,quinoa khichdi/khichri,primary,en
+food_4deabdfd,quinoa salad,primary,en
+food_b50dd6fa,radish parantha/paratha,primary,en
+food_b50dd6fa,mooli ka parantha/paratha,regional,hi
+food_31965de2,ragi mudde,primary,en
+food_b05f1cc7,ragi mudhe,primary,en
+food_a095687b,ragù,primary,en
+food_055becc5,rainbow sandwich,primary,en
+food_62d9d51a,raisins,primary,en
+food_3a01b98e,raita,primary,en
+food_e04c34da,rajasthani chicken,primary,en
+food_f08f3743,rajasthani kadhi,primary,en
+food_1f7f905a,rajbogh,primary,en
+food_4f85127a,rajma,primary,en
+food_85c4125d,rajma chawal,primary,en
+food_8dab1b05,rajma madra,primary,en
+food_a8037123,ramatori bhaaji,primary,en
+food_29171fe9,ramen,primary,en
+food_a9117983,rasabali,primary,en
+food_5f5c2001,rasagola,primary,en
+food_e67b220d,rasam,primary,en
+food_e4bab5e5,rasam powder,primary,en
+food_e4bab5e5,rasam masala,regional,hi
+food_4fadb5e5,rasam with lemon,primary,en
+food_4fadb5e5,nimmakaya rasam/nimmakaya charu/elumichai rasam/nimbe hannina saaru,regional,hi
+food_f0022d5b,rasam with tamarind,primary,en
+food_f0022d5b,puli rasam/ chintapandu rasam/ charu/saaru,regional,hi
+food_99133617,rasbhari,primary,en
+food_d1db17fa,rasgulla,primary,en
+food_615e2de5,rasmalai,primary,en
+food_4cee3df2,raspberries,primary,en
+food_c2d0d6e4,raspberry bavarian cream,primary,en
+food_ad57efda,raspberry shortbread cookies,primary,en
+food_7eea98c2,rasya muthia,primary,en
+food_24413904,raw banana kofta curry,primary,en
+food_24413904,kela kofta curry,regional,hi
+food_2d8ded89,raw mango chutney,primary,en
+food_2d8ded89,kachhe aam/kairi ki chutney,regional,hi
+food_8c9a02a7,raw mango drink,primary,en
+food_8c9a02a7,aam panna,regional,hi
+food_9ad4b7e1,raw papaya with coconut,primary,en
+food_9ad4b7e1,papaya thoran,regional,hi
+food_1ddef462,raw turnip with coconut,primary,en
+food_45d3993f,red cabbage,primary,en
+food_5ef419ab,red onion,primary,en
+food_808c692f,red rice,primary,en
+food_23ad9eba,red wine,primary,en
+food_4517acca,refried beans,primary,en
+food_f72955b0,reuben sandwich,primary,en
+food_99cc36b2,ribbon sandwich,primary,en
+food_30e5ad1e,ribollita,primary,en
+food_273a4b44,rice,primary,en
+food_f8c9e475,rice dal porridge,primary,en
+food_f8c9e475,chawal dal ki khichdi/khichri,regional,hi
+food_632af0bc,rice flakes,primary,en
+food_632af0bc,chiwda/aval,regional,hi
+food_b2bafc2d,rice flakes and roasted channa,primary,en
+food_7097b1af,rice kheer,primary,en
+food_7097b1af,chawal ki kheer,regional,hi
+food_adc5b547,rice krispies,primary,en
+food_31249b6d,rice moong dal cheela,primary,en
+food_31249b6d,chawal aur moong dal ka cheela,regional,hi
+food_8b380575,rice murukku,primary,en
+food_e7689b20,rice puttu,primary,en
+food_e7689b20,ari puttu,regional,hi
+food_e5c28063,rice upma,primary,en
+food_b88b81cc,rich chocolate mousse,primary,en
+food_c601fda4,ricotta,primary,en
+food_8b5cc96a,ricotta cheese,primary,en
+food_78c33114,risotto,primary,en
+food_40496474,risotto alla milanese,primary,en
+food_f3c8c2d6,rista,primary,en
+food_e4cc6292,roast chicken,primary,en
+food_c286858b,roast potatoes,primary,en
+food_53a57d6e,roasted cauliflower steak,primary,en
+food_0f550502,rogan josh,primary,en
+food_fdc69b02,roghan josh,primary,en
+food_41e8ed5f,rolled sandwich,primary,en
+food_e5ebf2ef,root beer,primary,en
+food_d0b81861,ros omelette,primary,en
+food_35151afa,rosemary,primary,en
+food_9b05fab6,royal icing,primary,en
+food_d8e4793b,royyala iguru,primary,en
+food_e4fc1a71,rugra,primary,en
+food_5b76558d,russian salad,primary,en
+food_b2135c0e,rye bread,primary,en
+food_f1ec7fe2,rye crispbread,primary,en
+food_e4cf6844,s'more,primary,en
+food_d714c083,saath,primary,en
+food_e767fd89,sabudana khichadi,primary,en
+food_dbecf302,sabudana khichdi,primary,en
+food_888bc6c6,sabudana vada,primary,en
+food_f9ce7ff9,safed maas,primary,en
+food_e0194f52,saffron,primary,en
+food_a81346c5,saffron biscuit,primary,en
+food_a81346c5,kesar biscuit,regional,hi
+food_674f1e84,saffron milk,primary,en
+food_674f1e84,kesariya doodh,regional,hi
+food_fdad37af,sage,primary,en
+food_eb766bb4,sago cutlet/vadas,primary,en
+food_eb766bb4,sabudana cutlet/vadas,regional,hi
+food_6373fa5f,sago khitchdi/khichri,primary,en
+food_6373fa5f,sabudana khitchdi/khichri,regional,hi
+food_00157e1b,sajina,primary,en
+food_06aee57c,sajjige,primary,en
+food_0ae53931,sake,primary,en
+food_fbd461c0,sakinalu,primary,en
+food_07b1330b,sakkara pongal,primary,en
+food_6007db65,salami,primary,en
+food_4131fb29,salami sandwich,primary,en
+food_05ea2b12,salmon,primary,en
+food_c6f4a081,salsa,primary,en
+food_810a8bb7,salt,primary,en
+food_95971ee3,saltimbocca,primary,en
+food_8b272ea0,saltine crackers,primary,en
+food_5bddb797,sambar,primary,en
+food_b5864474,sambar powder,primary,en
+food_b5864474,sambar masala,regional,hi
+food_3846053a,samosa,primary,en
+food_32f34808,sandesh,primary,en
+food_97b0ec15,sandige,primary,en
+food_9942a43c,santula,primary,en
+food_ed29f0d0,sarson ka saag,primary,en
+food_e0616780,sarson saag,primary,en
+food_1ca6efa7,sarva pindi,primary,en
+food_14329d18,sashimi,primary,en
+food_f8697982,sattu drink,primary,en
+food_972e78dc,sattu ki roti,primary,en
+food_2e09ec90,sattu paratha,primary,en
+food_eaacc7f4,sattu sharbat,primary,en
+food_3edf43c1,sauerkraut,primary,en
+food_fdde6b1b,saunth/sonth chutney with ginger,primary,en
+food_cbb295d0,saunth/sonth chutney with tamarind/imli,primary,en
+food_853bde10,sausage link,primary,en
+food_3c94d060,sauteed radishes with green beans,primary,en
+food_ffed3e95,savoury cheese horns,primary,en
+food_1524087a,savoury puffs,primary,en
+food_ac06e06a,sawhchiar,primary,en
+food_582d32bb,scallops,primary,en
+food_4a01fe5e,schezwan chutney,primary,en
+food_650e82c1,scotch egg,primary,en
+food_55aacce2,scrambled egg,primary,en
+food_55aacce2,ande ki bhurji,regional,hi
+food_d4537076,scrambled eggs,primary,en
+food_d2524122,sea salt,primary,en
+food_94051129,seaweed salad,primary,en
+food_24e83426,seitan,primary,en
+food_95601e6d,sel roti,primary,en
+food_fa7a6422,semolina burfi,primary,en
+food_fa7a6422,suji/rava burfi,regional,hi
+food_13a0fa5a,semolina cake,primary,en
+food_13a0fa5a,suji/rava cake,regional,hi
+food_55523b16,semolina carrot vada,primary,en
+food_55523b16,suji gajar vada,regional,hi
+food_3eea3186,semolina dhokla,primary,en
+food_3eea3186,suji/rava dhokla,regional,hi
+food_0e8df8ad,semolina dosa,primary,en
+food_0e8df8ad,suji/rava dosa,regional,hi
+food_1885dc56,semolina halwa,primary,en
+food_1885dc56,suji ka halwa,regional,hi
+food_dcbec9b9,semolina idli,primary,en
+food_dcbec9b9,suji/rava idli,regional,hi
+food_dbd6d3a4,semolina kheer,primary,en
+food_dbd6d3a4,suji/rava kheer,regional,hi
+food_138821e4,semolina ladoo with coconut,primary,en
+food_138821e4,suji/rava aur nariyal ke ladoo,regional,hi
+food_1e663a02,semolina ladoo with khoya,primary,en
+food_1e663a02,suji/rava aur khoye ke ladoo,regional,hi
+food_15965c48,semolina ladoo with nuts,primary,en
+food_15965c48,suji/rava ladoo with nuts,regional,hi
+food_7541e5ad,semolina milk drink,primary,en
+food_7541e5ad,thari kanji,regional,hi
+food_9aedac7c,semolina porridge,primary,en
+food_9aedac7c,suji/rava daliya,regional,hi
+food_5c4b64aa,semolina upma,primary,en
+food_5c4b64aa,suji/rava upma,regional,hi
+food_43a04ab7,sesame biscuit,primary,en
+food_43a04ab7,til ke biscuit,regional,hi
+food_9f144fa2,sesame chickpeas brittle,primary,en
+food_9f144fa2,til aur channe ki chikki,regional,hi
+food_8183487a,sesame ladoo,primary,en
+food_8183487a,til ke ladoo,regional,hi
+food_a1fa6697,sesame oil,primary,en
+food_6f5aff1a,sesame toast,primary,en
+food_7ed7d455,sev,primary,en
+food_7ed7d455,omapodi/karapusa,regional,hi
+food_98ccf74f,sev khamani,primary,en
+food_0e485e7e,sev tameta,primary,en
+food_06cbecd7,sev usal,primary,en
+food_926749a9,sevai,primary,en
+food_514c6f35,sha phal,primary,en
+food_50c02e81,shahi chicken masala,primary,en
+food_338fe0ad,shahi keema kofta curry,primary,en
+food_127d8bfa,shahi paneer,primary,en
+food_2af3c70f,shahi suji halwa,primary,en
+food_d3dbe9cc,shahi tukra,primary,en
+food_081e2410,shahi tukre,primary,en
+food_3ef2dfc0,shakarpara,primary,en
+food_0fb5142a,shami kebab,primary,en
+food_1dd6a732,shammi kebab,primary,en
+food_f12f4294,shankarpali,primary,en
+food_d3478122,shawarma,primary,en
+food_36debc53,sheer chai,primary,en
+food_6e422627,shepherd's pie,primary,en
+food_6e422627,vegetarian,regional,hi
+food_6e422627,with minced meat,regional,hi
+food_b4ddd712,shiro,primary,en
+food_b703ffb5,shish tawook,primary,en
+food_a763783b,shishu ahar,primary,en
+food_c4058cb7,shondesh,primary,en
+food_3be97ce8,shorshe ilish,primary,en
+food_49001d92,short bread cookies,primary,en
+food_d40fe4be,short crust pastry,primary,en
+food_efce5cbe,shredded cheese,primary,en
+food_7189d930,shrikhand,primary,en
+food_325c3c92,shrimp,primary,en
+food_7335747f,shrimp cocktail,primary,en
+food_ecd786d0,shrimp scampi,primary,en
+food_ba67a995,shukto,primary,en
+food_22911fff,siddu,primary,en
+food_1a334695,side salad,primary,en
+food_1c14475b,sikkimese pork curry,primary,en
+food_238268c5,silken tofu,primary,en
+food_e1396fea,simple syrup,primary,en
+food_786bc409,singhada lapsi,primary,en
+food_84b41e97,singju,primary,en
+food_91a7ad76,singori,primary,en
+food_603ebbaa,skirt steak,primary,en
+food_ec29d576,small onion pickle,primary,en
+food_9c79fed3,smoked pork,primary,en
+food_6199fb7d,smoked pork with bamboo shoot,primary,en
+food_dfc468ce,smoothie,primary,en
+food_029fd66c,snow flakes pudding,primary,en
+food_9b7b9373,soda,primary,en
+food_34ea0b85,soft custard,primary,en
+food_34ea0b85,stirred,regional,hi
+food_d656967d,sohan papdi,primary,en
+food_52cc9004,sol kadhi,primary,en
+food_588a795a,sooji halwa,primary,en
+food_20aaba46,soonvali,primary,en
+food_e6c106f0,sorpotel,primary,en
+food_9b2c194c,sour cream,primary,en
+food_8924777f,sour cream potato salad,primary,en
+food_fe2923fd,sour lentils,primary,en
+food_fe2923fd,khatti dal,regional,hi
+food_fe01b4fc,soy milk,primary,en
+food_00b3cbdc,soy sauce,primary,en
+food_458eea28,soya chikki,primary,en
+food_e409b3b6,soya chunks and peas,primary,en
+food_e409b3b6,nutrinugget matar,regional,hi
+food_9ccd49f6,soya chunks korma,primary,en
+food_9ccd49f6,nutrinugget korma,regional,hi
+food_3ebfb49f,soya chunks sweet and sour,primary,en
+food_3ebfb49f,nutrinugget sweet and sour,regional,hi
+food_bbc9e242,soya roti,primary,en
+food_c7da21de,soya seekh kebab,primary,en
+food_43379278,soyabean curry,primary,en
+food_3a05f141,soyabean muthias,primary,en
+food_1a72eac7,soyabean namak paras,primary,en
+food_f448390b,soyabean tikki,primary,en
+food_d70514ea,soyrizo,primary,en
+food_f1f68ea8,spaghetti,primary,en
+food_b708e3ec,spaghetti and cheese balls in tomato sauce,primary,en
+food_51a71595,spaghetti bolognese,primary,en
+food_95f619e8,spaghetti with meat balls and tomato sauce,primary,en
+food_8a32f255,spaghetti with paneer balls and tomato sauce,primary,en
+food_70ff83d9,spanish omelette/omlet,primary,en
+food_7463a999,spanish rice,primary,en
+food_2a9545de,spicy chutney sandwich,primary,en
+food_c4bd9b3a,spicy corn chaat,primary,en
+food_87bfc71a,spicy mustard,primary,en
+food_b49dcd48,spinach and paneer souffle,primary,en
+food_04a4a2b7,spinach and potato,primary,en
+food_04a4a2b7,palak aloo,regional,hi
+food_48a00da6,spinach artichoke dip,primary,en
+food_1a9c2ba5,spinach burfi,primary,en
+food_1a9c2ba5,palak burfi,regional,hi
+food_6fefbd44,spinach chickpeas cutlet,primary,en
+food_6fefbd44,palak channa dal cutlet,regional,hi
+food_dd995a3b,spinach khichri,primary,en
+food_dd995a3b,palak khichri/khichdi,regional,hi
+food_a23142ac,spinach kofta curry,primary,en
+food_a23142ac,palak kofta curry,regional,hi
+food_892dbf22,spinach mushroom,primary,en
+food_892dbf22,palak mushroom,regional,hi
+food_8eab7b70,spinach mushroom scrambled egg,primary,en
+food_8eab7b70,palak mushroom bhurji,regional,hi
+food_1455ec17,spinach mutton,primary,en
+food_1455ec17,palak mutton,regional,hi
+food_e847e71a,spinach pakora/pakoda,primary,en
+food_e847e71a,palak pakoda,regional,hi
+food_85a8c006,spinach paneer,primary,en
+food_85a8c006,palak paneer,regional,hi
+food_84ef71de,spinach paneer kofta curry,primary,en
+food_84ef71de,palak paneer kofta curry,regional,hi
+food_92d5c0d8,spinach peanut burfi,primary,en
+food_92d5c0d8,palak aur mungfali ki burfi,regional,hi
+food_2e1ff877,spinach peanut namak paras,primary,en
+food_2e1ff877,palak moongfali namak paras,regional,hi
+food_46ba02f7,spinach poori,primary,en
+food_46ba02f7,palak poori,regional,hi
+food_9d441c04,spinach raita,primary,en
+food_9d441c04,palak ka raita,regional,hi
+food_d082d59a,spinach souffle,primary,en
+food_53b04c9f,spinach soup,primary,en
+food_53b04c9f,palak ka soup,regional,hi
+food_bf91064c,spinach soup in milk,primary,en
+food_32aa22eb,split bengal gram burfi/fudge,primary,en
+food_32aa22eb,channa dal burfi,regional,hi
+food_5bff05c6,split bengal gram dal,primary,en
+food_5bff05c6,channa dal,regional,hi
+food_f82b458c,split bengal gram dal and vegetable pulao,primary,en
+food_f82b458c,channa dal and vegetable pulao,regional,hi
+food_0c6b9733,split bengal gram sweet rice,primary,en
+food_0c6b9733,channa dal sweet rice,regional,hi
+food_613d6b72,split bengal gram with bottle gourd,primary,en
+food_613d6b72,channa dal with ghiya/lauki,regional,hi
+food_ea883282,split pea soup,primary,en
+food_11f926b3,sponge cake,primary,en
+food_bf464456,sponge dosa,primary,en
+food_afc10fb8,spring basket salad,primary,en
+food_54b9fdaf,spring roll,primary,en
+food_0c57b817,sprouted moong dal chat,primary,en
+food_16ac8fff,sprouted moong daliya,primary,en
+food_d82d3eea,sprouted moong parantha/paratha,primary,en
+food_7e73cbbe,sprouted moong poha,primary,en
+food_8bc35e23,sprouted moong pulao,primary,en
+food_279986cd,sprouted moong raita,primary,en
+food_d7ea70d2,sprouted moong salad,primary,en
+food_289a4969,sprouts upma,primary,en
+food_d69a547a,sriracha,primary,en
+food_ea7f4736,stale bread,primary,en
+food_7d6db970,starfruit preserves,primary,en
+food_51ed8025,steamed broccoli,primary,en
+food_d061dc42,steamed cake with chocolate sauce,primary,en
+food_13ab852b,steamed orange pudding,primary,en
+food_db029e26,steeped hot coffee,primary,en
+food_457f49bb,stewed apple,primary,en
+food_881df523,stewed apple with custard,primary,en
+food_2c4eca8c,stewed fruit,primary,en
+food_2c4eca8c,with pear,regional,hi
+food_5404b739,sticky rice,primary,en
+food_8e80cc7a,strawberry and vanilla cake with butter icing,primary,en
+food_3e4bc22a,strawberry ice cream,primary,en
+food_a941f9d2,string cheese,primary,en
+food_9ff4ea05,stuffed baked potatoes,primary,en
+food_d7f12a3d,stuffed bittergourd,primary,en
+food_d7f12a3d,wet,regional,hi
+food_d7f12a3d,dry,regional,hi
+food_a28fb5ff,stuffed bottle gourd,primary,en
+food_a28fb5ff,stuffed ghiya/lauki,regional,hi
+food_9f301619,stuffed brinjal,primary,en
+food_9f301619,bharwa baingan,regional,hi
+food_7ec402db,stuffed capsicum,primary,en
+food_7ec402db,bharwa shimla mirch,regional,hi
+food_d0223147,stuffed egg omelette/omlet,primary,en
+food_936d5a61,stuffed grape leaves,primary,en
+food_d00b1951,stuffed okra,primary,en
+food_d00b1951,bharwa bhindi,regional,hi
+food_8a567d66,stuffed round gourd,primary,en
+food_8a567d66,bharwa tinde,regional,hi
+food_1db1af6a,stuffed tomatoes,primary,en
+food_1db1af6a,bharwa tamatar,regional,hi
+food_af413061,submarine sandwich,primary,en
+food_9c51da22,sugar,primary,en
+food_5c96c75c,sukhdi,primary,en
+food_cb781a26,sumac,primary,en
+food_7829ce6e,summer cooler,primary,en
+food_16256c82,sunflower cookies,primary,en
+food_4934964f,sunga pitha,primary,en
+food_c78b9c33,sunga pork,primary,en
+food_9a5baa0f,sunset and sunrise open sandwich,primary,en
+food_2dda5ca5,supplì,primary,en
+food_6d2f5463,surnoli,primary,en
+food_0f4edb24,surti egg ghotala,primary,en
+food_7b463526,surti ghari,primary,en
+food_e8c2c303,surti locho,primary,en
+food_64a17d74,surti sev khamani,primary,en
+food_0178fbbe,sutarfeni,primary,en
+food_7d412419,sweet & sour chicken,primary,en
+food_30f6184e,sweet and salty biscuit,primary,en
+food_30f6184e,meethay aur namkeen biscuit,regional,hi
+food_e47ee109,sweet and sour tomato pickle,primary,en
+food_e47ee109,khatta meetha tamatar ka achaar,regional,hi
+food_a59cc1ca,sweet chili sauce,primary,en
+food_6f568857,sweet corn soup,primary,en
+food_f7d87f08,sweet couscous dessert,primary,en
+food_5e08bbc3,sweet lassi,primary,en
+food_5e08bbc3,meethi lassi,regional,hi
+food_9fdc96a3,sweet lemon pickle,primary,en
+food_9fdc96a3,neembu ka meetha achaar,regional,hi
+food_d24e2c66,sweet open sandwich,primary,en
+food_466c36e0,sweet peach pickle,primary,en
+food_466c36e0,aadoo ka achaar,regional,hi
+food_3b9e403b,sweet plain biscuit,primary,en
+food_aab89b5a,sweet poori,primary,en
+food_aab89b5a,meethi poori,regional,hi
+food_421dded9,sweet potato,primary,en
+food_9e88794c,sweet potato biscuit,primary,en
+food_9e88794c,shakarkand ke biscuit,regional,hi
+food_b4e51bb5,sweet raita,primary,en
+food_b4e51bb5,meetha raita,regional,hi
+food_c8a22613,sweet rice,primary,en
+food_c8a22613,meethe chawal,regional,hi
+food_e56d406f,sweet split chickpea roti,primary,en
+food_e56d406f,sweet channa dal roti/puranpoli,regional,hi
+food_c5249a76,sweet tea,primary,en
+food_512bc435,sweet vermouth,primary,en
+food_b0326446,sweet wheat porridge,primary,en
+food_b0326446,sweet dalia,regional,hi
+food_223efc89,sweetened yogurt,primary,en
+food_223efc89,shrikhand,regional,hi
+food_10008d81,swiss cheese,primary,en
+food_0439e830,swiss roll,primary,en
+food_69494cc1,t-bone steak,primary,en
+food_b06cf7b8,tabak maaz,primary,en
+food_1f67062f,tabouli,primary,en
+food_dd7ab8b1,tagliatelle al ragù,primary,en
+food_0506baab,tahini,primary,en
+food_3469d232,tahini sauce,primary,en
+food_6b22226a,talaumein soup,primary,en
+food_03a07c07,talawa gosht,primary,en
+food_a776011f,talit macchi,primary,en
+food_e21736c8,tamarind chutney,primary,en
+food_e21736c8,chintapandu pachadi/puli chutney,regional,hi
+food_a4e5f4ff,tamarind rice,primary,en
+food_a4e5f4ff,chintapandu pulihora/puliyodharai/puli sadam/huli anna,regional,hi
+food_5defbcd2,tamatar chaat,primary,en
+food_4c617809,tandoori chicken,primary,en
+food_62362169,tandoori fish,primary,en
+food_fea23da3,tandoori fish tikka,primary,en
+food_1af3742e,tandoori parantha/paratha,primary,en
+food_d3315006,tapioca pearls,primary,en
+food_f014cec2,tartar sauce,primary,en
+food_f28b185d,tartare sauce,primary,en
+food_f2074963,tehri,primary,en
+food_d26af304,tempeh,primary,en
+food_23436a5b,tenga doi,primary,en
+food_6006a8dc,thai basil,primary,en
+food_4a585292,thai iced tea,primary,en
+food_a4e6fcf6,thalipeeth,primary,en
+food_0f887ff8,thandai,primary,en
+food_e225ea46,thattai,primary,en
+food_3acf43f0,thayir sadam,primary,en
+food_4c14b6ec,theeyal,primary,en
+food_4fe7d8c7,thekua,primary,en
+food_e10337e5,thengai sadam,primary,en
+food_e51a1e12,thepla,primary,en
+food_7704c6ce,thickened sweetened milk,primary,en
+food_7704c6ce,rabri,regional,hi
+food_c11d816a,thoran,primary,en
+food_d41d219a,thousand island dressing,primary,en
+food_568d6ca2,thukpa,primary,en
+food_dde837e6,til pitha,primary,en
+food_752fa224,tilapia,primary,en
+food_14ed59f6,tiramisu,primary,en
+food_bb7d43c8,tofu,primary,en
+food_66e33e4c,tofu scramble,primary,en
+food_92f49c2b,tofu stir-fry,primary,en
+food_63bce2ed,tomato,primary,en
+food_b7dd509c,tomato and cucumber sandwich,primary,en
+food_b7dd509c,tamatar aur kheere ka sandwich,regional,hi
+food_a49b0a39,tomato aspic,primary,en
+food_ee705f29,tomato chicken,primary,en
+food_1e994e83,tomato chutney,primary,en
+food_1e994e83,tamatar ki chutney,regional,hi
+food_6e38c413,tomato fish,primary,en
+food_d30e90bf,tomato ginger chutney,primary,en
+food_d30e90bf,tamatar adarak ki chutney,regional,hi
+food_69150c8c,tomato ketchup,primary,en
+food_dc68bab5,tomato onion raita,primary,en
+food_dc68bab5,tamatar aur pyaaz ka raita,regional,hi
+food_3a2e491e,tomato puree,primary,en
+food_ae66adef,tomato sandwich,primary,en
+food_ae66adef,grilled,regional,hi
+food_13342bdb,tomato sauce,primary,en
+food_850c9fdd,tomato soup,primary,en
+food_d67f0349,tortilla chips,primary,en
+food_08160cc1,tossed green salad,primary,en
+food_3c2a9004,tossed salad,primary,en
+food_38bfcf44,trail mix,primary,en
+food_742b9d5e,triffle pudding,primary,en
+food_11067de2,trofie pasta,primary,en
+food_b2381a04,tudkiya bhath,primary,en
+food_2da3959f,tuna,primary,en
+food_335c3438,tuna melt,primary,en
+food_cab045fd,tuna salad,primary,en
+food_79146472,tuna sauce,primary,en
+food_be2522ff,tunday kababi,primary,en
+food_4def78ff,tungrymbai,primary,en
+food_ddbb768a,turiya patra vatana sabji,primary,en
+food_0493ec10,turkey bacon,primary,en
+food_fc18eff0,turkey burger,primary,en
+food_7969bc5f,turkey chili,primary,en
+food_61d178b4,turkey sandwich,primary,en
+food_4fd40f5b,turkey sausage,primary,en
+food_2213ee70,turkish coffee,primary,en
+food_98a28709,turmeric,primary,en
+food_c062f02b,tutti fruitti biscuit,primary,en
+food_3468818b,tutti frutti cake,primary,en
+food_eaa10fc2,tzatziki sauce,primary,en
+food_8d9bbbe9,udupi sambar,primary,en
+food_4c85581d,undhiyu,primary,en
+food_52cbf36c,unniyappam,primary,en
+food_a3e65aa6,upma,primary,en
+food_36855ecc,upmaa,primary,en
+food_0f0875e5,urad sabut special,primary,en
+food_ffb41935,urad special dehusked,primary,en
+food_ef294d20,uttapam,primary,en
+food_07a42b05,vada,primary,en
+food_f2f44da6,vada pav,primary,en
+food_e4e7172b,vangi bath,primary,en
+food_309aeb1b,vanilla ice cream with apples in hot cherry sauce,primary,en
+food_f1207d64,vanilla ice cream with egg,primary,en
+food_56e852ec,vanilla ice cream without egg,primary,en
+food_68595840,vanilla souffle,primary,en
+food_faed8b8d,varuval,primary,en
+food_24a2e5cc,vawksa rep,primary,en
+food_4c4ae76e,veal parmesan,primary,en
+food_37c0328f,veg kolhapuri,primary,en
+food_865e7d07,veg manchurian,primary,en
+food_10de767d,veg paneer stew,primary,en
+food_981dc6cd,vegetable and cheese pie,primary,en
+food_d0ad3b8c,vegetable and mayonnaise sandwich,primary,en
+food_e22510a5,vegetable biryani/biriyani,primary,en
+food_4aba19ca,vegetable broth,primary,en
+food_8ce5f9cb,vegetable burger,primary,en
+food_90947301,vegetable chowmein,primary,en
+food_3b828585,vegetable curry with coconut,primary,en
+food_cba0afdb,vegetable cutlet,primary,en
+food_4b7006cd,vegetable jalfrezi,primary,en
+food_faabf017,vegetable khichdi/khichri,primary,en
+food_fa43c4d0,vegetable mix,primary,en
+food_bca3d5cc,vegetable namkeen jave,primary,en
+food_e0dd5842,vegetable pancake,primary,en
+food_a76040c4,vegetable patties,primary,en
+food_3fdb1caa,vegetable poha,primary,en
+food_cbfb5732,vegetable samosa,primary,en
+food_52846278,vegetable seekh kebab,primary,en
+food_9c34ce07,vegetable soup,primary,en
+food_97c21cee,vegetable stock,primary,en
+food_de6d4dc5,vegetable upma,primary,en
+food_db708b7a,vegetable yakhni,primary,en
+food_f10722ad,vegetables stir fry,primary,en
+food_a803aaea,vegetarian club sandwich,primary,en
+food_1f690c36,vegetarian egg kofta curry,primary,en
+food_fc5a4eb4,vegetarian nargisi kofta curry,primary,en
+food_b9c67ea3,vegeterian scotch egg,primary,en
+food_b5574525,veggie burger,primary,en
+food_50208318,veggie straws,primary,en
+food_2fe0624e,vermicelli kheer,primary,en
+food_2fe0624e,semiya/seviyan ki kheer,regional,hi
+food_07a86143,vermicelli porridge,primary,en
+food_07a86143,semiya/seviyan porridge,regional,hi
+food_9a6ccf34,vermicelli upma,primary,en
+food_9a6ccf34,semiya/seviyan upma,regional,hi
+food_2000cbb4,victorian sandwich cake,primary,en
+food_3c7a3d16,vindaloo,primary,en
+food_3c82f2ac,vitello tonnato,primary,en
+food_3bbc3919,vodka,primary,en
+food_bc7db2c0,vodka soda,primary,en
+food_367e0560,waffle cone,primary,en
+food_67276323,waffles,primary,en
+food_eefac99f,wahan mosdeng,primary,en
+food_c2bc9176,waldroff salad,primary,en
+food_16137192,walnut chutney,primary,en
+food_16137192,akhrot ki chutney,regional,hi
+food_e79242d4,walnuts,primary,en
+food_b6e53c88,wasabi,primary,en
+food_e80098ab,washed moong dal,primary,en
+food_e80098ab,dhuli moong ki dal,regional,hi
+food_c324167b,washed urad dal,primary,en
+food_c324167b,dhuli urad ki dal,regional,hi
+food_83190a69,water cracker,primary,en
+food_504a7b89,watercress sandwich,primary,en
+food_d9687529,watermelon,primary,en
+food_fddb5733,wheat and gram flour ladoo,primary,en
+food_fddb5733,atta besan ladoo,regional,hi
+food_26523a37,wheat cake,primary,en
+food_c67db1bd,wheat flakes,primary,en
+food_c1635a9e,wheat flour and moong dal burfi,primary,en
+food_c1635a9e,atta aur moong dal ki burfi,regional,hi
+food_84f28efb,wheat flour and nuts ladoos,primary,en
+food_84f28efb,atta nuts ladoos,regional,hi
+food_28d7a2a8,wheat upma,primary,en
+food_d44ff679,whey soup,primary,en
+food_a09dd068,whiskey,primary,en
+food_10d1bf72,white beans,primary,en
+food_8f62c9d2,white bread,primary,en
+food_630e7c55,white rice,primary,en
+food_33e2be47,white sauce,primary,en
+food_33e2be47,thin,regional,hi
+food_33e2be47,medium,regional,hi
+food_33e2be47,thick,regional,hi
+food_6e474250,white stock,primary,en
+food_da8b1622,white wine,primary,en
+food_819e61a3,white wine sauce,primary,en
+food_eab43bad,whole masoor,primary,en
+food_eab43bad,masoor ki dal,regional,hi
+food_80580126,whole moong,primary,en
+food_80580126,moong ki dal,regional,hi
+food_1e5a69a2,whole moth,primary,en
+food_1e5a69a2,moth ki dal,regional,hi
+food_24e6820a,whole urad,primary,en
+food_24e6820a,urad ki dal,regional,hi
+food_a7645d74,whole wheat toast,primary,en
+food_6f0c4026,wild rice,primary,en
+food_28c828db,woodapple juice,primary,en
+food_28c828db,bel ka sharbat,regional,hi
+food_03ad454d,xacuti chicken,primary,en
+food_ff9c423f,yak meat curry,primary,en
+food_955c6494,yakhni,primary,en
+food_df81d38a,yam fried,primary,en
+food_df81d38a,zimikand/suran fried,regional,hi
+food_1f247b23,yam kofta curry,primary,en
+food_1f247b23,zimikand/suran kofta curry,regional,hi
+food_e5e457f1,yellow rice,primary,en
+food_64332ae8,yelumicham sadam,primary,en
+food_14170702,za'atar,primary,en
+food_56ee4ed6,zan,primary,en
+food_3f2b9e59,zunka,primary,en

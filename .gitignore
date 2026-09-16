@@ -1,0 +1,117 @@
+# =============================================================================
+# Fitness AI Chatbot — .gitignore
+# =============================================================================
+
+# -----------------------------------------------------------------------------
+# Secrets & environment config — NEVER commit
+# -----------------------------------------------------------------------------
+.env
+.env.local
+.env.*.local
+backend/.env
+backend/.env.local
+
+# Keep the example template committed
+!.env.example
+!backend/.env.example
+
+# -----------------------------------------------------------------------------
+# Python
+# -----------------------------------------------------------------------------
+__pycache__/
+*.py[cod]
+*$py.class
+*.pyo
+
+# Virtual environments
+venv/
+.venv/
+env/
+ENV/
+
+# Distribution / packaging
+dist/
+build/
+*.egg-info/
+*.egg
+.eggs/
+
+# pytest
+.pytest_cache/
+.cache/
+*.pytest_ini
+htmlcov/
+.coverage
+.coverage.*
+coverage.xml
+*.cover
+
+# mypy / type checkers
+.mypy_cache/
+.dmypy.json
+dmypy.json
+.pytype/
+
+# Jupyter notebooks checkpoints
+.ipynb_checkpoints/
+
+# -----------------------------------------------------------------------------
+# Node / Frontend dev server
+# -----------------------------------------------------------------------------
+node_modules/
+frontend/node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# -----------------------------------------------------------------------------
+# IDE & editors
+# -----------------------------------------------------------------------------
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# -----------------------------------------------------------------------------
+# OS files
+# -----------------------------------------------------------------------------
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V500
+.Trashes
+ehthumbs.db
+
+# -----------------------------------------------------------------------------
+# Tunnel / runtime artifacts
+# -----------------------------------------------------------------------------
+tunnel_url.txt
+backend/tunnel_url.txt
+
+# -----------------------------------------------------------------------------
+# Test / benchmark results (generated output — not source)
+# -----------------------------------------------------------------------------
+backend/results/
+*.log
+
+# -----------------------------------------------------------------------------
+# Training — large model / adapter files (keep scripts & datasets, not weights)
+# -----------------------------------------------------------------------------
+training/*.bin
+training/*.safetensors
+training/*.gguf
+training/outputs/
+training/checkpoints/
+training/runs/
+training/wandb/
+
+# -----------------------------------------------------------------------------
+# Misc
+# -----------------------------------------------------------------------------
+*.bak
+*.tmp
+*.orig

@@ -1,0 +1,33 @@
+FITNESS CHATBOT — DATASET STATS
+==================================================
+Raw generated   : 15232
+After dedup     : 14721
+Train           : 12520
+Eval            : 2201
+Train/eval leak : 0
+Validation errs : 0
+
+Per-section counts (before dedup)
+----------------------------------------
+  food_qty_en               3417
+  exercise_dur              2295
+  nutrition                 1840
+  exercise_reps             1474
+  food_typo                 1335
+  yesterday                 1200
+  food_noqty                1012
+  food_hindi                 960
+  exercise_noamt             450
+  variants                   414
+  food_gujarati              295
+  multi_food                 175
+  exercise_dist              140
+  daily_log                   56
+  junk                        41
+  profile                     30
+  greeting                    30
+  ambiguous                   20
+  skip_meal                   20
+  exercise_read               20
+  followup                     8
+  TOTAL                    15232

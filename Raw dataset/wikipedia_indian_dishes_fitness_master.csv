@@ -1,0 +1,325 @@
+﻿region,food_name,category,vegetarian_status,serving_size_g,estimated_calories_kcal,estimated_protein_g,estimated_carbs_g,estimated_fat_g,estimated_fiber_g,estimated_calories_per_100g,nutrition_source
+North India,Achari baingan,Vegetable,Veg,150,130,4,15,5,5,86.7,Estimate for fitness-app use; not provided by Wikipedia
+North India,Aloo gobi,Vegetable,Veg,150,130,4,15,5,5,86.7,Estimate for fitness-app use; not provided by Wikipedia
+North India,Aloo tikki,Street Food,Veg,180,350,8,45,15,5,194.4,Estimate for fitness-app use; not provided by Wikipedia
+North India,Aloo tuk,Snack,Veg,100,280,6,32,14,3,280,Estimate for fitness-app use; not provided by Wikipedia
+North India,Aloo matar,Curry,Veg,200,230,8,18,12,5,115,Estimate for fitness-app use; not provided by Wikipedia
+North India,Aloo kulcha,Bread,Veg,80,250,7,42,7,3,312.5,Estimate for fitness-app use; not provided by Wikipedia
+North India,Aloo methi,Vegetable,Veg,150,130,4,15,5,5,86.7,Estimate for fitness-app use; not provided by Wikipedia
+North India,Aloo shimla mirch,Vegetable,Veg,150,130,4,15,5,5,86.7,Estimate for fitness-app use; not provided by Wikipedia
+North India,Baati,Bread,Veg,80,250,7,42,7,3,312.5,Estimate for fitness-app use; not provided by Wikipedia
+North India,Bhatura,Bread,Veg,80,250,7,42,7,3,312.5,Estimate for fitness-app use; not provided by Wikipedia
+North India,Bhindi masala,Vegetable,Veg,150,130,4,15,5,5,86.7,Estimate for fitness-app use; not provided by Wikipedia
+North India,Biryani,Rice Dish,Non-Veg,250,300,16,48,8,3,120,Estimate for fitness-app use; not provided by Wikipedia
+North India,Butter chicken,Chicken,Non-Veg,180,300,33,10,18,2,166.7,Estimate for fitness-app use; not provided by Wikipedia
+North India,Chaat,Street Food,Veg,180,350,8,45,15,5,194.4,Estimate for fitness-app use; not provided by Wikipedia
+North India,Chana masala,Curry,Veg,200,230,8,18,12,5,115,Estimate for fitness-app use; not provided by Wikipedia
+North India,Chapati,Bread,Veg,80,250,7,42,7,3,312.5,Estimate for fitness-app use; not provided by Wikipedia
+North India,Chicken rezala,Chicken,Non-Veg,180,300,33,10,18,2,166.7,Estimate for fitness-app use; not provided by Wikipedia
+North India,Chicken Tikka,Chicken,Non-Veg,180,300,33,10,18,2,166.7,Estimate for fitness-app use; not provided by Wikipedia
+North India,Chicken tikka masala,Chicken,Non-Veg,180,300,33,10,18,2,166.7,Estimate for fitness-app use; not provided by Wikipedia
+North India,Chole bhature,Street Food,Veg,180,350,8,45,15,5,194.4,Estimate for fitness-app use; not provided by Wikipedia
+North India,Daal baati churma,Main Dish,Veg,250,300,10,40,10,6,120,Estimate for fitness-app use; not provided by Wikipedia
+North India,Dal fara,Snack,Veg,100,280,6,32,14,3,280,Estimate for fitness-app use; not provided by Wikipedia
+North India,Dal makhani,Curry,Veg,200,230,8,18,12,5,115,Estimate for fitness-app use; not provided by Wikipedia
+North India,Dalpuri,Bread,Veg,80,250,7,42,7,3,312.5,Estimate for fitness-app use; not provided by Wikipedia
+North India,Dal tadka,Curry,Veg,200,230,8,18,12,5,115,Estimate for fitness-app use; not provided by Wikipedia
+North India,Dum aloo,Curry,Veg,200,230,8,18,12,5,115,Estimate for fitness-app use; not provided by Wikipedia
+North India,Poha,Breakfast,Veg,180,220,7,32,7,3,122.2,Estimate for fitness-app use; not provided by Wikipedia
+North India,Fara,Snack,Veg,100,280,6,32,14,3,280,Estimate for fitness-app use; not provided by Wikipedia
+North India,Aloo Phalliyaan,Vegetable,Veg,150,130,4,15,5,5,86.7,Estimate for fitness-app use; not provided by Wikipedia
+North India,Gajar Pak,Sweet,Veg,75,300,5,42,12,2,400,Estimate for fitness-app use; not provided by Wikipedia
+North India,Gatte ki Sabzi,Curry,Veg,200,230,8,18,12,5,115,Estimate for fitness-app use; not provided by Wikipedia
+North India,Gajar matar aloo,Vegetable,Veg,150,130,4,15,5,5,86.7,Estimate for fitness-app use; not provided by Wikipedia
+North India,Gobhi matar,Vegetable,Veg,150,130,4,15,5,5,86.7,Estimate for fitness-app use; not provided by Wikipedia
+North India,Hari mutter ka nimona,Curry,Veg,200,230,8,18,12,5,115,Estimate for fitness-app use; not provided by Wikipedia
+North India,Imarti,Sweet,Veg,75,300,5,42,12,2,400,Estimate for fitness-app use; not provided by Wikipedia
+North India,Imarti with rabri,Sweet,Veg,75,300,5,42,12,2,400,Estimate for fitness-app use; not provided by Wikipedia
+North India,Jalebi,Sweet,Veg,75,300,5,42,12,2,400,Estimate for fitness-app use; not provided by Wikipedia
+North India,Jaleba,Sweet,Veg,75,300,5,42,12,2,400,Estimate for fitness-app use; not provided by Wikipedia
+North India,Jalfrezi,Curry,Veg,200,230,8,18,12,5,115,Estimate for fitness-app use; not provided by Wikipedia
+North India,Kachori,Snack,Veg,100,280,6,32,14,3,280,Estimate for fitness-app use; not provided by Wikipedia
+North India,Kadai paneer,Curry,Veg,200,230,8,18,12,5,115,Estimate for fitness-app use; not provided by Wikipedia
+North India,Kadhi pakoda,Curry,Veg,200,230,8,18,12,5,115,Estimate for fitness-app use; not provided by Wikipedia
+North India,Karela bharta,Vegetable,Veg,150,130,4,15,5,5,86.7,Estimate for fitness-app use; not provided by Wikipedia
+North India,Katha meetha petha,Sweet,Veg,75,300,5,42,12,2,400,Estimate for fitness-app use; not provided by Wikipedia
+North India,Kheer,Sweet,Veg,75,300,5,42,12,2,400,Estimate for fitness-app use; not provided by Wikipedia
+North India,Khichdi,Main Dish,Veg,250,300,10,40,10,6,120,Estimate for fitness-app use; not provided by Wikipedia
+North India,Kadhi and Khichdi,Main Dish,Veg,250,300,10,40,10,6,120,Estimate for fitness-app use; not provided by Wikipedia
+North India,Khoya paneer,Curry,Veg,200,230,8,18,12,5,115,Estimate for fitness-app use; not provided by Wikipedia
+North India,Kofta,Curry,Veg,200,230,8,18,12,5,115,Estimate for fitness-app use; not provided by Wikipedia
+North India,Kulfi falooda,Dessert,Veg,100,280,5,35,12,2,280,Estimate for fitness-app use; not provided by Wikipedia
+North India,Laapsi,Sweet,Veg,75,300,5,42,12,2,400,Estimate for fitness-app use; not provided by Wikipedia
+North India,Lauki ke kofte,Curry,Veg,200,230,8,18,12,5,115,Estimate for fitness-app use; not provided by Wikipedia
+North India,Lauki ki bhaaji,Vegetable,Veg,150,130,4,15,5,5,86.7,Estimate for fitness-app use; not provided by Wikipedia
+North India,Litti chokha,Main Dish,Veg,250,300,10,40,10,6,120,Estimate for fitness-app use; not provided by Wikipedia
+North India,Lobiya,Curry,Veg,200,230,8,18,12,5,115,Estimate for fitness-app use; not provided by Wikipedia
+North India,Makhaan ka kheer,Sweet,Veg,75,300,5,42,12,2,400,Estimate for fitness-app use; not provided by Wikipedia
+North India,Makki ki roti sarson ka saag,Main Dish,Veg,250,300,10,40,10,6,120,Estimate for fitness-app use; not provided by Wikipedia
+North India,Matar paneer,Curry,Veg,200,230,8,18,12,5,115,Estimate for fitness-app use; not provided by Wikipedia
+North India,Mathura peda,Sweet,Veg,75,300,5,42,12,2,400,Estimate for fitness-app use; not provided by Wikipedia
+North India,Methi saag,Vegetable,Veg,150,130,4,15,5,5,86.7,Estimate for fitness-app use; not provided by Wikipedia
+North India,Millet Lapsi,Sweet,Veg,75,300,5,42,12,2,400,Estimate for fitness-app use; not provided by Wikipedia
+North India,Mirchi bada,Snack,Veg,100,280,6,32,14,3,280,Estimate for fitness-app use; not provided by Wikipedia
+North India,Missi roti,Bread,Veg,80,250,7,42,7,3,312.5,Estimate for fitness-app use; not provided by Wikipedia
+North India,Mixed vegetable,Vegetable,Veg,150,130,4,15,5,5,86.7,Estimate for fitness-app use; not provided by Wikipedia
+North India,Moong dal ki Lapsi,Sweet,Veg,75,300,5,42,12,2,400,Estimate for fitness-app use; not provided by Wikipedia
+North India,Murgh musallam,Chicken,Non-Veg,180,300,33,10,18,2,166.7,Estimate for fitness-app use; not provided by Wikipedia
+North India,Mushroom do pyaza,Curry,Veg,200,230,8,18,12,5,115,Estimate for fitness-app use; not provided by Wikipedia
+North India,Mushroom matar,Curry,Veg,200,230,8,18,12,5,115,Estimate for fitness-app use; not provided by Wikipedia
+North India,Naan,Bread,Veg,80,250,7,42,7,3,312.5,Estimate for fitness-app use; not provided by Wikipedia
+North India,Naan Khatai,Sweet,Veg,75,300,5,42,12,2,400,Estimate for fitness-app use; not provided by Wikipedia
+North India,Navrattan korma,Curry,Veg,200,230,8,18,12,5,115,Estimate for fitness-app use; not provided by Wikipedia
+North India,Pakhala,Rice Dish,Veg,250,300,8,48,8,3,120,Estimate for fitness-app use; not provided by Wikipedia
+North India,Palak paneer,Curry,Veg,200,230,8,18,12,5,115,Estimate for fitness-app use; not provided by Wikipedia
+North India,Paneer butter masala,Curry,Veg,200,230,8,18,12,5,115,Estimate for fitness-app use; not provided by Wikipedia
+North India,Paneer tikka masala,Curry,Veg,200,230,8,18,12,5,115,Estimate for fitness-app use; not provided by Wikipedia
+North India,Pani puri,Street Food,Veg,180,350,8,45,15,5,194.4,Estimate for fitness-app use; not provided by Wikipedia
+North India,Panjeeri,Sweet,Veg,75,300,5,42,12,2,400,Estimate for fitness-app use; not provided by Wikipedia
+North India,Papad,Snack,Veg,100,280,6,32,14,3,280,Estimate for fitness-app use; not provided by Wikipedia
+North India,Paratha,Bread,Veg,80,250,7,42,7,3,312.5,Estimate for fitness-app use; not provided by Wikipedia
+North India,Patrode,Snack,Veg,100,280,6,32,14,3,280,Estimate for fitness-app use; not provided by Wikipedia
+North India,Phirni,Sweet,Veg,75,300,5,42,12,2,400,Estimate for fitness-app use; not provided by Wikipedia
+North India,Pinni,Sweet,Veg,75,300,5,42,12,2,400,Estimate for fitness-app use; not provided by Wikipedia
+North India,Rajma,Curry,Veg,200,230,8,18,12,5,115,Estimate for fitness-app use; not provided by Wikipedia
+North India,Ramatori bhaaji,Vegetable,Veg,150,130,4,15,5,5,86.7,Estimate for fitness-app use; not provided by Wikipedia
+North India,Samosa,Snack,Veg/Non-Veg,100,280,17,32,14,3,280,Estimate for fitness-app use; not provided by Wikipedia
+North India,Sattu ki roti,Bread,Veg,80,250,7,42,7,3,312.5,Estimate for fitness-app use; not provided by Wikipedia
+North India,Shahi paneer,Curry,Veg,200,230,8,18,12,5,115,Estimate for fitness-app use; not provided by Wikipedia
+North India,Shahi tukra,Dessert,Veg,100,280,5,35,12,2,280,Estimate for fitness-app use; not provided by Wikipedia
+North India,Singhada Lapsi,Sweet,Veg,75,300,5,42,12,2,400,Estimate for fitness-app use; not provided by Wikipedia
+North India,Sooji halwa,Sweet,Veg,75,300,5,42,12,2,400,Estimate for fitness-app use; not provided by Wikipedia
+North India,Petha,Sweet,Veg,75,300,5,42,12,2,400,Estimate for fitness-app use; not provided by Wikipedia
+North India,Talit Macchi,Fish,Non-Veg,180,240,33,5,13,1,133.3,Estimate for fitness-app use; not provided by Wikipedia
+North India,Tamatar Chaat,Street Food,Veg,180,350,8,45,15,5,194.4,Estimate for fitness-app use; not provided by Wikipedia
+North India,Tandoori Chicken,Chicken,Non-Veg,180,300,33,10,18,2,166.7,Estimate for fitness-app use; not provided by Wikipedia
+North India,Tandoori Fish Tikka,Fish,Non-Veg,180,240,33,5,13,1,133.3,Estimate for fitness-app use; not provided by Wikipedia
+North East India,Machher Jhol,Fish,Non-Veg,180,240,33,5,13,1,133.3,Estimate for fitness-app use; not provided by Wikipedia
+North East India,Pork jarpaa jurpie,Meat,Non-Veg,180,350,32,8,25,2,194.4,Estimate for fitness-app use; not provided by Wikipedia
+North East India,Chak-Hao Kheer,Sweet,Veg,75,300,5,42,12,2,400,Estimate for fitness-app use; not provided by Wikipedia
+North East India,Galho,Main Dish,Veg,250,300,10,40,10,6,120,Estimate for fitness-app use; not provided by Wikipedia
+South India,Ananas menaskai,Curry,Veg,200,230,8,18,12,5,115,Estimate for fitness-app use; not provided by Wikipedia
+South India,Attu,Breakfast,Veg,180,220,7,32,7,3,122.2,Estimate for fitness-app use; not provided by Wikipedia
+South India,Kesari bat,Sweet,Veg,75,300,5,42,12,2,400,Estimate for fitness-app use; not provided by Wikipedia
+South India,Avial,Curry,Veg,200,230,8,18,12,5,115,Estimate for fitness-app use; not provided by Wikipedia
+South India,Baida roti,Snack,Non-Veg,100,280,14,32,14,3,280,Estimate for fitness-app use; not provided by Wikipedia
+South India,Halwa,Sweet,Veg,75,300,5,42,12,2,400,Estimate for fitness-app use; not provided by Wikipedia
+South India,Bhajji,Snack,Veg,100,280,6,32,14,3,280,Estimate for fitness-app use; not provided by Wikipedia
+South India,Biryani,Rice Dish,Depends,250,300,12,48,8,3,120,Estimate for fitness-app use; not provided by Wikipedia
+South India,Bisi bele bath,Main Dish,Veg,250,300,10,40,10,6,120,Estimate for fitness-app use; not provided by Wikipedia
+South India,Bonda,Snack,Veg,100,280,6,32,14,3,280,Estimate for fitness-app use; not provided by Wikipedia
+South India,Chettinadu Chicken,Chicken,Non-Veg,180,300,33,10,18,2,166.7,Estimate for fitness-app use; not provided by Wikipedia
+South India,Chicken 65,Chicken,Non-Veg,180,300,33,10,18,2,166.7,Estimate for fitness-app use; not provided by Wikipedia
+South India,Currivepillai sadam,Rice Dish,Veg,250,300,8,48,8,3,120,Estimate for fitness-app use; not provided by Wikipedia
+South India,Dibba rotti,Bread,Veg,80,250,7,42,7,3,312.5,Estimate for fitness-app use; not provided by Wikipedia
+South India,Dosa,Breakfast,Veg,180,220,7,32,7,3,122.2,Estimate for fitness-app use; not provided by Wikipedia
+South India,Double ka meetha,Dessert,Veg,100,280,5,35,12,2,280,Estimate for fitness-app use; not provided by Wikipedia
+South India,Ennai kathirikkai,Vegetable,Veg,150,130,4,15,5,5,86.7,Estimate for fitness-app use; not provided by Wikipedia
+South India,Goli bajje,Snack,Veg,100,280,6,32,14,3,280,Estimate for fitness-app use; not provided by Wikipedia
+South India,Golichina Mamsam,Meat,Non-Veg,180,350,32,8,25,2,194.4,Estimate for fitness-app use; not provided by Wikipedia
+South India,Hyderabadi biryani,Rice Dish,Non-Veg,250,300,16,48,8,3,120,Estimate for fitness-app use; not provided by Wikipedia
+South India,Idiyappam,Breakfast,Veg,180,220,7,32,7,3,122.2,Estimate for fitness-app use; not provided by Wikipedia
+South India,Idli,Breakfast,Veg,180,220,7,32,7,3,122.2,Estimate for fitness-app use; not provided by Wikipedia
+South India,Indian omelette,Egg,Non-Veg,100,160,20,3,10,1,160,Estimate for fitness-app use; not provided by Wikipedia
+South India,Kaara kozhambu,Curry,Veg,200,230,8,18,12,5,115,Estimate for fitness-app use; not provided by Wikipedia
+South India,Kanji,Main Dish,Veg,250,300,10,40,10,6,120,Estimate for fitness-app use; not provided by Wikipedia
+South India,Keerai koottu,Curry,Veg,200,230,8,18,12,5,115,Estimate for fitness-app use; not provided by Wikipedia
+South India,Keerai masiyal,Vegetable,Veg,150,130,4,15,5,5,86.7,Estimate for fitness-app use; not provided by Wikipedia
+South India,Keerai poriyal,Vegetable,Veg,150,130,4,15,5,5,86.7,Estimate for fitness-app use; not provided by Wikipedia
+South India,Keerai sadam,Rice Dish,Veg,250,300,8,48,8,3,120,Estimate for fitness-app use; not provided by Wikipedia
+South India,Kerala Beef Fry,Meat,Non-Veg,180,350,32,8,25,2,194.4,Estimate for fitness-app use; not provided by Wikipedia
+South India,Kodubale,Snack,Veg,100,280,6,32,14,3,280,Estimate for fitness-app use; not provided by Wikipedia
+South India,Kolhapuri akkha masoor Dal,Curry,Veg,200,230,8,18,12,5,115,Estimate for fitness-app use; not provided by Wikipedia
+South India,Koottu,Curry,Veg,200,230,8,18,12,5,115,Estimate for fitness-app use; not provided by Wikipedia
+South India,Kori rotti,Main Dish,Non-Veg,250,300,18,40,10,6,120,Estimate for fitness-app use; not provided by Wikipedia
+South India,Kos kootu,Curry,Veg,200,230,8,18,12,5,115,Estimate for fitness-app use; not provided by Wikipedia
+South India,Koshambri,Salad,Veg,150,100,4,12,3,4,66.7,Estimate for fitness-app use; not provided by Wikipedia
+South India,Kothamali sadam,Rice Dish,Veg,250,300,8,48,8,3,120,Estimate for fitness-app use; not provided by Wikipedia
+South India,Kuzhakkattai,Snack,Veg,100,280,6,32,14,3,280,Estimate for fitness-app use; not provided by Wikipedia
+South India,Kuzhambu,Curry,Veg,200,230,8,18,12,5,115,Estimate for fitness-app use; not provided by Wikipedia
+South India,Masala Dosa,Breakfast,Veg,180,220,7,32,7,3,122.2,Estimate for fitness-app use; not provided by Wikipedia
+South India,Nandu omelette,Egg,Non-Veg,100,160,20,3,10,1,160,Estimate for fitness-app use; not provided by Wikipedia
+South India,Obbattu,Sweet,Veg,75,300,5,42,12,2,400,Estimate for fitness-app use; not provided by Wikipedia
+South India,Olan,Curry,Veg,200,230,8,18,12,5,115,Estimate for fitness-app use; not provided by Wikipedia
+South India,Pachadi,Side Dish,Veg,100,140,4,16,6,4,140,Estimate for fitness-app use; not provided by Wikipedia
+South India,Paniyaram,Breakfast,Veg,180,220,7,32,7,3,122.2,Estimate for fitness-app use; not provided by Wikipedia
+South India,Papadum,Snack,Veg,100,280,6,32,14,3,280,Estimate for fitness-app use; not provided by Wikipedia
+South India,Paravannam,Sweet,Veg,75,300,5,42,12,2,400,Estimate for fitness-app use; not provided by Wikipedia
+South India,Parotta,Bread,Veg,80,250,7,42,7,3,312.5,Estimate for fitness-app use; not provided by Wikipedia
+South India,Paruppu sadam,Rice Dish,Veg,250,300,8,48,8,3,120,Estimate for fitness-app use; not provided by Wikipedia
+South India,Payasam,Sweet,Veg,75,300,5,42,12,2,400,Estimate for fitness-app use; not provided by Wikipedia
+South India,Pesarattu,Breakfast,Veg,180,220,7,32,7,3,122.2,Estimate for fitness-app use; not provided by Wikipedia
+South India,Pongal,Breakfast,Veg,180,220,7,32,7,3,122.2,Estimate for fitness-app use; not provided by Wikipedia
+South India,Poriyal,Vegetable,Veg,150,130,4,15,5,5,86.7,Estimate for fitness-app use; not provided by Wikipedia
+South India,Puli sadam,Rice Dish,Veg,250,300,8,48,8,3,120,Estimate for fitness-app use; not provided by Wikipedia
+South India,Puttu,Breakfast,Veg,180,220,7,32,7,3,122.2,Estimate for fitness-app use; not provided by Wikipedia
+South India,Ragi mudhe,Main Dish,Veg,250,300,10,40,10,6,120,Estimate for fitness-app use; not provided by Wikipedia
+South India,Rasam,Soup,Veg,250,110,6,12,4,3,44,Estimate for fitness-app use; not provided by Wikipedia
+South India,Sajjige,Sweet,Veg,75,300,5,42,12,2,400,Estimate for fitness-app use; not provided by Wikipedia
+South India,Sakkara pongal,Sweet,Veg,75,300,5,42,12,2,400,Estimate for fitness-app use; not provided by Wikipedia
+South India,Sambar,Curry,Veg,200,230,8,18,12,5,115,Estimate for fitness-app use; not provided by Wikipedia
+South India,Sandige,Snack,Veg,100,280,6,32,14,3,280,Estimate for fitness-app use; not provided by Wikipedia
+South India,Sevai,Breakfast,Veg,180,220,7,32,7,3,122.2,Estimate for fitness-app use; not provided by Wikipedia
+South India,Sponge dosa,Breakfast,Veg,180,220,7,32,7,3,122.2,Estimate for fitness-app use; not provided by Wikipedia
+South India,Thattai,Snack,Veg,100,280,6,32,14,3,280,Estimate for fitness-app use; not provided by Wikipedia
+South India,Thayir sadam,Rice Dish,Veg,250,300,8,48,8,3,120,Estimate for fitness-app use; not provided by Wikipedia
+South India,Theeyal,Curry,Veg,200,230,8,18,12,5,115,Estimate for fitness-app use; not provided by Wikipedia
+South India,Thengai sadam,Rice Dish,Veg,250,300,8,48,8,3,120,Estimate for fitness-app use; not provided by Wikipedia
+South India,Uttapam,Breakfast,Veg,180,220,7,32,7,3,122.2,Estimate for fitness-app use; not provided by Wikipedia
+South India,Vada,Snack,Veg,100,280,6,32,14,3,280,Estimate for fitness-app use; not provided by Wikipedia
+South India,Varuval,Vegetable,Veg,150,130,4,15,5,5,86.7,Estimate for fitness-app use; not provided by Wikipedia
+South India,Wheat upma,Breakfast,Veg,180,220,7,32,7,3,122.2,Estimate for fitness-app use; not provided by Wikipedia
+South India,Yelumicham sadam,Rice Dish,Veg,250,300,8,48,8,3,120,Estimate for fitness-app use; not provided by Wikipedia
+West India,Amti,Curry,Veg,200,230,8,18,12,5,115,Estimate for fitness-app use; not provided by Wikipedia
+West India,Bajri no rotlo,Bread,Veg,80,250,7,42,7,3,312.5,Estimate for fitness-app use; not provided by Wikipedia
+West India,Batata Saung,Curry,Veg,200,230,8,18,12,5,115,Estimate for fitness-app use; not provided by Wikipedia
+West India,Barfi,Sweet,Veg,75,300,5,42,12,2,400,Estimate for fitness-app use; not provided by Wikipedia
+West India,Basundi,Sweet,Veg,75,300,5,42,12,2,400,Estimate for fitness-app use; not provided by Wikipedia
+West India,Bhakri,Bread,Veg,80,250,7,42,7,3,312.5,Estimate for fitness-app use; not provided by Wikipedia
+West India,Bombil fry,Fish,Non-Veg,180,240,33,5,13,1,133.3,Estimate for fitness-app use; not provided by Wikipedia
+West India,Chaat,Street Food,Veg,180,350,8,45,15,5,194.4,Estimate for fitness-app use; not provided by Wikipedia
+West India,Chevdo,Snack,Veg,100,280,6,32,14,3,280,Estimate for fitness-app use; not provided by Wikipedia
+West India,Cholafali,Snack,Veg,100,280,6,32,14,3,280,Estimate for fitness-app use; not provided by Wikipedia
+West India,Chorafali,Snack,Veg,100,280,6,32,14,3,280,Estimate for fitness-app use; not provided by Wikipedia
+West India,Daal Dhokli,Main Dish,Veg,250,300,10,40,10,6,120,Estimate for fitness-app use; not provided by Wikipedia
+West India,Dabeli,Street Food,Veg,180,350,8,45,15,5,194.4,Estimate for fitness-app use; not provided by Wikipedia
+West India,Dahi vada,Snack,Veg,100,280,6,32,14,3,280,Estimate for fitness-app use; not provided by Wikipedia
+West India,Dalithoy,Soup,Veg,250,110,6,12,4,3,44,Estimate for fitness-app use; not provided by Wikipedia
+West India,Dhokla,Snack,Veg,100,280,6,32,14,3,280,Estimate for fitness-app use; not provided by Wikipedia
+West India,Doodhpak,Sweet,Veg,75,300,5,42,12,2,400,Estimate for fitness-app use; not provided by Wikipedia
+West India,Dudhi no halwo,Sweet,Veg,75,300,5,42,12,2,400,Estimate for fitness-app use; not provided by Wikipedia
+West India,Dudhi muthiya,Snack,Veg,100,280,6,32,14,3,280,Estimate for fitness-app use; not provided by Wikipedia
+West India,Dum aaloo,Curry,Veg,200,230,8,18,12,5,115,Estimate for fitness-app use; not provided by Wikipedia
+West India,Gajar halwo,Sweet,Veg,75,300,5,42,12,2,400,Estimate for fitness-app use; not provided by Wikipedia
+West India,Gatta curry,Curry,Veg,200,230,8,18,12,5,115,Estimate for fitness-app use; not provided by Wikipedia
+West India,Ghari,Sweet,Veg,75,300,5,42,12,2,400,Estimate for fitness-app use; not provided by Wikipedia
+West India,Ghooghra,Sweet,Veg,75,300,5,42,12,2,400,Estimate for fitness-app use; not provided by Wikipedia
+West India,Gud papdi,Sweet,Veg,75,300,5,42,12,2,400,Estimate for fitness-app use; not provided by Wikipedia
+West India,Gulab jamun,Sweet,Veg,75,300,5,42,12,2,400,Estimate for fitness-app use; not provided by Wikipedia
+West India,Halvasan,Sweet,Veg,75,300,5,42,12,2,400,Estimate for fitness-app use; not provided by Wikipedia
+West India,Handwo,Snack,Veg,100,280,6,32,14,3,280,Estimate for fitness-app use; not provided by Wikipedia
+West India,Gur,Sweet,Veg,75,300,5,42,12,2,400,Estimate for fitness-app use; not provided by Wikipedia
+West India,Jeera Aloo,Vegetable,Veg,150,130,4,15,5,5,86.7,Estimate for fitness-app use; not provided by Wikipedia
+West India,Juvar no rotlo,Bread,Veg,80,250,7,42,7,3,312.5,Estimate for fitness-app use; not provided by Wikipedia
+West India,Kansar,Sweet,Veg,75,300,5,42,12,2,400,Estimate for fitness-app use; not provided by Wikipedia
+West India,Karanji,Sweet,Veg,75,300,5,42,12,2,400,Estimate for fitness-app use; not provided by Wikipedia
+West India,Keri no ras,Dessert,Veg,100,280,5,35,12,2,280,Estimate for fitness-app use; not provided by Wikipedia
+West India,Khakhra,Snack,Veg,100,280,6,32,14,3,280,Estimate for fitness-app use; not provided by Wikipedia
+West India,Khandvi,Snack,Veg,100,280,6,32,14,3,280,Estimate for fitness-app use; not provided by Wikipedia
+West India,Kombdi vade,Chicken,Non-Veg,180,300,33,10,18,2,166.7,Estimate for fitness-app use; not provided by Wikipedia
+West India,Kopra paak,Sweet,Veg,75,300,5,42,12,2,400,Estimate for fitness-app use; not provided by Wikipedia
+West India,Koshimbir,Salad,Veg,150,100,4,12,3,4,66.7,Estimate for fitness-app use; not provided by Wikipedia
+West India,Kolim / Jawla,Fish,Non-Veg,180,240,33,5,13,1,133.3,Estimate for fitness-app use; not provided by Wikipedia
+West India,Laddu,Sweet,Veg,75,300,5,42,12,2,400,Estimate for fitness-app use; not provided by Wikipedia
+West India,Locha,Snack,Veg,100,280,6,32,14,3,280,Estimate for fitness-app use; not provided by Wikipedia
+West India,Malpua,Sweet,Veg,75,300,5,42,12,2,400,Estimate for fitness-app use; not provided by Wikipedia
+West India,Methi na Gota,Snack,Veg,100,280,6,32,14,3,280,Estimate for fitness-app use; not provided by Wikipedia
+West India,Modak,Sweet,Veg,75,300,5,42,12,2,400,Estimate for fitness-app use; not provided by Wikipedia
+West India,Mohanthal,Sweet,Veg,75,300,5,42,12,2,400,Estimate for fitness-app use; not provided by Wikipedia
+West India,Chakri,Snack,Veg,100,280,6,32,14,3,280,Estimate for fitness-app use; not provided by Wikipedia
+West India,Muthiya,Snack,Veg,100,280,6,32,14,3,280,Estimate for fitness-app use; not provided by Wikipedia
+West India,Naralachi vadi,Sweet,Veg,75,300,5,42,12,2,400,Estimate for fitness-app use; not provided by Wikipedia
+West India,Oondees,Breakfast,Veg,180,220,7,32,7,3,122.2,Estimate for fitness-app use; not provided by Wikipedia
+West India,Panipuri,Street Food,Veg,180,350,8,45,15,5,194.4,Estimate for fitness-app use; not provided by Wikipedia
+West India,Patra,Snack,Veg,100,280,6,32,14,3,280,Estimate for fitness-app use; not provided by Wikipedia
+West India,Pav Bhaji,Street Food,Veg,180,350,8,45,15,5,194.4,Estimate for fitness-app use; not provided by Wikipedia
+West India,Penda,Sweet,Veg,75,300,5,42,12,2,400,Estimate for fitness-app use; not provided by Wikipedia
+West India,Poha,Breakfast,Veg,180,220,7,32,7,3,122.2,Estimate for fitness-app use; not provided by Wikipedia
+West India,Pooran-poli,Sweet,Veg,75,300,5,42,12,2,400,Estimate for fitness-app use; not provided by Wikipedia
+West India,Poori,Bread,Veg,80,250,7,42,7,3,312.5,Estimate for fitness-app use; not provided by Wikipedia
+West India,Puri Bhaji,Breakfast,Veg,180,220,7,32,7,3,122.2,Estimate for fitness-app use; not provided by Wikipedia
+West India,Rasya muthia,Soup,Veg,250,110,6,12,4,3,44,Estimate for fitness-app use; not provided by Wikipedia
+West India,Sabudana Khichadi,Breakfast,Veg,180,220,7,32,7,3,122.2,Estimate for fitness-app use; not provided by Wikipedia
+West India,Saath,Sweet,Veg,75,300,5,42,12,2,400,Estimate for fitness-app use; not provided by Wikipedia
+West India,Sev khamani,Snack,Veg,100,280,6,32,14,3,280,Estimate for fitness-app use; not provided by Wikipedia
+West India,Sev tameta,Curry,Veg,200,230,8,18,12,5,115,Estimate for fitness-app use; not provided by Wikipedia
+West India,Shakarpara,Snack,Veg,100,280,6,32,14,3,280,Estimate for fitness-app use; not provided by Wikipedia
+West India,Namakpara,Snack,Veg,100,280,6,32,14,3,280,Estimate for fitness-app use; not provided by Wikipedia
+West India,Shankarpali,Snack,Veg,100,280,6,32,14,3,280,Estimate for fitness-app use; not provided by Wikipedia
+West India,Shiro,Sweet,Veg,75,300,5,42,12,2,400,Estimate for fitness-app use; not provided by Wikipedia
+West India,Shrikhand,Sweet,Veg,75,300,5,42,12,2,400,Estimate for fitness-app use; not provided by Wikipedia
+West India,Sohan papdi,Sweet,Veg,75,300,5,42,12,2,400,Estimate for fitness-app use; not provided by Wikipedia
+West India,Soonvali,Snack,Veg,100,280,6,32,14,3,280,Estimate for fitness-app use; not provided by Wikipedia
+West India,Sukhdi,Sweet,Veg,75,300,5,42,12,2,400,Estimate for fitness-app use; not provided by Wikipedia
+West India,Surnoli,Breakfast,Veg,180,220,7,32,7,3,122.2,Estimate for fitness-app use; not provided by Wikipedia
+West India,Sutarfeni,Sweet,Veg,75,300,5,42,12,2,400,Estimate for fitness-app use; not provided by Wikipedia
+West India,Thalipeeth,Breakfast,Veg,180,220,7,32,7,3,122.2,Estimate for fitness-app use; not provided by Wikipedia
+West India,Thepla,Bread,Veg,80,250,7,42,7,3,312.5,Estimate for fitness-app use; not provided by Wikipedia
+West India,Undhiyu,Main Dish,Veg,250,300,10,40,10,6,120,Estimate for fitness-app use; not provided by Wikipedia
+West India,Upmaa,Breakfast,Veg,180,220,7,32,7,3,122.2,Estimate for fitness-app use; not provided by Wikipedia
+West India,Vada pav,Street Food,Veg,180,350,8,45,15,5,194.4,Estimate for fitness-app use; not provided by Wikipedia
+West India,Veg Kolhapuri,Curry,Veg,200,230,8,18,12,5,115,Estimate for fitness-app use; not provided by Wikipedia
+West India,Vindaloo,Curry,Non-Veg,200,230,16,18,12,5,115,Estimate for fitness-app use; not provided by Wikipedia
+West India,Ghevar,Sweet,Veg,75,300,5,42,12,2,400,Estimate for fitness-app use; not provided by Wikipedia
+West India,Lilva Kachori,Snack,Veg,100,280,6,32,14,3,280,Estimate for fitness-app use; not provided by Wikipedia
+West India,Maghaz,Meat,Non-Veg,180,350,32,8,25,2,194.4,Estimate for fitness-app use; not provided by Wikipedia
+West India,Mag Dhokli,Main Dish,Veg,250,300,10,40,10,6,120,Estimate for fitness-app use; not provided by Wikipedia
+West India,Khichu,Snack,Veg,100,280,6,32,14,3,280,Estimate for fitness-app use; not provided by Wikipedia
+West India,Farsi Puri,Snack,Veg,100,280,6,32,14,3,280,Estimate for fitness-app use; not provided by Wikipedia
+West India,Khaman,Snack,Veg,100,280,6,32,14,3,280,Estimate for fitness-app use; not provided by Wikipedia
+West India,Turiya Patra Vatana sabji,Curry,Veg,200,230,8,18,12,5,115,Estimate for fitness-app use; not provided by Wikipedia
+West India,Mohan thaal,Sweet,Veg,75,300,5,42,12,2,400,Estimate for fitness-app use; not provided by Wikipedia
+West India,Churma Ladoo,Sweet,Veg,75,300,5,42,12,2,400,Estimate for fitness-app use; not provided by Wikipedia
+West India,Zunka,Main Dish,Veg,250,300,10,40,10,6,120,Estimate for fitness-app use; not provided by Wikipedia
+East India,Cheera Doi,Breakfast,Veg,180,220,7,32,7,3,122.2,Estimate for fitness-app use; not provided by Wikipedia
+East India,Daab chingri,Seafood,Non-Veg,180,220,30,6,11,1,122.2,Estimate for fitness-app use; not provided by Wikipedia
+East India,Dhup Pitha,Sweet,Veg,75,300,5,42,12,2,400,Estimate for fitness-app use; not provided by Wikipedia
+East India,Gheela Pitha,Sweet,Veg,75,300,5,42,12,2,400,Estimate for fitness-app use; not provided by Wikipedia
+East India,Hurum,Breakfast,Veg,180,220,7,32,7,3,122.2,Estimate for fitness-app use; not provided by Wikipedia
+East India,Khar,Side Dish,Veg,100,140,4,16,6,4,140,Estimate for fitness-app use; not provided by Wikipedia
+East India,Kumol Sawul,Breakfast,Veg,180,220,7,32,7,3,122.2,Estimate for fitness-app use; not provided by Wikipedia
+East India,Loskora,Sweet,Veg,75,300,5,42,12,2,400,Estimate for fitness-app use; not provided by Wikipedia
+East India,Luchi,Bread,Veg,80,250,7,42,7,3,312.5,Estimate for fitness-app use; not provided by Wikipedia
+East India,Malpua,Sweet,Veg,75,300,5,42,12,2,400,Estimate for fitness-app use; not provided by Wikipedia
+East India,Momo,Snack,Veg/Non-Veg,100,280,17,32,14,3,280,Estimate for fitness-app use; not provided by Wikipedia
+East India,Muri Naaru,Sweet,Veg,75,300,5,42,12,2,400,Estimate for fitness-app use; not provided by Wikipedia
+East India,Pani Tenga,Pickle,Veg,30,100,2,7,7,2,333.3,Estimate for fitness-app use; not provided by Wikipedia
+East India,Sunga Pitha,Sweet,Veg,75,300,5,42,12,2,400,Estimate for fitness-app use; not provided by Wikipedia
+East India,Alu Pitika,Side Dish,Veg,100,140,4,16,6,4,140,Estimate for fitness-app use; not provided by Wikipedia
+East India,Masor tenga,Fish,Non-Veg,180,240,33,5,13,1,133.3,Estimate for fitness-app use; not provided by Wikipedia
+East India,Bengena Pitika,Side Dish,Veg,100,140,4,16,6,4,140,Estimate for fitness-app use; not provided by Wikipedia
+East India,Bilahi Maas,Fish,Non-Veg,180,240,33,5,13,1,133.3,Estimate for fitness-app use; not provided by Wikipedia
+East India,Black rice,Rice,Veg,150,130,3,28,1,2,86.7,Estimate for fitness-app use; not provided by Wikipedia
+East India,Bora Sawul,Rice,Veg,150,130,3,28,1,2,86.7,Estimate for fitness-app use; not provided by Wikipedia
+East India,Brown Rice,Rice,Veg,150,130,3,28,1,2,86.7,Estimate for fitness-app use; not provided by Wikipedia
+East India,Chhenagaja,Sweet,Veg,75,300,5,42,12,2,400,Estimate for fitness-app use; not provided by Wikipedia
+East India,Chhenapoda,Sweet,Veg,75,300,5,42,12,2,400,Estimate for fitness-app use; not provided by Wikipedia
+East India,Chingri malai curry,Seafood,Non-Veg,180,220,30,6,11,1,122.2,Estimate for fitness-app use; not provided by Wikipedia
+East India,Dal,Curry,Veg,200,230,8,18,12,5,115,Estimate for fitness-app use; not provided by Wikipedia
+East India,Goja,Sweet,Veg,75,300,5,42,12,2,400,Estimate for fitness-app use; not provided by Wikipedia
+East India,Hando Guri,Breakfast,Veg,180,220,7,32,7,3,122.2,Estimate for fitness-app use; not provided by Wikipedia
+East India,Haq Maas,Fish,Non-Veg,180,240,33,5,13,1,133.3,Estimate for fitness-app use; not provided by Wikipedia
+East India,Horioh Maas,Fish,Non-Veg,180,240,33,5,13,1,133.3,Estimate for fitness-app use; not provided by Wikipedia
+East India,Ilish Bhape,Fish,Non-Veg,180,240,33,5,13,1,133.3,Estimate for fitness-app use; not provided by Wikipedia
+East India,Kabiraji,Chicken,Non-Veg,180,300,33,10,18,2,166.7,Estimate for fitness-app use; not provided by Wikipedia
+East India,Kharoli,Pickle,Veg,30,100,2,7,7,2,333.3,Estimate for fitness-app use; not provided by Wikipedia
+East India,Khorisa,Pickle,Veg,30,100,2,7,7,2,333.3,Estimate for fitness-app use; not provided by Wikipedia
+East India,Koldil Chicken,Chicken,Non-Veg,180,300,33,10,18,2,166.7,Estimate for fitness-app use; not provided by Wikipedia
+East India,Koldil Duck,Meat,Non-Veg,180,350,32,8,25,2,194.4,Estimate for fitness-app use; not provided by Wikipedia
+East India,Konir Dom,Egg,Non-Veg,100,160,20,3,10,1,160,Estimate for fitness-app use; not provided by Wikipedia
+East India,Lai Haq Maas,Fish,Non-Veg,180,240,33,5,13,1,133.3,Estimate for fitness-app use; not provided by Wikipedia
+East India,Litti,Main Dish,Veg,250,300,10,40,10,6,120,Estimate for fitness-app use; not provided by Wikipedia
+East India,Maasor Tenga,Fish,Non-Veg,180,240,33,5,13,1,133.3,Estimate for fitness-app use; not provided by Wikipedia
+East India,Masor Koni,Fish,Non-Veg,180,240,33,5,13,1,133.3,Estimate for fitness-app use; not provided by Wikipedia
+East India,Masor Petu,Fish,Non-Veg,180,240,33,5,13,1,133.3,Estimate for fitness-app use; not provided by Wikipedia
+East India,Mishti Chholar Dal,Curry,Veg,200,230,8,18,12,5,115,Estimate for fitness-app use; not provided by Wikipedia
+East India,Mishti Doi,Sweet,Veg,75,300,5,42,12,2,400,Estimate for fitness-app use; not provided by Wikipedia
+East India,Ou tenga Maas,Fish,Non-Veg,180,240,33,5,13,1,133.3,Estimate for fitness-app use; not provided by Wikipedia
+East India,Pakhala,Rice Dish,Veg,250,300,8,48,8,3,120,Estimate for fitness-app use; not provided by Wikipedia
+East India,Bhaji,Vegetable,Veg,150,130,4,15,5,5,86.7,Estimate for fitness-app use; not provided by Wikipedia
+East India,Pani Pitha,Sweet,Veg,75,300,5,42,12,2,400,Estimate for fitness-app use; not provided by Wikipedia
+East India,Pantua,Sweet,Veg,75,300,5,42,12,2,400,Estimate for fitness-app use; not provided by Wikipedia
+East India,Payokh,Sweet,Veg,75,300,5,42,12,2,400,Estimate for fitness-app use; not provided by Wikipedia
+East India,Peda,Sweet,Veg,75,300,5,42,12,2,400,Estimate for fitness-app use; not provided by Wikipedia
+East India,Prawn malai curry,Seafood,Non-Veg,180,220,30,6,11,1,122.2,Estimate for fitness-app use; not provided by Wikipedia
+East India,Red Rice,Rice,Veg,150,130,3,28,1,2,86.7,Estimate for fitness-app use; not provided by Wikipedia
+East India,Rice,Staple,Veg,150,130,3,28,1,2,86.7,Estimate for fitness-app use; not provided by Wikipedia
+East India,Rasagola,Sweet,Veg,75,300,5,42,12,2,400,Estimate for fitness-app use; not provided by Wikipedia
+East India,Shondesh,Sweet,Veg,75,300,5,42,12,2,400,Estimate for fitness-app use; not provided by Wikipedia
+East India,Shukto,Vegetable,Veg,150,130,4,15,5,5,86.7,Estimate for fitness-app use; not provided by Wikipedia
+East India,Sunga Pork,Meat,Non-Veg,180,350,32,8,25,2,194.4,Estimate for fitness-app use; not provided by Wikipedia
+East India,Tenga Doi,Dairy,Veg,100,150,6,15,6,1,150,Estimate for fitness-app use; not provided by Wikipedia
+East India,Til Pitha,Sweet,Veg,75,300,5,42,12,2,400,Estimate for fitness-app use; not provided by Wikipedia
+Unsorted,Bread pakora,Snack,Veg,100,280,6,32,14,3,280,Estimate for fitness-app use; not provided by Wikipedia
+Unsorted,Dhoper chop,Snack,Veg,100,280,6,32,14,3,280,Estimate for fitness-app use; not provided by Wikipedia
+Unsorted,Karela nu shak,Vegetable,Veg,150,130,4,15,5,5,86.7,Estimate for fitness-app use; not provided by Wikipedia

@@ -1,0 +1,56 @@
+exercise_id,exercise_name,exercise_name_display,category,measurement_unit,calories_per_unit_min,calories_per_unit_max,calories_per_unit_avg,typical_duration_min,session_calories_min,session_calories_max,session_calories_avg,is_verified,created_at,updated_at
+ex_1db9092f,walking,Walking,Cardio,minutes,3.0,6.0,4.5,30.0,100.0,180.0,140.0,True,2026-08-17T11:20:15.727278,2026-08-17T11:20:15.727796
+ex_e6380349,jogging,Jogging,Cardio,minutes,7.0,12.0,9.5,30.0,200.0,350.0,275.0,True,2026-08-17T11:20:15.727278,2026-08-17T11:20:15.727796
+ex_c27d8fb0,running,Running,Cardio,minutes,8.0,15.0,11.5,30.0,250.0,450.0,350.0,True,2026-08-17T11:20:15.727278,2026-08-17T11:20:15.727796
+ex_0e0640e5,cycling,Cycling,Cardio,minutes,5.0,10.0,7.5,30.0,150.0,300.0,225.0,True,2026-08-17T11:20:15.727278,2026-08-17T11:20:15.727796
+ex_b416c8c3,jump rope,Jump Rope,Cardio,jumps,0.1,0.2,0.15000000000000002,15.0,150.0,250.0,200.0,True,2026-08-17T11:20:15.727278,2026-08-17T11:20:15.727796
+ex_b7e3c50a,weight training,Weight Training,Strength,reps,0.3,0.6,0.44999999999999996,45.0,150.0,300.0,225.0,True,2026-08-17T11:20:15.727278,2026-08-17T11:20:15.727796
+ex_70cb4138,squats,Squats,Strength,reps,0.3,0.5,0.4,20.0,80.0,150.0,115.0,True,2026-08-17T11:20:15.727278,2026-08-17T11:20:15.727796
+ex_fe126ce2,push-ups,Push-ups,Strength,reps,0.3,0.5,0.4,15.0,70.0,120.0,95.0,True,2026-08-17T11:20:15.727278,2026-08-17T11:20:15.727796
+ex_f2809a28,lunges,Lunges,Strength,reps,0.3,0.5,0.4,15.0,60.0,100.0,80.0,True,2026-08-17T11:20:15.727278,2026-08-17T11:20:15.727796
+ex_ad62e5c6,deadlift,Deadlift,Strength,reps,0.5,1.0,0.75,20.0,100.0,180.0,140.0,True,2026-08-17T11:20:15.727278,2026-08-17T11:20:15.727796
+ex_6b85c407,pull-ups,Pull-ups,Strength,reps,0.5,1.0,0.75,10.0,60.0,100.0,80.0,True,2026-08-17T11:20:15.727278,2026-08-17T11:20:15.727796
+ex_c9fefa6c,plank,Plank,Strength,minutes,3.0,6.0,4.5,5.0,15.0,30.0,22.5,True,2026-08-17T11:20:15.727278,2026-08-17T11:20:15.727796
+ex_77db7a83,hiit,HIIT,Full body,minutes,7.0,15.0,11.0,20.0,150.0,300.0,225.0,True,2026-08-17T11:20:15.727278,2026-08-17T11:20:15.727796
+ex_c7b1e8db,burpees,Burpees,Full body,reps,0.5,1.0,0.75,10.0,100.0,150.0,125.0,True,2026-08-17T11:20:15.727278,2026-08-17T11:20:15.727796
+ex_42092bbd,mountain climbers,Mountain Climbers,Full body,reps,0.2,0.4,0.30000000000000004,10.0,80.0,120.0,100.0,True,2026-08-17T11:20:15.727278,2026-08-17T11:20:15.727796
+ex_3f5ce02e,surya namaskar (sun salutation),Surya Namaskar (Sun Salutation),Yoga,rounds,5.0,10.0,7.5,10.0,50.0,100.0,75.0,True,2026-08-17T11:20:15.727278,2026-08-17T11:20:15.727796
+ex_135f6ddf,adho mukha svanasana (downward dog),Adho Mukha Svanasana (Downward Dog),Yoga,minutes,3.0,5.0,4.0,1.0,3.0,5.0,4.0,True,2026-08-17T11:20:15.727278,2026-08-17T11:20:15.727796
+ex_f1fc9423,vrikshasana (tree pose),Vrikshasana (Tree Pose),Yoga,minutes,2.0,4.0,3.0,1.0,2.0,4.0,3.0,True,2026-08-17T11:20:15.727278,2026-08-17T11:20:15.727796
+ex_7f49fc91,bhujangasana (cobra pose),Bhujangasana (Cobra Pose),Yoga,minutes,3.0,5.0,4.0,1.0,3.0,5.0,4.0,True,2026-08-17T11:20:15.727278,2026-08-17T11:20:15.727796
+ex_e1f7c209,trikonasana (triangle pose),Trikonasana (Triangle Pose),Yoga,minutes,3.0,5.0,4.0,1.0,3.0,5.0,4.0,True,2026-08-17T11:20:15.727278,2026-08-17T11:20:15.727796
+ex_786dd7c3,setu bandhasana (bridge pose),Setu Bandhasana (Bridge Pose),Yoga,minutes,3.0,5.0,4.0,1.0,3.0,5.0,4.0,True,2026-08-17T11:20:15.727278,2026-08-17T11:20:15.727796
+ex_ede99a44,balasana (child's pose),Balasana (Child's Pose),Yoga,minutes,2.0,3.0,2.5,2.0,4.0,6.0,5.0,True,2026-08-17T11:20:15.727278,2026-08-17T11:20:15.727796
+ex_fc12ef44,kapalbhati pranayama,Kapalbhati Pranayama,Yoga,minutes,3.0,5.0,4.0,5.0,15.0,25.0,20.0,True,2026-08-17T11:20:15.727278,2026-08-17T11:20:15.727796
+ex_7c5218d4,anulom vilom pranayama,Anulom Vilom Pranayama,Yoga,minutes,1.5,3.0,2.25,10.0,15.0,30.0,22.5,True,2026-08-17T11:20:15.727278,2026-08-17T11:20:15.727796
+ex_9cde3aea,full yoga session (mixed),Full Yoga Session (Mixed),Yoga,session,150.0,250.0,200.0,45.0,150.0,250.0,200.0,True,2026-08-17T11:20:15.727278,2026-08-17T11:20:15.727796
+ex_fabba6b5,bodyweight squats,Bodyweight Squats,Calisthenics,reps,0.3,0.5,0.4,15.0,60.0,120.0,90.0,True,2026-08-17T11:20:15.727278,2026-08-17T11:20:15.727796
+ex_c1f8890a,dips,Dips,Calisthenics,reps,0.4,0.7,0.55,10.0,50.0,90.0,70.0,True,2026-08-17T11:20:15.727278,2026-08-17T11:20:15.727796
+ex_8f16dd60,jumping jacks,Jumping Jacks,Calisthenics,reps,0.15,0.25,0.2,10.0,80.0,130.0,105.0,True,2026-08-17T11:20:15.727278,2026-08-17T11:20:15.727796
+ex_8b410683,bear crawl,Bear Crawl,Calisthenics,minutes,8.0,14.0,11.0,5.0,40.0,70.0,55.0,True,2026-08-17T11:20:15.727278,2026-08-17T11:20:15.727796
+ex_14685be6,wall sit,Wall Sit,Calisthenics,minutes,3.0,5.0,4.0,5.0,15.0,25.0,20.0,True,2026-08-17T11:20:15.727278,2026-08-17T11:20:15.727796
+ex_2a31fc26,pilates session (mat),Pilates Session (Mat),Pilates & Core,session,150.0,250.0,200.0,45.0,150.0,250.0,200.0,True,2026-08-17T11:20:15.727278,2026-08-17T11:20:15.727796
+ex_d31c19a6,crunches,Crunches,Pilates & Core,reps,0.2,0.35,0.275,10.0,40.0,70.0,55.0,True,2026-08-17T11:20:15.727278,2026-08-17T11:20:15.727796
+ex_f24e40c7,russian twists,Russian Twists,Pilates & Core,reps,0.25,0.4,0.325,10.0,50.0,90.0,70.0,True,2026-08-17T11:20:15.727278,2026-08-17T11:20:15.727796
+ex_5ffa7ca8,leg raises,Leg Raises,Pilates & Core,reps,0.3,0.5,0.4,10.0,50.0,80.0,65.0,True,2026-08-17T11:20:15.727278,2026-08-17T11:20:15.727796
+ex_106247e5,hollow body hold,Hollow Body Hold,Pilates & Core,minutes,4.0,7.0,5.5,5.0,20.0,35.0,27.5,True,2026-08-17T11:20:15.727278,2026-08-17T11:20:15.727796
+ex_92777850,zumba,Zumba,Dance & Zumba,minutes,7.0,11.0,9.0,45.0,300.0,500.0,400.0,True,2026-08-17T11:20:15.727278,2026-08-17T11:20:15.727796
+ex_71a4fc8a,bollywood dance workout,Bollywood Dance Workout,Dance & Zumba,minutes,7.0,12.0,9.5,30.0,200.0,350.0,275.0,True,2026-08-17T11:20:15.727278,2026-08-17T11:20:15.727796
+ex_f8bfdd3b,hip-hop dance,Hip-Hop Dance,Dance & Zumba,minutes,6.0,10.0,8.0,30.0,180.0,300.0,240.0,True,2026-08-17T11:20:15.727278,2026-08-17T11:20:15.727796
+ex_3256c2e9,garba/folk dance,Garba/Folk Dance,Dance & Zumba,minutes,7.0,12.0,9.5,30.0,200.0,350.0,275.0,True,2026-08-17T11:20:15.727278,2026-08-17T11:20:15.727796
+ex_37eb2b5b,boxing (bag work),Boxing (Bag Work),Martial Arts/Boxing,minutes,8.0,13.0,10.5,30.0,250.0,400.0,325.0,True,2026-08-17T11:20:15.727278,2026-08-17T11:20:15.727796
+ex_7b3269cd,kickboxing,Kickboxing,Martial Arts/Boxing,minutes,8.0,15.0,11.5,30.0,250.0,450.0,350.0,True,2026-08-17T11:20:15.727278,2026-08-17T11:20:15.727796
+ex_b4f10d01,karate/taekwondo practice,Karate/Taekwondo Practice,Martial Arts/Boxing,minutes,7.0,11.0,9.0,45.0,300.0,500.0,400.0,True,2026-08-17T11:20:15.727278,2026-08-17T11:20:15.727796
+ex_7873d3c0,shadow boxing,Shadow Boxing,Martial Arts/Boxing,minutes,7.0,12.0,9.5,15.0,100.0,180.0,140.0,True,2026-08-17T11:20:15.727278,2026-08-17T11:20:15.727796
+ex_9d860d09,muay thai,Muay Thai,Martial Arts/Boxing,minutes,10.0,15.0,12.5,30.0,300.0,450.0,375.0,True,2026-08-17T11:20:15.727278,2026-08-17T11:20:15.727796
+ex_dc7e843c,freestyle swimming,Freestyle Swimming,Swimming,laps,4.0,7.0,5.5,30.0,250.0,400.0,325.0,True,2026-08-17T11:20:15.727278,2026-08-17T11:20:15.727796
+ex_7e02638e,breaststroke,Breaststroke,Swimming,laps,3.0,6.0,4.5,30.0,200.0,350.0,275.0,True,2026-08-17T11:20:15.727278,2026-08-17T11:20:15.727796
+ex_e8f71048,backstroke,Backstroke,Swimming,laps,3.0,5.0,4.0,30.0,200.0,300.0,250.0,True,2026-08-17T11:20:15.727278,2026-08-17T11:20:15.727796
+ex_cefac54c,water aerobics,Water Aerobics,Swimming,minutes,5.0,8.0,6.5,30.0,150.0,250.0,200.0,True,2026-08-17T11:20:15.727278,2026-08-17T11:20:15.727796
+ex_2389851b,cricket (batting/fielding),Cricket (Batting/Fielding),Sports,minutes,4.0,7.0,5.5,60.0,250.0,400.0,325.0,True,2026-08-17T11:20:15.727278,2026-08-17T11:20:15.727796
+ex_31a1c4c6,football/soccer,Football/Soccer,Sports,minutes,7.5,12.0,9.75,60.0,450.0,700.0,575.0,True,2026-08-17T11:20:15.727278,2026-08-17T11:20:15.727796
+ex_0fa34a0e,badminton,Badminton,Sports,minutes,5.0,10.0,7.5,30.0,150.0,300.0,225.0,True,2026-08-17T11:20:15.727278,2026-08-17T11:20:15.727796
+ex_67b0245e,basketball,Basketball,Sports,minutes,7.0,12.0,9.5,30.0,200.0,350.0,275.0,True,2026-08-17T11:20:15.727278,2026-08-17T11:20:15.727796
+ex_5af026a3,table tennis,Table Tennis,Sports,minutes,4.0,7.0,5.5,30.0,120.0,200.0,160.0,True,2026-08-17T11:20:15.727278,2026-08-17T11:20:15.727796
+ex_650c29f3,tennis (singles),Tennis (Singles),Sports,minutes,7.0,10.0,8.5,60.0,400.0,600.0,500.0,True,2026-08-17T11:20:15.727278,2026-08-17T11:20:15.727796
+ex_3e71139a,volleyball,Volleyball,Sports,minutes,3.0,6.0,4.5,45.0,150.0,280.0,215.0,True,2026-08-17T11:20:15.727278,2026-08-17T11:20:15.727796

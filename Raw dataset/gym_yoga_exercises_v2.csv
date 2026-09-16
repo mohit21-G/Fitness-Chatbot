@@ -1,0 +1,56 @@
+Category,Exercise,Duration,Estimated calories burned (session),Unit (1 time),Calories burned per 1 time
+Cardio,Walking,30 min,~100-180 kcal,1 min,~3-6 kcal
+Cardio,Jogging,30 min,~200-350 kcal,1 min,~7-12 kcal
+Cardio,Running,30 min,~250-450 kcal,1 min,~8-15 kcal
+Cardio,Cycling,30 min,~150-300 kcal,1 min,~5-10 kcal
+Cardio,Jump Rope,15 min,~150-250 kcal,1 jump,~0.1-0.2 kcal
+Strength,Weight Training,45 min,~150-300 kcal,1 rep,~0.3-0.6 kcal
+Strength,Squats,20 min,~80-150 kcal,1 rep,~0.3-0.5 kcal
+Strength,Push-ups,15 min,~70-120 kcal,1 rep,~0.3-0.5 kcal
+Strength,Lunges,15 min,~60-100 kcal,1 rep,~0.3-0.5 kcal
+Strength,Deadlift,20 min,~100-180 kcal,1 rep,~0.5-1 kcal
+Strength,Pull-ups,10 min,~60-100 kcal,1 rep,~0.5-1 kcal
+Strength,Plank,5 min,~15-30 kcal,1 min hold,~3-6 kcal
+Full body,HIIT,20 min,~150-300 kcal,1 round (1 min),~7-15 kcal
+Full body,Burpees,10 min,~100-150 kcal,1 rep,~0.5-1 kcal
+Full body,Mountain Climbers,10 min,~80-120 kcal,1 rep (both legs),~0.2-0.4 kcal
+Yoga,Surya Namaskar (Sun Salutation),10 min,~50-100 kcal,1 round,~5-10 kcal
+Yoga,Adho Mukha Svanasana (Downward Dog),1 min hold,~3-5 kcal,1 min hold,~3-5 kcal
+Yoga,Vrikshasana (Tree Pose),1 min hold,~2-4 kcal,1 min hold,~2-4 kcal
+Yoga,Bhujangasana (Cobra Pose),1 min hold,~3-5 kcal,1 min hold,~3-5 kcal
+Yoga,Trikonasana (Triangle Pose),1 min hold,~3-5 kcal,1 min hold,~3-5 kcal
+Yoga,Setu Bandhasana (Bridge Pose),1 min hold,~3-5 kcal,1 min hold,~3-5 kcal
+Yoga,Balasana (Child's Pose),2 min hold,~4-6 kcal,1 min hold,~2-3 kcal
+Yoga,Kapalbhati Pranayama,5 min,~15-25 kcal,1 min,~3-5 kcal
+Yoga,Anulom Vilom Pranayama,10 min,~15-30 kcal,1 min,~1.5-3 kcal
+Yoga,Full Yoga Session (Mixed),45 min,~150-250 kcal,1 session,~150-250 kcal
+Calisthenics,Bodyweight Squats,15 min,~60-120 kcal,1 rep,~0.3-0.5 kcal
+Calisthenics,Dips,10 min,~50-90 kcal,1 rep,~0.4-0.7 kcal
+Calisthenics,Jumping Jacks,10 min,~80-130 kcal,1 rep,~0.15-0.25 kcal
+Calisthenics,Bear Crawl,5 min,~40-70 kcal,1 min,~8-14 kcal
+Calisthenics,Wall Sit,5 min,~15-25 kcal,1 min hold,~3-5 kcal
+Pilates & Core,Pilates Session (Mat),45 min,~150-250 kcal,1 session,~150-250 kcal
+Pilates & Core,Crunches,10 min,~40-70 kcal,1 rep,~0.2-0.35 kcal
+Pilates & Core,Russian Twists,10 min,~50-90 kcal,1 rep,~0.25-0.4 kcal
+Pilates & Core,Leg Raises,10 min,~50-80 kcal,1 rep,~0.3-0.5 kcal
+Pilates & Core,Hollow Body Hold,5 min,~20-35 kcal,1 min hold,~4-7 kcal
+Dance & Zumba,Zumba,45 min,~300-500 kcal,1 min,~7-11 kcal
+Dance & Zumba,Bollywood Dance Workout,30 min,~200-350 kcal,1 min,~7-12 kcal
+Dance & Zumba,Hip-Hop Dance,30 min,~180-300 kcal,1 min,~6-10 kcal
+Dance & Zumba,Garba/Folk Dance,30 min,~200-350 kcal,1 min,~7-12 kcal
+Martial Arts/Boxing,Boxing (Bag Work),30 min,~250-400 kcal,1 min,~8-13 kcal
+Martial Arts/Boxing,Kickboxing,30 min,~250-450 kcal,1 min,~8-15 kcal
+Martial Arts/Boxing,Karate/Taekwondo Practice,45 min,~300-500 kcal,1 min,~7-11 kcal
+Martial Arts/Boxing,Shadow Boxing,15 min,~100-180 kcal,1 min,~7-12 kcal
+Martial Arts/Boxing,Muay Thai,30 min,~300-450 kcal,1 min,~10-15 kcal
+Swimming,Freestyle Swimming,30 min,~250-400 kcal,1 lap (25m),~4-7 kcal
+Swimming,Breaststroke,30 min,~200-350 kcal,1 lap (25m),~3-6 kcal
+Swimming,Backstroke,30 min,~200-300 kcal,1 lap (25m),~3-5 kcal
+Swimming,Water Aerobics,30 min,~150-250 kcal,1 min,~5-8 kcal
+Sports,Cricket (Batting/Fielding),60 min,~250-400 kcal,1 min,~4-7 kcal
+Sports,Football/Soccer,60 min,~450-700 kcal,1 min,~7.5-12 kcal
+Sports,Badminton,30 min,~150-300 kcal,1 min,~5-10 kcal
+Sports,Basketball,30 min,~200-350 kcal,1 min,~7-12 kcal
+Sports,Table Tennis,30 min,~120-200 kcal,1 min,~4-7 kcal
+Sports,Tennis (Singles),60 min,~400-600 kcal,1 min,~7-10 kcal
+Sports,Volleyball,45 min,~150-280 kcal,1 min,~3-6 kcal

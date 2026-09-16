@@ -1,0 +1,15 @@
+# Fine-tuning dependencies — install in the GPU training environment (not production)
+# Run: pip install -r training/requirements_finetune.txt
+#
+# Google Colab T4 (free) is enough for Path A (Llama-3.2-3B).
+# For Path B (Qwen3-8B) you need a 16 GB+ GPU or Colab A100.
+
+unsloth[colab-new]>=2024.12.0   # fastest QLoRA on consumer GPUs
+datasets>=2.21.0
+trl>=0.12.0
+transformers>=4.46.0
+peft>=0.13.0
+bitsandbytes>=0.44.0
+accelerate>=1.0.0
+safetensors>=0.4.5
+httpx>=0.26.0                    # for upload_lora_cf.py
