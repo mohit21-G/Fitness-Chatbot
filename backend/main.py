@@ -459,6 +459,20 @@ async def get_calorie_target(user_id: str, db=Depends(get_db)):
     if not user:
         raise HTTPException(status_code=404, detail=f"User '{user_id}' not found")
 
+    # New / incomplete profile — return what we have without computing targets
+    if not user.get("age") or not user.get("gender") or not user.get("weight_kg"):
+        return schemas.CalorieTargetResponse(
+            user_id=user["user_id"],
+            name=user.get("name") or user["user_id"],
+            age=user.get("age"),
+            gender=user.get("gender"),
+            height_cm=user.get("height_cm"),
+            weight_kg=user.get("weight_kg"),
+            activity_level=user.get("activity_level"),
+            fitness_goal=user.get("fitness_goal"),
+            custom_calorie_goal=user.get("custom_calorie_goal"),
+        )
+
     target = compute_full_target(user)
     return schemas.CalorieTargetResponse(
         user_id=user["user_id"], name=user["name"], age=user["age"],
@@ -662,7 +676,8 @@ async def get_daily_summary(user_id: str, log_date: str, db=Depends(get_db)):
     if not user:
         raise HTTPException(status_code=404, detail=f"User '{user_id}' not found")
 
-    target = compute_full_target(user)
+    target = compute_full_target(user) if user.get("age") and user.get("weight_kg") else None
+    cal_target = target.calorie_target if target else 2000.0
     repo = DailyLogRepository(db)
     food_totals = await repo.get_daily_food_totals(user_id, d)
     exercise_totals = await repo.get_daily_exercise_totals(user_id, d)
@@ -670,7 +685,7 @@ async def get_daily_summary(user_id: str, log_date: str, db=Depends(get_db)):
     net = food_totals["total_calories_consumed"] - exercise_totals["total_calories_burned"]
 
     return schemas.DailySummaryResponse(
-        user_id=user_id, date=log_date, calorie_target=target.calorie_target,
+        user_id=user_id, date=log_date, calorie_target=cal_target,
         total_calories_consumed=food_totals["total_calories_consumed"],
         total_protein_g=food_totals["total_protein_g"],
         total_carbs_g=food_totals["total_carbs_g"],
@@ -678,7 +693,7 @@ async def get_daily_summary(user_id: str, log_date: str, db=Depends(get_db)):
         total_fiber_g=food_totals["total_fiber_g"],
         total_calories_burned=exercise_totals["total_calories_burned"],
         net_calories=round(net, 1),
-        remaining_calories=round(target.calorie_target - net, 1),
+        remaining_calories=round(cal_target - net, 1),
         food_entries=food_totals["food_entries"],
         exercise_entries=exercise_totals["exercise_entries"],
         meal_breakdown=food_totals["meal_breakdown"],

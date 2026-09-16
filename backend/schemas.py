@@ -86,16 +86,17 @@ class UserProfileResponse(BaseModel):
     user_id: str
     name: str
     email: Optional[str] = None
-    age: int
-    gender: str
-    height_cm: float
-    weight_kg: float
-    activity_level: str
-    fitness_goal: str
-    diet_type: str
+    age: Optional[int] = None
+    gender: Optional[str] = None
+    height_cm: Optional[float] = None
+    weight_kg: Optional[float] = None
+    activity_level: Optional[str] = None
+    fitness_goal: Optional[str] = None
+    diet_type: Optional[str] = None
     target_weight_kg: Optional[float] = None
     medical_conditions: Optional[str] = None
     custom_calorie_goal: Optional[float] = None
+    onboarding_complete: Optional[bool] = False
     created_at: Optional[datetime] = None
     updated_at: Optional[datetime] = None
 
@@ -108,26 +109,26 @@ class CalorieTargetResponse(BaseModel):
     user_id: str
     name: str
 
-    # Body stats
-    age: int
-    gender: str
-    height_cm: float
-    weight_kg: float
-    activity_level: str
-    fitness_goal: str
+    # Body stats (None for new users who haven't completed onboarding)
+    age: Optional[int] = None
+    gender: Optional[str] = None
+    height_cm: Optional[float] = None
+    weight_kg: Optional[float] = None
+    activity_level: Optional[str] = None
+    fitness_goal: Optional[str] = None
 
-    # Calculations
-    bmr: float                   # Basal Metabolic Rate (kcal/day)
-    tdee: float                  # Total Daily Energy Expenditure
-    calorie_target: float        # Goal-adjusted daily calories (or custom override)
-    protein_target_g: float      # Recommended daily protein
-    carbs_target_g: float        # Recommended daily carbs
-    fat_target_g: float          # Recommended daily fat
+    # Calculations (None if profile is incomplete)
+    bmr: Optional[float] = None
+    tdee: Optional[float] = None
+    calorie_target: Optional[float] = None
+    protein_target_g: Optional[float] = None
+    carbs_target_g: Optional[float] = None
+    fat_target_g: Optional[float] = None
 
     # Explanation
-    bmr_formula: str             # "Mifflin-St Jeor"
-    tdee_multiplier: float       # Activity multiplier used
-    calorie_adjustment: str      # e.g. "-500 kcal (lose weight)" or "Custom goal: 2000 kcal/day"
+    bmr_formula: Optional[str] = None
+    tdee_multiplier: Optional[float] = None
+    calorie_adjustment: Optional[str] = None
 
     # Custom override (None = using auto-computed target)
     custom_calorie_goal: Optional[float] = None
