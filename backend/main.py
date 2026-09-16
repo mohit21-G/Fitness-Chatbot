@@ -27,6 +27,7 @@ from user_repository import UserRepository
 from bmr_tdee_calculator import compute_full_target
 from daily_log_repository import DailyLogRepository
 from conversation import ConversationStore
+from user_repository import slugify_username
 
 settings = get_settings()
 _config_warnings = validate_config()
@@ -472,6 +473,70 @@ async def get_calorie_target(user_id: str, db=Depends(get_db)):
 
 
 # ============================================================================
+# AUTH ENDPOINTS
+# ============================================================================
+
+@app.post("/api/auth/login", response_model=schemas.LoginResponse, tags=["Auth"])
+async def auth_login(data: schemas.LoginRequest, db=Depends(get_db)):
+    """
+    Login or auto-register.  No OTP required.
+
+    - If username doesn't exist → creates user, returns is_new_user=True.
+    - If username exists → verifies password, returns is_new_user=False.
+    - user_id is a stable slug derived from username — never changes.
+    """
+    repo = UserRepository(db)
+    try:
+        user, is_new = await repo.login_or_register(data.username, data.password)
+    except ValueError as e:
+        raise HTTPException(status_code=401, detail=str(e))
+
+    profile = None
+    if user.get("onboarding_complete") and user.get("age"):
+        profile = schemas.UserProfileResponse(
+            user_id=user["user_id"],
+            name=user.get("name") or user["user_id"],
+            email=user.get("email"),
+            age=user["age"],
+            gender=user.get("gender", "male"),
+            height_cm=user.get("height_cm", 170),
+            weight_kg=user.get("weight_kg", 70),
+            activity_level=user.get("activity_level", "moderate"),
+            fitness_goal=user.get("fitness_goal", "maintain"),
+            diet_type=user.get("diet_type", "non_veg"),
+            target_weight_kg=user.get("target_weight_kg"),
+            medical_conditions=user.get("medical_conditions"),
+            custom_calorie_goal=user.get("custom_calorie_goal"),
+            created_at=user.get("created_at"),
+            updated_at=user.get("updated_at"),
+        )
+
+    return schemas.LoginResponse(
+        user_id=user["user_id"],
+        username=user.get("username") or user["user_id"],
+        name=user.get("name") or user["user_id"],
+        is_new_user=is_new,
+        onboarding_complete=bool(user.get("onboarding_complete", False)),
+        profile=profile,
+    )
+
+
+@app.put("/api/users/{user_id}/onboard", response_model=schemas.UserProfileResponse, tags=["Auth"])
+async def complete_onboarding(user_id: str, data: schemas.UserProfileUpdate, db=Depends(get_db)):
+    """
+    Complete the onboarding profile wizard.  Sets onboarding_complete=True.
+    Accepts all profile fields.  custom_calorie_goal is saved as-is (no override).
+    """
+    payload = data.model_dump(exclude_unset=True)
+    # Mark onboarding done
+    payload["onboarding_complete"] = True
+    user = await UserRepository(db).update(user_id, payload)
+    if not user:
+        raise HTTPException(status_code=404, detail=f"User '{user_id}' not found")
+    return user
+
+
+# ============================================================================
 # DAILY LOGGING ENDPOINTS
 # ============================================================================
 
@@ -648,16 +713,30 @@ async def _get_default_user(db):
     return user
 
 
+async def _get_chat_user(db, user_id: Optional[str] = None):
+    """
+    Resolve the user for a chatbot request.
+    If user_id is provided and exists, use that user.
+    Otherwise fall back to default_user (backward compat for benchmarks/tests).
+    """
+    if user_id:
+        user = await db["user_profiles"].find_one({"user_id": user_id}, {"_id": 0})
+        if user:
+            return user
+    return await _get_default_user(db)
+
+
 @app.post("/api/chat/message", response_model=schemas.ChatResponse, tags=["Chatbot"])
 async def chat_message(
     request: schemas.ChatMessageRequest,
+    user_id: Optional[str] = Query(None, description="Logged-in user_id (omit for default_user)"),
     db=Depends(get_db),
 ):
     """Text chatbot. Supports English/Hindi/Gujarati with multi-turn clarification."""
     from chatbot_engine import ChatbotEngine
     from llm_service import LLMService
 
-    user = await _get_default_user(db)
+    user = await _get_chat_user(db, user_id)
     engine = ChatbotEngine(db, user, LLMService())
     result = await engine.process_message(request.message, context=request.context, auto_log=request.auto_log)
 
@@ -671,6 +750,7 @@ async def chat_message(
 @app.post("/api/chat/confirm", response_model=schemas.ChatResponse, tags=["Chatbot"])
 async def chat_confirm(
     request: schemas.ChatConfirmRequest,
+    user_id: Optional[str] = Query(None, description="Logged-in user_id (omit for default_user)"),
     db=Depends(get_db),
 ):
     from chatbot_engine import ChatbotEngine
@@ -679,9 +759,14 @@ async def chat_confirm(
     if not request.confirm:
         return schemas.ChatResponse(message="Cancelled. What else can I help with?", intent="cancelled", success=True)
 
-    user = await _get_default_user(db)
+    user = await _get_chat_user(db, user_id)
     engine = ChatbotEngine(db, user, LLMService())
     result = await engine.execute_confirmed_action(request.pending_action)
+
+    return schemas.ChatResponse(
+        message=result.message, intent=result.intent, action_taken=result.action_taken,
+        data=result.data, needs_confirmation=False, options=result.options, success=result.success,
+    )
 
     return schemas.ChatResponse(
         message=result.message, intent=result.intent, action_taken=result.action_taken,
@@ -694,6 +779,7 @@ async def chat_voice(
     audio: UploadFile = File(...),
     language: Optional[str] = Query(None, description="2-letter language hint (en/hi/gu/…)"),
     auto_log: bool = Query(False),
+    user_id: Optional[str] = Query(None, description="Logged-in user_id (omit for default_user)"),
     stt_provider: Optional[str] = Query(
         None,
         description="STT provider: 'auto' (default), 'sarvam', or 'whisper'. "
@@ -738,7 +824,7 @@ async def chat_voice(
     display_text = stt_result.raw_text or stt_result.text
     process_text = stt_result.text   # normalised — fed to chatbot
 
-    user = await _get_default_user(db)
+    user = await _get_chat_user(db, user_id)
     engine = ChatbotEngine(db, user, LLMService())
     result = await engine.process_message(process_text, auto_log=auto_log)
 

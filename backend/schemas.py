@@ -600,3 +600,23 @@ class StatsResponse(BaseModel):
     non_veg_foods: int
     eggetarian_foods: int
     exercise_categories: list[str]
+
+# ============================================================================
+# AUTH SCHEMAS
+# ============================================================================
+
+class LoginRequest(BaseModel):
+    """Login or register with username + password (no OTP)."""
+    username: str = Field(..., min_length=2, max_length=40,
+                          description="Username — becomes the stable user_id slug")
+    password: str = Field(..., min_length=4, max_length=128)
+
+
+class LoginResponse(BaseModel):
+    """Returned after successful login or first-time registration."""
+    user_id: str                       # stable slug, never changes
+    username: str                      # display name (same as slug on creation)
+    name: str                          # full display name from profile
+    is_new_user: bool                  # True on first registration
+    onboarding_complete: bool          # False until profile wizard is finished
+    profile: Optional["UserProfileResponse"] = None

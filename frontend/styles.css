@@ -209,8 +209,15 @@ body {
 /* ---- Profile ---- */
 .profile-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; }
 .profile-item { background: var(--bg); padding: 0.6rem 0.8rem; border-radius: 8px; }
-.profile-item label { font-size: 0.75rem; color: var(--text-muted); display: block; }
+.profile-item label { font-size: 0.75rem; color: var(--text-muted); display: block; margin-bottom: 0.25rem; }
 .profile-item span { font-weight: 600; }
+.profile-item input, .profile-item select {
+  width: 100%; padding: 0.35rem 0.5rem;
+  border: 1px solid var(--border); border-radius: 6px;
+  font-size: 0.9rem; background: var(--surface);
+  outline: none; transition: border 0.2s;
+}
+.profile-item input:focus, .profile-item select:focus { border-color: var(--primary); }
 
 /* ---- Option Buttons (Modern Pill/Card Style) ---- */
 .options-row {

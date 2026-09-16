@@ -7,22 +7,56 @@
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-  <!-- ============ CHAT SCREEN (No Login) ============ -->
-  <div id="screen-chat" class="screen active">
+
+  <!-- ============ LOGIN SCREEN ============ -->
+  <div id="screen-login" class="screen active">
+    <div class="login-container">
+      <div class="login-header">
+        <h1>🏋️ Fitness AI</h1>
+        <p>Your personal health & nutrition assistant</p>
+      </div>
+
+      <div class="auth-form" id="auth-form">
+        <input type="text" id="login-username" placeholder="Username" autocomplete="username" maxlength="40">
+        <input type="password" id="login-password" placeholder="Password (min 4 chars)" autocomplete="current-password" maxlength="128">
+        <button class="btn-primary" id="btn-login">Sign In / Register</button>
+        <p style="font-size:0.8rem;color:var(--text-muted);text-align:center;margin-top:0.25rem">
+          New here? Just enter a username &amp; password to create your account.
+        </p>
+        <div class="error-msg" id="login-error"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============ ONBOARDING WIZARD ============ -->
+  <div class="modal hidden" id="modal-onboard">
+    <div class="modal-content" style="max-width:480px">
+      <div class="modal-header">
+        <h3 id="onboard-title">👋 Welcome! Let's set up your profile</h3>
+      </div>
+      <div class="modal-body" id="onboard-body">
+        <!-- steps rendered by JS -->
+      </div>
+    </div>
+  </div>
+
+  <!-- ============ CHAT SCREEN ============ -->
+  <div id="screen-chat" class="screen">
     <!-- Top Bar -->
     <header class="chat-header">
       <div class="header-left">
         <h2>Fitness AI</h2>
+        <div class="user-badge" id="user-badge"></div>
       </div>
       <div class="header-right">
         <button class="btn-icon" id="btn-summary" title="Daily Summary">&#x1F4CA;</button>
         <button class="btn-icon" id="btn-profile" title="Profile">&#x1F464;</button>
+        <button class="btn-icon" id="btn-logout" title="Log out" style="font-size:0.85rem">&#x1F6AA;</button>
       </div>
     </header>
 
     <!-- Messages Area -->
-    <main class="chat-messages" id="chat-messages">
-    </main>
+    <main class="chat-messages" id="chat-messages"></main>
 
     <!-- Input Area -->
     <footer class="chat-input-area">

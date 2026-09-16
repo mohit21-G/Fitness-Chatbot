@@ -3,10 +3,34 @@ User Repository — MongoDB version.
 """
 from __future__ import annotations
 
+import re
 from datetime import datetime, timezone
 from typing import Optional
 
+import bcrypt
 from motor.motor_asyncio import AsyncIOMotorDatabase
+
+
+def _hash_password(password: str) -> str:
+    return bcrypt.hashpw(password.encode(), bcrypt.gensalt()).decode()
+
+
+def _verify_password(password: str, hashed: str) -> bool:
+    try:
+        return bcrypt.checkpw(password.encode(), hashed.encode())
+    except Exception:
+        return False
+
+
+def slugify_username(raw: str) -> str:
+    """Convert a raw username to a stable, URL-safe user_id slug.
+    Keeps letters, digits and underscores; collapses everything else to '_'.
+    Always lowercase.  e.g. 'Mohit Gangani' → 'mohit_gangani'.
+    """
+    slug = raw.strip().lower()
+    slug = re.sub(r"[^a-z0-9_]+", "_", slug)
+    slug = re.sub(r"_+", "_", slug).strip("_")
+    return slug or "user"
 
 
 class UserRepository:
@@ -86,6 +110,9 @@ class UserRepository:
                 if hasattr(value, "value"):
                     value = value.value
                 update_fields[key] = value
+            # onboarding_complete=False is a valid falsy value — must pass through
+            if key == "onboarding_complete" and value is False:
+                update_fields[key] = False
 
         if update_fields:
             update_fields["updated_at"] = datetime.now(timezone.utc)
@@ -99,3 +126,57 @@ class UserRepository:
     async def delete(self, user_id: str) -> bool:
         result = await self.collection.delete_one({"user_id": user_id})
         return result.deleted_count > 0
+
+    # ------------------------------------------------------------------
+    # Auth helpers
+    # ------------------------------------------------------------------
+
+    async def get_by_username(self, username: str) -> Optional[dict]:
+        """Look up a user by their username slug (case-insensitive)."""
+        slug = slugify_username(username)
+        return await self.collection.find_one({"user_id": slug}, {"_id": 0})
+
+    async def login_or_register(self, username: str, password: str) -> tuple[dict, bool]:
+        """
+        Authenticate an existing user or create a new one.
+
+        Returns (user_doc, is_new_user).
+
+        New user  → inserted with hashed password, onboarding_complete=False,
+                    minimal profile defaults.  is_new_user=True.
+        Existing  → password verified; raises ValueError on wrong password.
+                    is_new_user=False.
+        """
+        slug = slugify_username(username)
+        existing = await self.get_by_username(username)
+
+        if existing:
+            # Existing user — verify password
+            stored_hash = existing.get("password_hash") or ""
+            if stored_hash and not _verify_password(password, stored_hash):
+                raise ValueError("Incorrect password.")
+            return existing, False
+
+        # New user — create minimal record
+        doc = {
+            "user_id":             slug,
+            "username":            slug,
+            "name":                username.strip(),   # display name starts as typed
+            "email":               None,
+            "password_hash":       _hash_password(password),
+            "age":                 None,
+            "gender":              None,
+            "height_cm":           None,
+            "weight_kg":           None,
+            "activity_level":      None,
+            "fitness_goal":        None,
+            "diet_type":           None,
+            "target_weight_kg":    None,
+            "medical_conditions":  None,
+            "custom_calorie_goal": None,
+            "onboarding_complete": False,
+            "created_at":          datetime.now(timezone.utc),
+            "updated_at":          None,
+        }
+        await self.collection.insert_one(doc)
+        return await self.get_by_username(username), True
