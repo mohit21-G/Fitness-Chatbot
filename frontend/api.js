@@ -2,28 +2,21 @@
  * API Client — No authentication required.
  *
  * API_BASE resolution order:
- *   1. localStorage override — set FITNESS_API_BASE to point at any backend.
- *   2. Local dev server on port 3000 (npm run dev) — targets http://localhost:8001.
- *   3. Served directly by FastAPI on port 8001 — uses same origin (no CORS needed).
- *   4. Any other origin (e.g. Netlify, GitHub Pages, custom domain) — falls back
- *      to the deployed Render backend.
+ *   1. localStorage override  — set FITNESS_API_BASE to point at any backend.
+ *   2. localhost              — any localhost origin targets http://localhost:8001.
+ *   3. Everything else        — always uses the Render backend (production).
  *
  * To override for a custom backend URL, set:
  *   localStorage.setItem('FITNESS_API_BASE', 'https://your-host.onrender.com')
  * before the page loads.
  */
-const _BACKEND_PORT = 8001;
 const _RENDER_BACKEND = 'https://fitness-chatbot-kneq.onrender.com';
+const _LOCAL_BACKEND  = 'http://localhost:8001';
 
 const _localOverride = (typeof localStorage !== 'undefined') && localStorage.getItem('FITNESS_API_BASE');
-const _isLocalDev = window.location.port === String(_BACKEND_PORT);          // served by FastAPI directly
-const _isDevServer = window.location.hostname === 'localhost' &&
-                     window.location.port === '3000';                         // npm run dev
+const _isLocalhost   = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
 
-const API_BASE = _localOverride
-  || (_isLocalDev  ? window.location.origin          // same-origin FastAPI
-  : (_isDevServer  ? `http://localhost:${_BACKEND_PORT}` // cross-port dev
-  :                  _RENDER_BACKEND));               // production / any other host
+const API_BASE = _localOverride || (_isLocalhost ? _LOCAL_BACKEND : _RENDER_BACKEND);
 
 const api = {
   // ---- Chat ----
