@@ -1,21 +1,29 @@
 /**
  * API Client — No authentication required.
  *
- * API_BASE resolution:
- *   - Served by FastAPI (port 8001 or any backend port): use window.location.origin
- *     so all API calls go to the same origin (no CORS needed).
- *   - Standalone dev server (e.g. `npm run dev` on port 3000): use the explicit
- *     backend URL so the frontend can reach FastAPI across ports.
+ * API_BASE resolution order:
+ *   1. localStorage override — set FITNESS_API_BASE to point at any backend.
+ *   2. Local dev server on port 3000 (npm run dev) — targets http://localhost:8001.
+ *   3. Served directly by FastAPI on port 8001 — uses same origin (no CORS needed).
+ *   4. Any other origin (e.g. Netlify, GitHub Pages, custom domain) — falls back
+ *      to the deployed Render backend.
  *
  * To override for a custom backend URL, set:
- *   localStorage.setItem('FITNESS_API_BASE', 'http://your-host:8001')
- * before the page loads (useful for staging/production deployments).
+ *   localStorage.setItem('FITNESS_API_BASE', 'https://your-host.onrender.com')
+ * before the page loads.
  */
 const _BACKEND_PORT = 8001;
+const _RENDER_BACKEND = 'https://fitness-chatbot-kneq.onrender.com';
+
 const _localOverride = (typeof localStorage !== 'undefined') && localStorage.getItem('FITNESS_API_BASE');
-const _isStandalone = window.location.port !== String(_BACKEND_PORT) && window.location.port !== '';
+const _isLocalDev = window.location.port === String(_BACKEND_PORT);          // served by FastAPI directly
+const _isDevServer = window.location.hostname === 'localhost' &&
+                     window.location.port === '3000';                         // npm run dev
+
 const API_BASE = _localOverride
-  || (_isStandalone ? `http://localhost:${_BACKEND_PORT}` : window.location.origin);
+  || (_isLocalDev  ? window.location.origin          // same-origin FastAPI
+  : (_isDevServer  ? `http://localhost:${_BACKEND_PORT}` // cross-port dev
+  :                  _RENDER_BACKEND));               // production / any other host
 
 const api = {
   // ---- Chat ----
@@ -83,7 +91,20 @@ const api = {
       const data = await resp.json();
       return { ok: resp.ok, status: resp.status, data };
     } catch (e) {
-      return { ok: false, status: 0, data: { error: 'Network error' } };
+      // On first network failure (e.g. Render free-tier cold start), retry once
+      // after a short delay before giving up.
+      try {
+        await new Promise(r => setTimeout(r, 3000));
+        const resp2 = await fetch(API_BASE + path, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+          body: JSON.stringify(body),
+        });
+        const data2 = await resp2.json();
+        return { ok: resp2.ok, status: resp2.status, data: data2 };
+      } catch (e2) {
+        return { ok: false, status: 0, data: { error: 'Network error' } };
+      }
     }
   },
 

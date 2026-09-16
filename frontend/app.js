@@ -47,7 +47,17 @@ async function loadGreeting() {
   showTyping();
   const res = await api.sendMessage('hello');
   hideTyping();
-  if (res.ok) addBotMessage(res.data);
+  if (res.ok) {
+    addBotMessage(res.data);
+  } else {
+    // Backend may be cold-starting on Render free tier — show a helpful message
+    // instead of a generic error so the user knows to try again in a moment.
+    addBotError(
+      res.status === 0
+        ? 'Backend is starting up — please send a message in a few seconds.'
+        : (res.data.detail || 'Something went wrong')
+    );
+  }
 }
 
 async function handleSendText() {
@@ -63,7 +73,11 @@ async function handleSendText() {
   if (res.ok) {
     addBotMessage(res.data);
   } else {
-    addBotError(res.data.detail || 'Something went wrong');
+    addBotError(
+      res.status === 0
+        ? 'Could not reach the server — please try again in a moment.'
+        : (res.data.detail || 'Something went wrong')
+    );
   }
 }
 
@@ -294,7 +308,11 @@ async function handleOptionClick(btn, optionText) {
   const res = await api.sendMessage(text, false);
   hideTyping();
   if (res.ok) addBotMessage(res.data);
-  else addBotError(res.data.detail || 'Something went wrong');
+  else addBotError(
+    res.status === 0
+      ? 'Could not reach the server — please try again in a moment.'
+      : (res.data.detail || 'Something went wrong')
+  );
 }
 window.handleOptionClick = handleOptionClick;
 
