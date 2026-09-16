@@ -1,12 +1,16 @@
 {
   "name": "fitness-chatbot-frontend",
   "version": "1.0.0",
-  "description": "Fitness AI Chatbot — static frontend dev server",
+  "description": "Fitness AI Chatbot — standalone frontend dev server (port 3000)",
   "scripts": {
     "dev": "npx serve . -p 3000 --cors",
     "start": "npx serve . -p 3000 --cors"
   },
   "devDependencies": {
     "serve": "^14.2.4"
+  },
+  "notes": {
+    "backend": "Start the backend separately: cd ../backend && python run.py  (serves on http://localhost:8001)",
+    "api": "api.js auto-detects port 3000 and points all API calls to http://localhost:8001 — no manual config needed"
   }
 }

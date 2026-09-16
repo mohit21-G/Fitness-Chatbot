@@ -24,9 +24,11 @@ python import_to_mongodb.py
 
 ## Running the Services
 
-The backend and frontend start independently. Open **two terminals**.
+The backend and frontend are started **independently** in two separate terminals.
 
-### Terminal 1 — Backend (FastAPI)
+---
+
+### Terminal 1 — Backend (FastAPI on port 8001)
 
 ```bash
 cd backend
@@ -40,34 +42,36 @@ cd backend
 uvicorn main:app --host 0.0.0.0 --port 8001 --reload
 ```
 
-Backend API: http://localhost:8001  
-Swagger docs: http://localhost:8001/docs
-
-> The backend also serves the frontend at **http://localhost:8001/app** — use this if you don't want to run a separate frontend server.
+| URL | Description |
+|-----|-------------|
+| http://localhost:8001/ | Health check (JSON) |
+| http://localhost:8001/docs | Swagger / interactive API docs |
+| http://localhost:8001/app | Frontend served by the backend (no separate server needed) |
 
 ---
 
-### Terminal 2 — Frontend (standalone dev server)
+### Terminal 2 — Frontend (standalone dev server on port 3000)
 
 ```bash
 cd frontend
 npm run dev
 ```
 
-On first run, `serve` will be downloaded automatically via `npx` (no global install needed).
+On first run, `serve` is downloaded automatically via `npx` — no global install needed.
 
 Frontend: http://localhost:3000
 
-> The frontend auto-detects it is running on port 3000 and points all API calls to `http://localhost:8001`. No manual configuration needed.
+`api.js` auto-detects that it is running on port 3000 and points all API calls to `http://localhost:8001`. No manual configuration needed.
 
 ---
 
 ## Modes at a Glance
 
-| Mode | How to open | API target |
-|------|-------------|------------|
-| Backend-served (single command) | `python main.py` → http://localhost:8001/app | Same origin (8001) |
-| Standalone frontend | `npm run dev` → http://localhost:3000 | http://localhost:8001 |
+| Mode | Command | URL | API target |
+|------|---------|-----|------------|
+| Backend only (API + built-in UI) | `cd backend && python main.py` | http://localhost:8001/app | Same origin |
+| Frontend dev server | `cd frontend && npm run dev` | http://localhost:3000 | http://localhost:8001 |
+| Both independently | Run both commands above | Both URLs work | http://localhost:8001 |
 
 ---
 
