@@ -838,49 +838,19 @@ async def stt_compare(
 # RUN
 # ============================================================================
 
-def _get_lan_ip() -> str:
-    """Best-effort detection of this machine's LAN IP (for same-network access)."""
-    import socket
-    s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-    try:
-        # Doesn't actually send packets; just picks the outbound interface.
-        s.connect(("8.8.8.8", 80))
-        ip = s.getsockname()[0]
-    except Exception:
-        ip = "127.0.0.1"
-    finally:
-        s.close()
-    return ip
-
-
-def _print_startup_banner(port: int) -> None:
-    """Print Vite-style Local + Network URLs so users can open the app easily."""
-    lan_ip = _get_lan_ip()
-    green = "\033[32m"
-    cyan = "\033[36m"
-    bold = "\033[1m"
-    dim = "\033[2m"
-    reset = "\033[0m"
-    print()
-    print(f"  {bold}Fitness AI Chatbot{reset} is running:")
-    print()
-    print(f"  {green}➜{reset}  {bold}Local:{reset}    {cyan}http://localhost:{port}/app{reset}")
-    print(f"  {green}➜{reset}  {bold}Network:{reset}  {cyan}http://{lan_ip}:{port}/app{reset}")
-    print()
-    print(f"  {dim}API docs:  http://localhost:{port}/docs{reset}")
-    print(f"  {dim}Open the Network URL on any phone/PC on the same Wi-Fi.{reset}")
-    print(f"  {dim}Press CTRL+C to stop.{reset}")
-    print()
-
-
 if __name__ == "__main__":
     import uvicorn
 
-    _print_startup_banner(settings.API_PORT)
+    port = int(os.environ.get("PORT", settings.API_PORT))
+
+    print(f"\n  Fitness AI Chatbot is running:")
+    print(f"  Local:     http://localhost:{port}/app")
+    print(f"  API docs:  http://localhost:{port}/docs")
+    print(f"  Press CTRL+C to stop.\n")
 
     uvicorn.run(
         "main:app",
-        host=settings.API_HOST,   # 0.0.0.0 → reachable from other devices on the LAN
-        port=settings.API_PORT,
+        host=settings.API_HOST,  # 0.0.0.0 — required for Render and other cloud hosts
+        port=port,
         reload=settings.API_RELOAD,
     )

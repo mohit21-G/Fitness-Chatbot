@@ -19,6 +19,7 @@ from nutrition_calculator import NutritionCalculator
 from exercise_calculator import ExerciseSearcher, ExerciseCalculator, parse_exercise_input
 from daily_log_repository import DailyLogRepository, meal_sort_key
 from food_emoji import get_food_emoji, get_meal_emoji, get_exercise_emoji
+from workout_recommender import build_workout_recommendation, format_recommendation
 from bmr_tdee_calculator import compute_full_target
 from external_food_api import ExternalFoodAPIService
 from external_exercise_api import ExternalExerciseAPIService
@@ -292,7 +293,7 @@ class ChatbotEngine:
         _actionable = {
             Intent.LOG_FOOD, Intent.LOG_EXERCISE, Intent.GET_SUMMARY,
             Intent.GET_CALORIES, Intent.GET_PROFILE, Intent.QUERY_MEAL,
-            Intent.QUERY_EXERCISE, Intent.SKIP_MEAL,
+            Intent.QUERY_EXERCISE, Intent.SKIP_MEAL, Intent.RECOMMEND_WORKOUT,
         }
         if intent not in _actionable and not (parse_result.food_query or "").strip():
             salvaged_q = self._clean_food_query(message, original_message=message)
@@ -372,6 +373,8 @@ class ChatbotEngine:
         # ── Route ────────────────────────────────────────────────────────
         if intent == Intent.GREETING:
             response = self._handle_greeting()
+        elif intent == Intent.RECOMMEND_WORKOUT:
+            response = await self._handle_recommend_workout()
         elif intent == Intent.LOG_FOOD:
             response = await self._handle_log_food(parse_result, auto_log, original_message=message)
         elif intent == Intent.LOG_EXERCISE:
@@ -911,6 +914,123 @@ class ChatbotEngine:
     # ------------------------------------------------------------------
     # Intent Handlers
     # ------------------------------------------------------------------
+
+    # ------------------------------------------------------------------
+    # Workout Recommendation
+    # ------------------------------------------------------------------
+
+    def _looks_like_workout_recommendation(self, message: str) -> bool:
+        """
+        Deterministically detect a workout recommendation request.
+        Must NOT fire on exercise LOG messages ("did 30 min yoga") or
+        exercise READ messages ("show my workout history").
+        """
+        m = " " + message.lower().strip() + " "
+
+        # Hard exclusion: actual exercise logs have a quantity/amount
+        import re as _re
+        if _re.search(r"\b\d+\s*(?:min|minute|minutes|rep|reps|set|sets|km|steps|laps|rounds|times)\b", m):
+            return False
+        # Also exclude eating verbs that can mention workout context
+        _eating = (" ate ", " eat ", " eaten ", " khaya ", " khadha ", " khadhi ",
+                   " khadhu ", " khadho ", " khayi ", " pidhi ", " piya ", " drank ")
+        if any(v in m for v in _eating):
+            return False
+
+        # Recommendation cue words
+        _rec_cues = (
+            "recommend", "suggest", "suchav", "suchavo", "suchavjo",
+            "what should i do", "what to do tomorrow", "what workout",
+            "workout plan", "training plan", "exercise plan",
+            "what exercise", "which exercise",
+            "kal kya karna", "kal kya exercise", "aavti kal",
+            "mane workout", "workout suchav", "next workout",
+            "workout for tomorrow", "exercise for tomorrow",
+            "plan for tomorrow", "tomorrow workout", "tomorrow exercise",
+            "kal workout", "kal exercise",
+        )
+        if not any(c in m for c in _rec_cues):
+            return False
+
+        # Must contain a forward-looking or planning cue (avoids "did you recommend X")
+        _forward = (
+            "tomorrow", "next", "kal", "aavti kal", "suggest", "recommend",
+            "plan", "should", "chahiye", "karna chahiye", "suchav",
+        )
+        return any(f in m for f in _forward)
+
+    async def _handle_recommend_workout(self) -> ChatResponse:
+        """
+        Build and return a workout recommendation using today's data,
+        7-day exercise history, user goal/profile, and calorie/protein status.
+        Returns a graceful error message if anything fails — never raises.
+        """
+        try:
+            from bmr_tdee_calculator import compute_full_target
+            from datetime import date as _date, timedelta as _td
+
+            today     = datetime.now(IST).date()
+            week_ago  = today - _td(days=7)
+            user_id   = self.user["user_id"]
+
+            # Gather all data in parallel via asyncio
+            import asyncio
+            food_totals_t, exercise_totals_t, exercise_logs_7d = await asyncio.gather(
+                self.log_repo.get_daily_food_totals(user_id, today),
+                self.log_repo.get_daily_exercise_totals(user_id, today),
+                self.log_repo.get_exercise_logs_by_range(user_id, week_ago, today),
+            )
+
+            calorie_target = compute_full_target(self.user)
+
+            rec = build_workout_recommendation(
+                db                    = sync_db,
+                user                  = self.user,
+                exercise_logs_7d      = exercise_logs_7d,
+                today_food_totals     = food_totals_t,
+                today_exercise_totals = exercise_totals_t,
+                calorie_target        = calorie_target,
+            )
+
+            body = format_recommendation(rec, lang=self.lang)
+
+            return ChatResponse(
+                message   = body,
+                intent    = Intent.RECOMMEND_WORKOUT,
+                data      = {
+                    "today_burned_kcal":   rec.today_burned_cal,
+                    "recommended_cats":    [b.category for b in rec.recommended_blocks],
+                    "underfuelled":        rec.underfuelled,
+                    "protein_warning":     rec.protein_warning,
+                    "blocked_groups":      list(rec.blocked_groups.keys()),
+                },
+                success   = True,
+                language  = self.lang,
+            )
+
+        except Exception as e:
+            # Recommendation is a bonus — never surface a crash to the user
+            import logging
+            logging.getLogger(__name__).warning("Workout recommendation failed: %s", e)
+
+            def _L(en, hi, gu):
+                if self.lang == "gu": return gu
+                if self.lang == "hi": return hi
+                return en
+
+            return ChatResponse(
+                message = _L(
+                    "Sorry, I couldn't generate a workout recommendation right now. "
+                    "Try logging some exercise first so I can learn your training history.",
+                    "Abhi workout recommendation generate nahi ho saki. "
+                    "Pehle kuch exercise log karein taaki main aapki history samajh sakoon.",
+                    "Abhi workout recommendation bani shaki nahi. "
+                    "Pahela koi exercise log karo jyathi hu tamari history samaji shaku.",
+                ),
+                intent   = Intent.RECOMMEND_WORKOUT,
+                success  = False,
+                language = self.lang,
+            )
 
     def _handle_greeting(self) -> ChatResponse:
         name = self.user["name"].split()[0] if self.user.get("name") else "there"
@@ -3834,6 +3954,10 @@ class ChatbotEngine:
                 raw_response="deterministic_exercise_read", success=True,
             )
             return await self._handle_query_exercise(parsed)
+
+        # 2b. Workout recommendation request → recommend_workout.
+        if self._looks_like_workout_recommendation(message):
+            return await self._handle_recommend_workout()
 
         # 3a. Daily-Log food read → get_summary / query_meal. Checked BEFORE
         #     exercise-log so read phrasings that contain an exercise trigger

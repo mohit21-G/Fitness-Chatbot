@@ -26,8 +26,16 @@ class Settings(BaseSettings):
 
     # API
     API_HOST: str = "0.0.0.0"
-    API_PORT: int = 8001
+    API_PORT: int = 8001          # overridden by $PORT env var (e.g. on Render)
     API_RELOAD: bool = True
+
+    def __init__(self, **data):
+        # Render (and similar platforms) inject $PORT instead of $API_PORT.
+        # Apply it here so the rest of the code only references API_PORT.
+        import os
+        if "PORT" in os.environ and "API_PORT" not in os.environ:
+            data.setdefault("API_PORT", int(os.environ["PORT"]))
+        super().__init__(**data)
 
     # Application
     APP_NAME: str = "Fitness Chatbot API"

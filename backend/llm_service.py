@@ -35,11 +35,12 @@ class Intent:
     LOG_FOOD = "log_food"
     LOG_EXERCISE = "log_exercise"
     GET_SUMMARY = "get_summary"
-    GET_CALORIES = "get_calories"        # ask about a food's nutrition
+    GET_CALORIES = "get_calories"           # ask about a food's nutrition
     GET_PROFILE = "get_profile"
-    QUERY_MEAL = "query_meal"            # "aaje breakfast ma su lidhu?" — check today's logs
-    QUERY_EXERCISE = "query_exercise"    # "aaje me kya exercise kari?" — check today's exercise logs
-    SKIP_MEAL = "skip_meal"              # "breakfast nathi karyu" — mark meal as skipped
+    QUERY_MEAL = "query_meal"               # "aaje breakfast ma su lidhu?" — check today's logs
+    QUERY_EXERCISE = "query_exercise"       # "aaje me kya exercise kari?" — check today's exercise logs
+    SKIP_MEAL = "skip_meal"                 # "breakfast nathi karyu" — mark meal as skipped
+    RECOMMEND_WORKOUT = "recommend_workout" # "what should I do tomorrow?" — workout suggestion
     CLARIFICATION_NEEDED = "clarification_needed"
     GREETING = "greeting"
     UNKNOWN = "unknown"
@@ -105,7 +106,11 @@ CORE PRINCIPLES:
 7. Capture EVERY food in a separate "foods" array entry. Connectives (and/aur/ane/sathe/with) are NOT foods.
 
 OUTPUT FORMAT (JSON only, all fields present):
-{"intent":"log_food|log_exercise|get_summary|get_calories|get_profile|query_meal|query_exercise|clarification_needed|skip_meal|greeting|unknown","exact_term":null,"food_query":null,"quantity":null,"variant":null,"meal_type":null,"foods":[],"exercise_query":null,"exercise_input":null,"reps":null,"sets":null,"distance":null,"distance_unit":null,"duration_min":null,"intensity":null,"time_of_day":null,"date":"today","missing_detail":null,"clarification_question":null}
+{"intent":"log_food|log_exercise|get_summary|get_calories|get_profile|query_meal|query_exercise|recommend_workout|clarification_needed|skip_meal|greeting|unknown","exact_term":null,"food_query":null,"quantity":null,"variant":null,"meal_type":null,"foods":[],"exercise_query":null,"exercise_input":null,"reps":null,"sets":null,"distance":null,"distance_unit":null,"duration_min":null,"intensity":null,"time_of_day":null,"date":"today","missing_detail":null,"clarification_question":null}
+
+RECOMMEND_WORKOUT intent:
+• Use intent "recommend_workout" when the user asks what workout/exercise to do tomorrow, next, or suggests a training plan.
+• Examples: "what should I do tomorrow?", "suggest a workout", "what exercise for tomorrow?", "kal kya karna chahiye?", "aavti kal exercise suchavjo", "mane workout suggest karo", "recommend a workout plan".
 
 EXERCISE EXTRACTION RULES (most important — always fill these fields):
 • exercise_query = English name of the exercise (e.g. "jogging", "squats", "cycling")
@@ -1136,6 +1141,17 @@ class LLMService:
         profile_kw = ["my profile", "mera profile", "profile dikhao", "my stats", "my details"]
         if any(kw in msg for kw in profile_kw):
             return LLMParseResult(intent=Intent.GET_PROFILE, raw_response="fallback", success=True)
+
+        # Recommend-workout keywords (check before summary so "workout plan" doesn't bleed)
+        _workout_rec_kw = [
+            "recommend", "suggest a workout", "suggest workout", "workout suggest",
+            "what should i do tomorrow", "what exercise tomorrow", "exercise tomorrow",
+            "kal kya karna", "kal kya exercise", "workout plan", "training plan",
+            "aavti kal exercise", "kal exercise suchav", "mane workout", "workout suchav",
+            "next workout", "workout for tomorrow", "exercise for tomorrow",
+        ]
+        if any(kw in msg for kw in _workout_rec_kw):
+            return LLMParseResult(intent=Intent.RECOMMEND_WORKOUT, raw_response="fallback", success=True)
 
         # Summary keywords
         summary_kw = ["summary", "aaj ka", "today summary", "dikhao", "report",
