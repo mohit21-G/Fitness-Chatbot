@@ -68,6 +68,7 @@ async def startup_event():
                 "diet_type": "non_veg",
                 "target_weight_kg": None,
                 "medical_conditions": None,
+                "custom_calorie_goal": None,
             })
         except Exception:
             pass  # Already exists or index conflict — safe to ignore
@@ -466,6 +467,7 @@ async def get_calorie_target(user_id: str, db=Depends(get_db)):
         protein_target_g=target.protein_target_g, carbs_target_g=target.carbs_target_g,
         fat_target_g=target.fat_target_g, bmr_formula=target.bmr_formula,
         tdee_multiplier=target.tdee_multiplier, calorie_adjustment=target.calorie_adjustment,
+        custom_calorie_goal=user.get("custom_calorie_goal"),
     )
 
 

@@ -536,6 +536,16 @@ async function showProfile() {
 // BMR/TDEE/targets from the saved values.
 function renderProfileForm(p, t) {
   const body = $('#profile-body');
+  // Show the computed TDEE target as the placeholder suggestion for the custom goal
+  const computedTarget = t && t.tdee ? Math.round(t.tdee + (
+    p.fitness_goal === 'lose_weight' ? -500 :
+    p.fitness_goal === 'gain_muscle' ? 300 :
+    p.fitness_goal === 'gain_weight' ? 500 : 0
+  )) : 2000;
+  const customGoalVal = (p.custom_calorie_goal != null && p.custom_calorie_goal > 0)
+    ? p.custom_calorie_goal : '';
+  const isCustomActive = customGoalVal !== '';
+
   body.innerHTML = `
     <form id="profile-form" class="profile-grid">
       <div class="profile-item"><label>Name</label>
@@ -555,13 +565,32 @@ function renderProfileForm(p, t) {
       <div class="profile-item"><label>Diet</label>
         <select name="diet_type">${_optionsHtml('diet_type', p.diet_type)}</select></div>
     </form>
+
+    <div style="margin-top:1rem;border-top:1px solid var(--border,#e0e0e0);padding-top:1rem">
+      <h4 style="margin-bottom:0.4rem">Daily Calorie Goal</h4>
+      <p style="font-size:0.83rem;color:var(--text-muted,#666);margin:0 0 0.6rem">
+        Leave blank to use your auto-computed target (${computedTarget} kcal based on your profile).
+        Enter your own value to override it everywhere.
+      </p>
+      <div style="display:flex;align-items:center;gap:0.5rem;flex-wrap:wrap">
+        <input id="custom-calorie-input" type="number" name="custom_calorie_goal"
+          min="500" max="10000" step="50"
+          value="${escapeAttr(String(customGoalVal))}"
+          placeholder="e.g. 2000"
+          style="width:120px;padding:0.35rem 0.5rem;border:1px solid var(--border,#ccc);border-radius:6px;font-size:0.95rem">
+        <span style="font-size:0.9rem;color:var(--text-muted,#666)">kcal / day</span>
+        ${isCustomActive ? `<button type="button" id="clear-custom-goal" style="font-size:0.8rem;padding:0.25rem 0.6rem;border:1px solid var(--border,#ccc);border-radius:5px;background:none;cursor:pointer;color:var(--text-muted,#666)">✕ Clear (use auto)</button>` : ''}
+      </div>
+      ${isCustomActive ? `<div style="margin-top:0.4rem;font-size:0.82rem;color:var(--success,#2e7d32)">✅ Custom goal active: <strong>${customGoalVal} kcal</strong></div>` : ''}
+    </div>
+
     <div id="profile-targets">
       ${t && t.bmr ? `
       <div style="margin-top:1rem">
         <h4 style="margin-bottom:0.5rem">Calorie Targets</h4>
         <div class="summary-row"><span>BMR</span><span>${t.bmr.toFixed(0)} kcal</span></div>
         <div class="summary-row"><span>TDEE</span><span>${t.tdee.toFixed(0)} kcal</span></div>
-        <div class="summary-row highlight"><span>Daily Target</span><span>${t.calorie_target.toFixed(0)} kcal</span></div>
+        <div class="summary-row highlight"><span>Daily Target ${isCustomActive ? '(custom)' : '(auto)'}</span><span>${t.calorie_target.toFixed(0)} kcal</span></div>
       </div>` : ''}
     </div>
     <div style="margin-top:1rem;display:flex;gap:0.5rem;align-items:center">
@@ -571,6 +600,13 @@ function renderProfileForm(p, t) {
 
   const saveBtn = $('#profile-save-btn');
   if (saveBtn) saveBtn.addEventListener('click', saveProfile);
+
+  // Clear custom goal button
+  const clearBtn = $('#clear-custom-goal');
+  if (clearBtn) clearBtn.addEventListener('click', () => {
+    const inp = $('#custom-calorie-input');
+    if (inp) inp.value = '';
+  });
 }
 
 async function saveProfile() {
@@ -589,6 +625,20 @@ async function saveProfile() {
     fitness_goal: fd.get('fitness_goal'),
     diet_type: fd.get('diet_type'),
   };
+
+  // Custom calorie goal — include explicitly so the server can clear it (null) or set it
+  const rawCustom = (fd.get('custom_calorie_goal') || '').trim();
+  if (rawCustom === '') {
+    payload.custom_calorie_goal = null;   // explicitly clear any saved custom goal
+  } else {
+    const parsed = parseFloat(rawCustom);
+    if (isNaN(parsed) || parsed < 500 || parsed > 10000) {
+      status.textContent = 'Custom calorie goal must be between 500 and 10 000 kcal';
+      status.style.color = 'var(--error)';
+      return;
+    }
+    payload.custom_calorie_goal = parsed;
+  }
 
   // Basic client-side validation against backend bounds.
   if (!payload.name) { status.textContent = 'Name is required'; status.style.color = 'var(--error)'; return; }

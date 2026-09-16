@@ -75,6 +75,10 @@ class UserProfileUpdate(BaseModel):
     diet_type: Optional[DietType] = None
     target_weight_kg: Optional[float] = Field(None, ge=20, le=500)
     medical_conditions: Optional[str] = None
+    # Custom calorie goal: if set (>= 500), overrides the computed TDEE-based
+    # target everywhere (summary, recommendations, workout engine).
+    # Pass null/None to revert to the auto-computed value.
+    custom_calorie_goal: Optional[float] = Field(None, ge=500, le=10000)
 
 
 class UserProfileResponse(BaseModel):
@@ -91,6 +95,7 @@ class UserProfileResponse(BaseModel):
     diet_type: str
     target_weight_kg: Optional[float] = None
     medical_conditions: Optional[str] = None
+    custom_calorie_goal: Optional[float] = None
     created_at: Optional[datetime] = None
     updated_at: Optional[datetime] = None
 
@@ -114,7 +119,7 @@ class CalorieTargetResponse(BaseModel):
     # Calculations
     bmr: float                   # Basal Metabolic Rate (kcal/day)
     tdee: float                  # Total Daily Energy Expenditure
-    calorie_target: float        # Goal-adjusted daily calories
+    calorie_target: float        # Goal-adjusted daily calories (or custom override)
     protein_target_g: float      # Recommended daily protein
     carbs_target_g: float        # Recommended daily carbs
     fat_target_g: float          # Recommended daily fat
@@ -122,7 +127,10 @@ class CalorieTargetResponse(BaseModel):
     # Explanation
     bmr_formula: str             # "Mifflin-St Jeor"
     tdee_multiplier: float       # Activity multiplier used
-    calorie_adjustment: str      # e.g. "-500 kcal (lose weight)"
+    calorie_adjustment: str      # e.g. "-500 kcal (lose weight)" or "Custom goal: 2000 kcal/day"
+
+    # Custom override (None = using auto-computed target)
+    custom_calorie_goal: Optional[float] = None
 
 
 # ============================================================================

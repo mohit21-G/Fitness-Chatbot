@@ -144,10 +144,31 @@ def compute_full_target(user: dict) -> CalorieTarget:
     """
     Full computation pipeline from a user document (dict).
     Returns a CalorieTarget dataclass with all values.
+
+    Custom calorie goal override
+    ----------------------------
+    If the user document contains a ``custom_calorie_goal`` field with a
+    positive numeric value, that value is used as the calorie_target instead
+    of the goal-adjusted TDEE.  BMR and TDEE are still computed (and returned)
+    for reference, but all macro targets are scaled to the custom goal so that
+    every downstream consumer (summary, recommendations, workout engine) sees a
+    consistent picture.
     """
     bmr = calculate_bmr(user["gender"], user["weight_kg"], user["height_cm"], user["age"])
     tdee, multiplier, tdee_desc = calculate_tdee(bmr, user["activity_level"])
     calorie_target, adjustment_desc = calculate_calorie_target(tdee, user["fitness_goal"])
+
+    # --- Custom calorie goal override ---
+    custom = user.get("custom_calorie_goal")
+    if custom is not None:
+        try:
+            custom_f = float(custom)
+            if custom_f >= 500:          # sanity floor — ignore obviously wrong values
+                calorie_target = round(custom_f, 1)
+                adjustment_desc = f"Custom goal: {custom_f:.0f} kcal/day"
+        except (TypeError, ValueError):
+            pass  # malformed value — fall back to computed target silently
+
     protein_g, carbs_g, fat_g = calculate_macro_targets(calorie_target, user["fitness_goal"])
 
     return CalorieTarget(
@@ -167,21 +188,7 @@ def compute_full_target(user: dict) -> CalorieTarget:
 def compute_full_target_dict(user: dict) -> CalorieTarget:
     """
     Same as compute_full_target but accepts a dict (MongoDB document).
+    Delegates entirely to compute_full_target so custom_calorie_goal is
+    respected in both call sites.
     """
-    bmr = calculate_bmr(user["gender"], user["weight_kg"], user["height_cm"], user["age"])
-    tdee, multiplier, tdee_desc = calculate_tdee(bmr, user["activity_level"])
-    calorie_target, adjustment_desc = calculate_calorie_target(tdee, user["fitness_goal"])
-    protein_g, carbs_g, fat_g = calculate_macro_targets(calorie_target, user["fitness_goal"])
-
-    return CalorieTarget(
-        bmr=bmr,
-        tdee=tdee,
-        calorie_target=calorie_target,
-        protein_target_g=protein_g,
-        carbs_target_g=carbs_g,
-        fat_target_g=fat_g,
-        bmr_formula="Mifflin-St Jeor",
-        tdee_multiplier=multiplier,
-        tdee_description=tdee_desc,
-        calorie_adjustment=adjustment_desc,
-    )
+    return compute_full_target(user)

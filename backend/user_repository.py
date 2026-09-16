@@ -61,15 +61,28 @@ class UserRepository:
         return await self.get_by_id(data["user_id"])
 
     async def update(self, user_id: str, data: dict) -> Optional[dict]:
-        """Partial update — only modifies provided fields."""
+        """Partial update — only modifies provided fields.
+
+        Special case: ``custom_calorie_goal`` may be explicitly set to None to
+        clear a previously saved custom target (revert to auto-computed TDEE).
+        All other fields follow the usual "skip None" rule so callers can
+        send only the fields they want to change.
+        """
         user = await self.get_by_id(user_id)
         if not user:
             return None
 
         update_fields = {}
         for key, value in data.items():
-            if value is not None and key not in ("user_id",):
-                # Handle enum values
+            if key == "user_id":
+                # user_id is the stable unique identifier — never overwrite it
+                continue
+            if key == "custom_calorie_goal":
+                # Explicit None = clear the custom goal; keep other None fields as "not provided"
+                if hasattr(value, "value"):
+                    value = value.value
+                update_fields[key] = value   # None is intentional here
+            elif value is not None:
                 if hasattr(value, "value"):
                     value = value.value
                 update_fields[key] = value
