@@ -663,6 +663,22 @@ async function saveProfile() {
   const st = $('#profile-save-status');
   if (st) { st.textContent = '✓ Saved — targets updated'; st.style.color = 'var(--success, #2e7d32)'; }
   showToast('success', '✓ Profile saved');
+
+  // ── Refresh open summary modal immediately ────────────────────────────────
+  // If the summary modal is visible, reload it so the new calorie target shows.
+  if ($('#modal-summary') && !$('#modal-summary').classList.contains('hidden')) {
+    showSummary();
+  }
+
+  // ── Inject a fresh greeting into the chat ────────────────────────────────
+  // The greeting bubble already in the chat history was rendered with the old
+  // name and calorie target.  After a profile save we post a "hello" to the
+  // backend so the new values surface immediately without requiring a page reload.
+  const greetRes = await api.sendMessage('hello');
+  if (greetRes.ok) {
+    addBotMessage(greetRes.data);
+    scrollToBottom();
+  }
 }
 
 // ============================================================
