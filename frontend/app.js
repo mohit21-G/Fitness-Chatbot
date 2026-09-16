@@ -24,51 +24,136 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 });
 
+// ── Tab switcher (called from HTML onclick) ──────────────────
+function switchTab(tab) {
+  const isSignin = tab === 'signin';
+  document.getElementById('tab-signin').classList.toggle('active',  isSignin);
+  document.getElementById('tab-signup').classList.toggle('active', !isSignin);
+  document.getElementById('form-signin').classList.toggle('hidden', !isSignin);
+  document.getElementById('form-signup').classList.toggle('hidden',  isSignin);
+  document.getElementById('signin-error').textContent = '';
+  document.getElementById('signup-error').textContent = '';
+}
+window.switchTab = switchTab;
+
 function showLogin() {
   $('#screen-login').classList.add('active');
   $('#screen-chat').classList.remove('active');
+  _bindAuthEvents();
+}
 
-  const btn = $('#btn-login');
-  const err = $('#login-error');
+let _authBound = false;
+function _bindAuthEvents() {
+  if (_authBound) return;
+  _authBound = true;
 
-  // Allow pressing Enter to submit
-  ['login-username', 'login-password'].forEach(id => {
-    const el = document.getElementById(id);
-    if (el) el.addEventListener('keydown', (e) => { if (e.key === 'Enter') btn.click(); });
+  // ── Sign In ──────────────────────────────────────────────
+  const siBtn = $('#btn-signin');
+  const siErr = $('#signin-error');
+  ['si-username','si-password'].forEach(id => {
+    document.getElementById(id)?.addEventListener('keydown', e => {
+      if (e.key === 'Enter') siBtn.click();
+    });
   });
 
-  btn.onclick = async () => {
-    const username = ($('#login-username').value || '').trim();
-    const password = ($('#login-password').value || '').trim();
-    err.textContent = '';
+  siBtn.addEventListener('click', async () => {
+    const username = (document.getElementById('si-username').value || '').trim();
+    const password = (document.getElementById('si-password').value || '').trim();
+    siErr.textContent = '';
+    if (!username) { siErr.textContent = 'Please enter your username.'; return; }
+    if (!password) { siErr.textContent = 'Please enter your password.'; return; }
 
-    if (username.length < 2) { err.textContent = 'Username must be at least 2 characters.'; return; }
-    if (password.length < 4) { err.textContent = 'Password must be at least 4 characters.'; return; }
-
-    btn.disabled = true;
-    btn.textContent = 'Please wait…';
-
+    siBtn.disabled = true; siBtn.textContent = 'Signing in…';
     const res = await api.login(username, password);
-    btn.disabled = false;
-    btn.textContent = 'Sign In / Register';
+    siBtn.disabled = false; siBtn.textContent = 'Sign In';
 
     if (!res.ok) {
-      err.textContent = res.data?.detail || 'Login failed — please try again.';
+      siErr.textContent = res.data?.detail || 'Sign in failed. Check username / password.';
+      return;
+    }
+    const d = res.data;
+    // If this username exists but onboarding wasn't done, tell the user to sign up
+    if (!d.onboarding_complete) {
+      siErr.textContent = 'Profile incomplete — please use Sign Up to finish setting up your account.';
+      switchTab('signup');
+      document.getElementById('su-username').value = username;
+      document.getElementById('su-password').value = password;
+      return;
+    }
+    session.set({ user_id: d.user_id, name: d.name, username: d.username });
+    enterChat();
+  });
+
+  // ── Sign Up ──────────────────────────────────────────────
+  const suBtn = $('#btn-signup');
+  const suErr = $('#signup-error');
+
+  suBtn.addEventListener('click', async () => {
+    suErr.textContent = '';
+
+    const g = id => (document.getElementById(id)?.value || '').trim();
+    const username  = g('su-username');
+    const password  = g('su-password');
+    const name      = g('su-name');
+    const age       = parseInt(g('su-age'), 10);
+    const gender    = g('su-gender');
+    const height_cm = parseFloat(g('su-height'));
+    const weight_kg = parseFloat(g('su-weight'));
+    const activity  = g('su-activity');
+    const goal      = g('su-goal');
+    const diet      = g('su-diet');
+    const calRaw    = g('su-calorie');
+    const calorie   = calRaw ? parseFloat(calRaw) : null;
+
+    // Validation
+    if (username.length < 2)  { suErr.textContent = 'Username must be at least 2 characters.'; return; }
+    if (password.length < 4)  { suErr.textContent = 'Password must be at least 4 characters.'; return; }
+    if (!name)                 { suErr.textContent = 'Full name is required.'; return; }
+    if (!(age >= 10 && age <= 120))        { suErr.textContent = 'Age must be between 10 and 120.'; return; }
+    if (!gender)               { suErr.textContent = 'Please select gender.'; return; }
+    if (!(height_cm >= 50 && height_cm <= 300)) { suErr.textContent = 'Height must be 50–300 cm.'; return; }
+    if (!(weight_kg >= 20 && weight_kg <= 500)) { suErr.textContent = 'Weight must be 20–500 kg.'; return; }
+    if (!activity)             { suErr.textContent = 'Please select activity level.'; return; }
+    if (!goal)                 { suErr.textContent = 'Please select fitness goal.'; return; }
+    if (!diet)                 { suErr.textContent = 'Please select diet type.'; return; }
+    if (calorie !== null && (isNaN(calorie) || calorie < 500 || calorie > 10000)) {
+      suErr.textContent = 'Calorie goal must be between 500 and 10 000.'; return;
+    }
+
+    suBtn.disabled = true; suBtn.textContent = 'Creating account…';
+
+    // Step 1: create / login the account
+    const loginRes = await api.login(username, password);
+    if (!loginRes.ok) {
+      suBtn.disabled = false; suBtn.textContent = 'Create Account & Start';
+      suErr.textContent = loginRes.data?.detail || 'Could not create account.';
+      return;
+    }
+    const d = loginRes.data;
+    session.set({ user_id: d.user_id, name: name, username: d.username });
+
+    // Step 2: save full profile via onboard endpoint (sets onboarding_complete=true)
+    const profileRes = await api.completeOnboarding({
+      name, age, gender, height_cm, weight_kg,
+      activity_level: activity, fitness_goal: goal, diet_type: diet,
+      custom_calorie_goal: calorie,
+    });
+
+    suBtn.disabled = false; suBtn.textContent = 'Create Account & Start';
+
+    if (!profileRes.ok) {
+      suErr.textContent = profileRes.data?.detail || 'Profile save failed — please try again.';
       return;
     }
 
-    const d = res.data;
-    // Save session
-    session.set({ user_id: d.user_id, name: d.name, username: d.username });
-
-    if (!d.onboarding_complete) {
-      // New user or incomplete profile — show wizard
-      enterChat();          // switch screen first so chat bg is visible
-      startOnboarding(d);
-    } else {
-      enterChat();
+    // Update session name from saved profile
+    if (profileRes.data?.name) {
+      const s = session.get();
+      session.set({ ...s, name: profileRes.data.name });
     }
-  };
+
+    enterChat();
+  });
 }
 
 function enterChat() {
@@ -82,217 +167,6 @@ function enterChat() {
 function updateUserBadge() {
   const badge = $('#user-badge');
   if (badge) badge.textContent = '👤 ' + session.name();
-}
-
-// ============================================================
-// ONBOARDING WIZARD
-// ============================================================
-
-const ONBOARD_STEPS = [
-  {
-    id: 'basics',
-    title: '📋 Basic Info',
-    fields: [
-      { name: 'name',       label: 'Display Name',  type: 'text',   required: true,  min: 1 },
-      { name: 'age',        label: 'Age',            type: 'number', required: true,  min: 10, max: 120 },
-      { name: 'gender',     label: 'Gender',         type: 'select', options: ['male','female'], required: true },
-    ],
-  },
-  {
-    id: 'body',
-    title: '⚖️ Body Measurements',
-    fields: [
-      { name: 'height_cm', label: 'Height (cm)', type: 'number', required: true, min: 50,  max: 300, step: 0.1 },
-      { name: 'weight_kg', label: 'Weight (kg)', type: 'number', required: true, min: 20,  max: 500, step: 0.1 },
-    ],
-  },
-  {
-    id: 'goals',
-    title: '🎯 Goals & Activity',
-    fields: [
-      { name: 'activity_level', label: 'Activity Level', type: 'select',
-        options: ['sedentary','light','moderate','active','very_active'], required: true },
-      { name: 'fitness_goal',   label: 'Fitness Goal',   type: 'select',
-        options: ['lose_weight','maintain','gain_muscle','gain_weight'], required: true },
-      { name: 'diet_type',      label: 'Diet Type',      type: 'select',
-        options: ['veg','non_veg','eggetarian','vegan'], required: true },
-    ],
-  },
-  {
-    id: 'calorie',
-    title: '🔥 Daily Calorie Goal',
-    fields: [
-      { name: 'custom_calorie_goal', label: 'Daily Calorie Target (kcal)',
-        type: 'number', required: true, min: 500, max: 10000, step: 50,
-        hint: 'Enter your daily calorie goal. Suggestion: 2000 kcal. You can change this anytime.' },
-    ],
-  },
-];
-
-let _onboardData   = {};  // accumulated across steps
-let _onboardStep   = 0;
-
-function startOnboarding(loginData) {
-  _onboardData  = {};
-  _onboardStep  = 0;
-
-  // Pre-fill name from username
-  if (loginData?.name) _onboardData.name = loginData.name;
-
-  $('#modal-onboard').classList.remove('hidden');
-  renderOnboardStep();
-}
-
-function renderOnboardStep() {
-  const step  = ONBOARD_STEPS[_onboardStep];
-  const total = ONBOARD_STEPS.length;
-  const body  = $('#onboard-body');
-  const title = $('#onboard-title');
-  title.textContent = step.title;
-
-  let html = `<div style="font-size:0.8rem;color:var(--text-muted);margin-bottom:1rem">
-    Step ${_onboardStep + 1} of ${total}</div>
-  <div style="display:flex;flex-direction:column;gap:0.75rem" id="onboard-fields">`;
-
-  for (const f of step.fields) {
-    const val = _onboardData[f.name] ?? '';
-    html += `<div>
-      <label style="font-size:0.8rem;color:var(--text-muted);display:block;margin-bottom:0.3rem">${f.label}</label>`;
-    if (f.type === 'select') {
-      html += `<select name="${f.name}" style="width:100%;padding:0.7rem;border:1px solid var(--border);border-radius:8px;font-size:0.95rem">
-        <option value="">— Select —</option>`;
-      for (const o of (f.options || [])) {
-        html += `<option value="${o}"${o === val ? ' selected' : ''}>${o.replace(/_/g, ' ')}</option>`;
-      }
-      html += `</select>`;
-    } else {
-      html += `<input type="${f.type}" name="${f.name}"
-        value="${escapeAttr(String(val))}"
-        ${f.min  !== undefined ? `min="${f.min}"` : ''}
-        ${f.max  !== undefined ? `max="${f.max}"` : ''}
-        ${f.step !== undefined ? `step="${f.step}"` : ''}
-        style="width:100%;padding:0.7rem;border:1px solid var(--border);border-radius:8px;font-size:0.95rem"
-        placeholder="${f.label}">`;
-    }
-    if (f.hint) {
-      html += `<p style="font-size:0.78rem;color:var(--text-muted);margin-top:0.25rem">${escapeHtml(f.hint)}</p>`;
-    }
-    html += `</div>`;
-  }
-
-  html += `</div>
-  <div id="onboard-error" style="color:var(--error);font-size:0.84rem;min-height:1.2rem;margin-top:0.5rem"></div>
-  <div style="display:flex;gap:0.5rem;margin-top:1rem">`;
-
-  if (_onboardStep > 0) {
-    html += `<button id="onboard-back" class="btn-primary" style="background:var(--bg);color:var(--text);border:1px solid var(--border)">← Back</button>`;
-  }
-  html += `<button id="onboard-next" class="btn-primary" style="flex:1">
-    ${_onboardStep === total - 1 ? '✓ Finish Setup' : 'Next →'}
-  </button></div>`;
-
-  body.innerHTML = html;
-
-  const backBtn = $('#onboard-back');
-  if (backBtn) backBtn.addEventListener('click', () => {
-    _collectOnboardStep();   // save current values even going back
-    _onboardStep--;
-    renderOnboardStep();
-  });
-
-  $('#onboard-next').addEventListener('click', onboardNext);
-}
-
-function _collectOnboardStep() {
-  const step = ONBOARD_STEPS[_onboardStep];
-  const fields = $('#onboard-fields');
-  if (!fields) return;
-  for (const f of step.fields) {
-    const el = fields.querySelector(`[name="${f.name}"]`);
-    if (!el) continue;
-    _onboardData[f.name] = el.value;
-  }
-}
-
-async function onboardNext() {
-  const step   = ONBOARD_STEPS[_onboardStep];
-  const errEl  = $('#onboard-error');
-  const fields = $('#onboard-fields');
-  errEl.textContent = '';
-
-  // Collect & validate
-  for (const f of step.fields) {
-    const el  = fields.querySelector(`[name="${f.name}"]`);
-    const raw = (el?.value ?? '').trim();
-
-    if (f.required && raw === '') {
-      errEl.textContent = `${f.label} is required.`;
-      el?.focus();
-      return;
-    }
-    if (f.type === 'number' && raw !== '') {
-      const n = parseFloat(raw);
-      if (isNaN(n)) { errEl.textContent = `${f.label} must be a number.`; el?.focus(); return; }
-      if (f.min !== undefined && n < f.min) {
-        errEl.textContent = `${f.label} must be at least ${f.min}.`; el?.focus(); return;
-      }
-      if (f.max !== undefined && n > f.max) {
-        errEl.textContent = `${f.label} must be at most ${f.max}.`; el?.focus(); return;
-      }
-      _onboardData[f.name] = n;
-    } else {
-      _onboardData[f.name] = raw;
-    }
-  }
-
-  if (_onboardStep < ONBOARD_STEPS.length - 1) {
-    _onboardStep++;
-    renderOnboardStep();
-    return;
-  }
-
-  // Final step — save to backend
-  const btn = $('#onboard-next');
-  btn.disabled = true;
-  btn.textContent = 'Saving…';
-
-  // Build clean payload
-  const payload = {
-    name:               _onboardData.name        || session.name(),
-    age:                parseInt(_onboardData.age, 10),
-    gender:             _onboardData.gender,
-    height_cm:          parseFloat(_onboardData.height_cm),
-    weight_kg:          parseFloat(_onboardData.weight_kg),
-    activity_level:     _onboardData.activity_level,
-    fitness_goal:       _onboardData.fitness_goal,
-    diet_type:          _onboardData.diet_type,
-    custom_calorie_goal: parseFloat(_onboardData.custom_calorie_goal) || null,
-  };
-
-  const res = await api.completeOnboarding(payload);
-  if (!res.ok) {
-    const errEl2 = $('#onboard-error');
-    if (errEl2) errEl2.textContent = res.data?.detail || 'Save failed — please try again.';
-    btn.disabled = false;
-    btn.textContent = '✓ Finish Setup';
-    return;
-  }
-
-  // Update session name if changed
-  const saved = res.data;
-  if (saved?.name) {
-    const s = session.get();
-    session.set({ ...s, name: saved.name });
-    updateUserBadge();
-  }
-
-  $('#modal-onboard').classList.add('hidden');
-  showToast('success', '✓ Profile set up — let\'s go!');
-
-  // Clear chat and send greeting with fresh context
-  const cm = chatMessages();
-  if (cm) cm.innerHTML = '';
-  loadGreeting();
 }
 
 // ============================================================
@@ -334,6 +208,7 @@ async function loadGreeting() {
 function handleLogout() {
   session.clear();
   window._chatEventsBound = false;
+  _authBound = false;
   pendingAction = null;
   const cm = chatMessages();
   if (cm) cm.innerHTML = '';

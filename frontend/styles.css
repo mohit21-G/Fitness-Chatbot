@@ -46,7 +46,9 @@ body {
   border-radius: 16px;
   padding: 2rem;
   width: 90%;
-  max-width: 400px;
+  max-width: 420px;
+  max-height: 92vh;
+  overflow-y: auto;
   box-shadow: 0 20px 60px rgba(0,0,0,0.2);
 }
 .login-header { text-align: center; margin-bottom: 1.5rem; }
@@ -64,11 +66,12 @@ body {
 .auth-form.hidden { display: none; }
 .auth-form input, .auth-form select {
   padding: 0.75rem 1rem; border: 1px solid var(--border); border-radius: 8px;
-  font-size: 0.95rem; outline: none; transition: border 0.2s;
+  font-size: 0.95rem; outline: none; transition: border 0.2s; width: 100%;
+  background: var(--surface); color: var(--text);
 }
 .auth-form input:focus, .auth-form select:focus { border-color: var(--primary); }
 .form-row { display: flex; gap: 0.5rem; }
-.form-row input, .form-row select { flex: 1; }
+.form-row input, .form-row select { flex: 1; min-width: 0; }
 
 .btn-primary {
   padding: 0.8rem; background: var(--primary); color: white;

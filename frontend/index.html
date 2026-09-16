@@ -13,29 +13,79 @@
     <div class="login-container">
       <div class="login-header">
         <h1>🏋️ Fitness AI</h1>
-        <p>Your personal health & nutrition assistant</p>
+        <p>Your personal health &amp; nutrition assistant</p>
       </div>
 
-      <div class="auth-form" id="auth-form">
-        <input type="text" id="login-username" placeholder="Username" autocomplete="username" maxlength="40">
-        <input type="password" id="login-password" placeholder="Password (min 4 chars)" autocomplete="current-password" maxlength="128">
-        <button class="btn-primary" id="btn-login">Sign In / Register</button>
-        <p style="font-size:0.8rem;color:var(--text-muted);text-align:center;margin-top:0.25rem">
-          New here? Just enter a username &amp; password to create your account.
+      <!-- Tabs -->
+      <div class="login-tabs">
+        <button class="tab-btn active" id="tab-signin" onclick="switchTab('signin')">Sign In</button>
+        <button class="tab-btn"        id="tab-signup" onclick="switchTab('signup')">Sign Up</button>
+      </div>
+
+      <!-- ── SIGN IN ── -->
+      <div class="auth-form" id="form-signin">
+        <input type="text"     id="si-username" placeholder="Username"         autocomplete="username"         maxlength="40">
+        <input type="password" id="si-password" placeholder="Password"         autocomplete="current-password" maxlength="128">
+        <button class="btn-primary" id="btn-signin">Sign In</button>
+        <div class="error-msg" id="signin-error"></div>
+      </div>
+
+      <!-- ── SIGN UP ── -->
+      <div class="auth-form hidden" id="form-signup">
+        <p style="font-size:0.82rem;color:var(--text-muted);margin-bottom:0.25rem;text-align:center">
+          Fill in your details — everything is saved to your account.
         </p>
-        <div class="error-msg" id="login-error"></div>
-      </div>
-    </div>
-  </div>
 
-  <!-- ============ ONBOARDING WIZARD ============ -->
-  <div class="modal hidden" id="modal-onboard">
-    <div class="modal-content" style="max-width:480px">
-      <div class="modal-header">
-        <h3 id="onboard-title">👋 Welcome! Let's set up your profile</h3>
-      </div>
-      <div class="modal-body" id="onboard-body">
-        <!-- steps rendered by JS -->
+        <!-- Account -->
+        <input type="text"     id="su-username"  placeholder="Choose a username (e.g. mohit)" autocomplete="username"         maxlength="40">
+        <input type="password" id="su-password"  placeholder="Choose a password (min 4 chars)" autocomplete="new-password"    maxlength="128">
+
+        <!-- Personal -->
+        <div class="form-row">
+          <input type="text"   id="su-name"     placeholder="Full name (e.g. Mohit Gangani)" style="flex:2">
+          <input type="number" id="su-age"      placeholder="Age" min="10" max="120">
+        </div>
+        <div class="form-row">
+          <select id="su-gender">
+            <option value="">Gender</option>
+            <option value="male">Male</option>
+            <option value="female">Female</option>
+          </select>
+          <input type="number" id="su-height" placeholder="Height cm" min="50" max="300" step="0.1">
+          <input type="number" id="su-weight" placeholder="Weight kg" min="20" max="500" step="0.1">
+        </div>
+
+        <!-- Fitness -->
+        <div class="form-row">
+          <select id="su-activity">
+            <option value="">Activity level</option>
+            <option value="sedentary">Sedentary</option>
+            <option value="light">Light</option>
+            <option value="moderate">Moderate</option>
+            <option value="active">Active</option>
+            <option value="very_active">Very Active</option>
+          </select>
+          <select id="su-goal">
+            <option value="">Fitness goal</option>
+            <option value="lose_weight">Lose Weight</option>
+            <option value="maintain">Maintain</option>
+            <option value="gain_muscle">Gain Muscle</option>
+            <option value="gain_weight">Gain Weight</option>
+          </select>
+        </div>
+        <div class="form-row">
+          <select id="su-diet">
+            <option value="">Diet type</option>
+            <option value="veg">Veg</option>
+            <option value="non_veg">Non-Veg</option>
+            <option value="eggetarian">Eggetarian</option>
+            <option value="vegan">Vegan</option>
+          </select>
+          <input type="number" id="su-calorie" placeholder="Daily calorie goal (e.g. 2000)" min="500" max="10000" step="50">
+        </div>
+
+        <button class="btn-primary" id="btn-signup">Create Account &amp; Start</button>
+        <div class="error-msg" id="signup-error"></div>
       </div>
     </div>
   </div>
