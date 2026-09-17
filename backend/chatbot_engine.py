@@ -1113,6 +1113,12 @@ class ChatbotEngine:
         if meal_type == "snack" and local_meal == "dinner":
             meal_type = "dinner"
 
+        # If no meal was detected from this message, reuse the meal from the most
+        # recent food log in this session (within 30 min) so the bot doesn't ask
+        # the same meal question repeatedly when logging several foods in a row.
+        if not meal_type:
+            meal_type = await self.memory.get_last_meal(self.user["user_id"])
+
         q_obj = await self._build_food_item_queue_object(food_query, original_message or food_query, shared_meal_type=meal_type)
         if not q_obj:
             # Nothing matched the DB or a valid external source → reject.

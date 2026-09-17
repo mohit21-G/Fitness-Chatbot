@@ -94,6 +94,35 @@ class ConversationStore:
                     return name
         return None
 
+    async def get_last_meal(self, user_id: str) -> Optional[str]:
+        """Return the meal type from the most-recent food log assistant message.
+
+        Used to pre-populate shared_meal_type for the next food log so the bot
+        doesn't ask meal type again when the user logs several foods in a row
+        within the same session.  Returns None when no recent meal is found or
+        when more than 30 minutes have passed (stale context).
+        """
+        from datetime import datetime, timezone, timedelta
+        cutoff = datetime.now(timezone.utc) - timedelta(minutes=30)
+        cursor = self.collection.find(
+            {"user_id": user_id, "role": "assistant",
+             "created_at": {"$gte": cutoff}},
+            sort=[("created_at", -1)]
+        ).limit(10)
+        async for doc in cursor:
+            intent = doc.get("intent", "")
+            if "log_food" not in intent and "food_logged" not in intent:
+                continue
+            content = doc.get("content", "")
+            # Response templates mention the meal name in the log line, e.g.
+            # "Logged 1 roti for **Breakfast**" or "Breakfast ma logged"
+            import re as _re
+            for meal in ("breakfast", "lunch", "dinner", "snack", "morning",
+                         "evening", "afternoon"):
+                if meal in content.lower():
+                    return meal
+        return None
+
     async def clear_history(self, user_id: str):
         await self.collection.delete_many({"user_id": user_id})
 

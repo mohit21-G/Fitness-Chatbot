@@ -370,8 +370,10 @@ class NutritionCalculator:
         grams = self._resolve_grams(food, quantity)
 
         # ── Step 2: Base nutrition ratio ───────────────────────────────
-        # All DB macros are per serving_size_g
-        ratio = grams / food["serving_size_g"] if food["serving_size_g"] > 0 else 1.0
+        # All DB macros are stored per serving_size_g. Ratio = actual grams / serving.
+        serving = food["serving_size_g"] if food["serving_size_g"] > 0 else 100.0
+        ratio = grams / serving
+        base_calories = food["calories_kcal"] * ratio
 
         # ── Step 3: Variant multiplier ─────────────────────────────────
         variant_key = _normalize_variant(variant)
@@ -393,13 +395,13 @@ class NutritionCalculator:
             vm = VARIANT_MULTIPLIERS.get(variant_key, VARIANT_MULTIPLIERS["normal"])
 
         # ── Step 4: Compute final nutrition ────────────────────────────
-        calories = food["calories_kcal"] * ratio * vm.calorie_multiplier
+        calories = base_calories * vm.calorie_multiplier
         protein = food["protein_g"] * ratio
-        carbs = food["carbs_g"] * ratio
-        fat = food["fat_g"] * ratio * vm.fat_multiplier
-        fiber = food["fiber_g"] * ratio
-        sugar = (food["sugar_g"] * ratio) if food.get("sugar_g") is not None else None
-        sodium = (food["sodium_mg"] * ratio) if food.get("sodium_mg") is not None else None
+        carbs   = food["carbs_g"]   * ratio
+        fat     = food["fat_g"]     * ratio * vm.fat_multiplier
+        fiber   = food["fiber_g"]   * ratio
+        sugar   = (food["sugar_g"]   * ratio) if food.get("sugar_g")   is not None else None
+        sodium  = (food["sodium_mg"] * ratio) if food.get("sodium_mg") is not None else None
 
         # Build note
         notes = []
