@@ -345,6 +345,11 @@ _EXERCISE_NOISE_WORDS = {
     "kita", "kiti", "kite", "lagavya", "lagavyu", "lagaya",
     # particles
     "ne", "ka", "ki", "ke", "nu", "ni", "na", "da", "di", "de", "te",
+    # Gujarati/Hinglish connectors — "pn"/"pan"/"ane" = also/and/too
+    # These appear in follow-up sentences like "pn me 6 set marya" (also did 6 sets)
+    # and must NEVER be treated as exercise names.
+    "pn", "pan", "ane", "pn me", "pan me", "ane me",
+    "also", "too", "again", "more", "extra", "additional",
 }
 
 

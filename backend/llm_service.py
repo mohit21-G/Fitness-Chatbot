@@ -120,10 +120,12 @@ EXERCISE EXTRACTION RULES (most important — always fill these fields):
 • distance       = numeric distance value; distance_unit = "km"|"m"|"miles"
 • exercise_input = compact phrase combining exercise + amount, e.g. "jogging 30 minutes", "3 sets of 12 squats", "cycling 5 km"
 • missing_detail = "amount" ONLY when no reps/duration/distance/sets were given at all
+• CONNECTOR WORDS: "pn"/"pan"/"ane"/"and" in Gujarati/Hinglish are connectors meaning "also/and/too" — NEVER treat them as exercise or food names. "pn me 6 set marya" = also did 6 sets (of the previous exercise — set exercise_query to empty and sets=6). "what is the pn" = protein query → intent get_calories.
 
 FOOD EXTRACTION RULES:
 • foods array: list EVERY food mentioned, each as {"food_query":"...","quantity":"...","variant":null,"meal_type":"..."}
 • food_query: canonical English food name (fix typos/transliterations, keep the same dish)
+• Preparation words (bafela=boiled, phanagavela=soaked, bafeli=boiled, shekela=roasted in Gujarati) are VARIANTS, not food names. "bafela chana" → food_query="boiled chana", variant="boiled". "mag nu pani" → food_query="moong water".
 • quantity: exactly what the user said ("2 pieces", "1 bowl", "150g", "1 glass")
 • missing_detail: "quantity" when amount absent; "meal_type" when meal context absent and both are missing → use "quantity"
 • variant: cooking method only (ghee/fried/boiled/grilled/steamed/baked/oil/butter)

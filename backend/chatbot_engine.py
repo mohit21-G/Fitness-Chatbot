@@ -16,7 +16,7 @@ from food_repository import FoodRepositorySync
 from search_engine import FoodSearchEngine
 from quantity_parser import parse_quantity, ParsedQuantity
 from nutrition_calculator import NutritionCalculator
-from exercise_calculator import ExerciseSearcher, ExerciseCalculator, parse_exercise_input
+from exercise_calculator import ExerciseSearcher, ExerciseCalculator, parse_exercise_input, ParsedExerciseInput
 from daily_log_repository import DailyLogRepository, meal_sort_key
 from food_emoji import get_food_emoji, get_meal_emoji, get_exercise_emoji
 from workout_recommender import build_workout_recommendation, format_recommendation
@@ -1219,6 +1219,28 @@ class ChatbotEngine:
             return ChatResponse(message="I couldn't understand the exercise. Try again with name and duration.",
                                 intent=Intent.CLARIFICATION_NEEDED, success=True, language=self.lang)
 
+        # ── Connector-word fallback: "pn me 6 set marya" ──────────────────
+        # If the exercise_query is a known connector/filler word (pn, pan, ane)
+        # and an amount was detected, this is a follow-up log for the last
+        # exercise stored in conversation memory. Retrieve it.
+        _CONNECTOR_NOISE = {"pn", "pan", "ane", "also", "too", "again", "more"}
+        if ex_parsed.exercise_query.lower() in _CONNECTOR_NOISE and ex_parsed.amount:
+            last_ex_name = await self.memory.get_last_exercise(self.user["user_id"])
+            if last_ex_name:
+                ex_parsed = ParsedExerciseInput(
+                    exercise_query=last_ex_name,
+                    amount=ex_parsed.amount,
+                    unit=ex_parsed.unit,
+                    raw_input=exercise_input,
+                )
+            else:
+                return ChatResponse(
+                    message=get_response("what_exercise", self.lang) if hasattr(
+                        __builtins__, "get_response") else
+                    "Which exercise are you referring to? I couldn't find your previous activity.",
+                    intent=Intent.CLARIFICATION_NEEDED, success=True, language=self.lang,
+                )
+
         # Disallow food portion units / containers from being logged as exercises
         _FOOD_PORTION_UNITS = {
             "plate", "plates", "bowl", "bowls", "cup", "cups", "glass", "glasses",
@@ -2209,6 +2231,10 @@ class ChatbotEngine:
                 "bhurji", "sabji", "sabzi", "shaak", "shak", "ki", "ka", "ke", "nu", "ni",
                 "na", "with", "and", "of", "fresh", "homemade", "spicy",
                 "subji", "subzi", "wali", "wala", "vale",
+                # preparation words (English + Gujarati mapped forms)
+                "boiled", "steamed", "soaked", "baked",
+                # liquid/water suffix: "mag nu pani" → strip "pani" after nu-stripping
+                "pani", "water", "juice",
             }
             _tokens = [w for w in re.findall(r"[a-z]+", cleaned_query.lower())]
             _content = [w for w in _tokens if w not in _method_words]
@@ -3594,7 +3620,11 @@ class ChatbotEngine:
         # A macro/energy keyword must be present.
         macro_kw = ("calorie", "calories", "kcal", "protein", "carb", "carbs",
                     "carbohydrate", "fat", "fats", "fiber", "fibre", "sugar",
-                    "macros", "nutrition")
+                    "macros", "nutrition",
+                    # fitness abbreviations used in gym context
+                    " pn ",   # "pn" = protein in Gujarati gym slang
+                    " prot ", " cal ",
+                    )
         if not any(k in m for k in macro_kw):
             return None
 

@@ -67,6 +67,33 @@ class ConversationStore:
         )
         return doc.get("intent") if doc else None
 
+    async def get_last_exercise(self, user_id: str) -> Optional[str]:
+        """Return the exercise_name from the most-recent log_exercise assistant message.
+
+        Used by the connector-word fallback ("pn me 6 set marya" = also did 6
+        more of the previous exercise) so follow-up sentences don't require the
+        user to repeat the exercise name.
+        """
+        import re as _re
+        # Walk recent assistant messages looking for a log_exercise intent
+        cursor = self.collection.find(
+            {"user_id": user_id, "role": "assistant"},
+            sort=[("created_at", -1)]
+        ).limit(10)
+        async for doc in cursor:
+            intent = doc.get("intent", "")
+            if "log_exercise" not in intent and "exercise" not in intent:
+                continue
+            content = doc.get("content", "")
+            # Response template: "💪 **Push-ups** — **30 reps** = …" or similar
+            m = _re.search(r"\*\*(.+?)\*\*", content)
+            if m:
+                name = m.group(1).strip().lower()
+                # Skip quantity phrases like "30 reps"
+                if not _re.search(r"^\d", name):
+                    return name
+        return None
+
     async def clear_history(self, user_id: str):
         await self.collection.delete_many({"user_id": user_id})
 

@@ -336,6 +336,23 @@ TRANSLITERATION_MAP: dict[str, str] = {
     "subzi": "sabzi",
     "shak": "sabji",        # Gujarati shak = sabji/vegetable dish
     "shaak": "sabji",       # alternate spelling
+    # Gujarati preparation words — strip to a neutral form so the head food
+    # can be resolved.  bafela/bafeli/bafelu = boiled; phanagavela = soaked/sprouted.
+    # Mapping them to their English equivalent lets the compound-fallback strip
+    # them as method words and match the bare food name.
+    "bafela":       "boiled",
+    "bafeli":       "boiled",
+    "bafelu":       "boiled",
+    "bafelo":       "boiled",
+    "phanagavela":  "soaked",
+    "phanagaveli":  "soaked",
+    "phanagavelu":  "soaked",
+    "phangavela":   "soaked",   # common short form
+    "phangaveli":   "soaked",
+    "bhajavela":    "fried",    # Gujarati fried
+    "bhajeli":      "fried",
+    "shekela":      "roasted",  # Gujarati roasted
+    "sekela":       "roasted",
     "dhokala": "dhokla",
     "dhoklaa": "dhokla",
     "undhyu": "undhiyu",
