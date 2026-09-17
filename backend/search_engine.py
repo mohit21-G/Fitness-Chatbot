@@ -311,6 +311,18 @@ TRANSLITERATION_MAP: dict[str, str] = {
     "khakra": "khakhra",
     "khakhara": "khakhra",
     "fafada": "fafda",
+    # gundi — deep-fried Gujarati wheat/besan snack (many spellings)
+    "gunde": "gundi",
+    "gundiya": "gundi",
+    "gundy": "gundi",
+    "goondi": "gundi",
+    "goodi": "gundi",
+    # chakli / chakri — spiral fried snack
+    "chakri": "chakli",
+    "chakkli": "chakli",
+    "chakale": "chakli",
+    "murukku": "chakli",
+    "muruku": "chakli",
     "dhokala": "dhokla",
     "dhoklaa": "dhokla",
     "undhyu": "undhiyu",

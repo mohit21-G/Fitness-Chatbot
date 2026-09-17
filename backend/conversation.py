@@ -125,6 +125,7 @@ class PendingFlow:
     unresolved_items: list = None       # raw item strings that could not be resolved
 
     def to_json(self) -> str:
+        import datetime as _dt
         d = self.__dict__.copy()
         if d.get("items") is None:
             d["items"] = []
@@ -134,7 +135,18 @@ class PendingFlow:
             d["remaining_items"] = []
         if d.get("unresolved_items") is None:
             d["unresolved_items"] = []
-        return json.dumps(d)
+
+        def _clean(obj):
+            """Recursively strip datetime objects and other non-serializable types."""
+            if isinstance(obj, (_dt.datetime, _dt.date)):
+                return obj.isoformat()
+            if isinstance(obj, dict):
+                return {k: _clean(v) for k, v in obj.items()}
+            if isinstance(obj, list):
+                return [_clean(i) for i in obj]
+            return obj
+
+        return json.dumps(_clean(d))
 
     @classmethod
     def from_json(cls, data: str) -> "PendingFlow":
