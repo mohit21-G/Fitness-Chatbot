@@ -493,11 +493,8 @@ async def get_calorie_target(user_id: str, db=Depends(get_db)):
 @app.post("/api/auth/login", response_model=schemas.LoginResponse, tags=["Auth"])
 async def auth_login(data: schemas.LoginRequest, db=Depends(get_db)):
     """
-    Login or auto-register.  No OTP required.
-
-    - If username doesn't exist → creates user, returns is_new_user=True.
-    - If username exists → verifies password, returns is_new_user=False.
-    - user_id is a stable slug derived from username — never changes.
+    Legacy combined login/register endpoint — kept for backward compatibility.
+    New clients should use /api/auth/signup or /api/auth/signin.
     """
     repo = UserRepository(db)
     try:
@@ -511,13 +508,13 @@ async def auth_login(data: schemas.LoginRequest, db=Depends(get_db)):
             user_id=user["user_id"],
             name=user.get("name") or user["user_id"],
             email=user.get("email"),
-            age=user["age"],
-            gender=user.get("gender", "male"),
-            height_cm=user.get("height_cm", 170),
-            weight_kg=user.get("weight_kg", 70),
-            activity_level=user.get("activity_level", "moderate"),
-            fitness_goal=user.get("fitness_goal", "maintain"),
-            diet_type=user.get("diet_type", "non_veg"),
+            age=user.get("age"),
+            gender=user.get("gender"),
+            height_cm=user.get("height_cm"),
+            weight_kg=user.get("weight_kg"),
+            activity_level=user.get("activity_level"),
+            fitness_goal=user.get("fitness_goal"),
+            diet_type=user.get("diet_type"),
             target_weight_kg=user.get("target_weight_kg"),
             medical_conditions=user.get("medical_conditions"),
             custom_calorie_goal=user.get("custom_calorie_goal"),
@@ -531,6 +528,83 @@ async def auth_login(data: schemas.LoginRequest, db=Depends(get_db)):
         name=user.get("name") or user["user_id"],
         is_new_user=is_new,
         onboarding_complete=bool(user.get("onboarding_complete", False)),
+        profile=profile,
+    )
+
+
+@app.post("/api/auth/signup", response_model=schemas.LoginResponse, tags=["Auth"])
+async def auth_signup(data: schemas.LoginRequest, db=Depends(get_db)):
+    """
+    Register a new user.
+
+    - Creates the user record (or resets password on an incomplete previous attempt).
+    - Does NOT validate password against any existing hash.
+    - Returns is_new_user=True, onboarding_complete=False.
+    - Call PUT /api/users/{user_id}/onboard next to save the full profile.
+    - If the username is already fully registered, returns 409 so the
+      frontend can redirect to Sign In.
+    """
+    repo = UserRepository(db)
+    try:
+        user = await repo.signup(data.username, data.password)
+    except ValueError as e:
+        raise HTTPException(status_code=409, detail=str(e))
+
+    return schemas.LoginResponse(
+        user_id=user["user_id"],
+        username=user.get("username") or user["user_id"],
+        name=user.get("name") or user["user_id"],
+        is_new_user=True,
+        onboarding_complete=False,
+        profile=None,
+    )
+
+
+@app.post("/api/auth/signin", response_model=schemas.LoginResponse, tags=["Auth"])
+async def auth_signin(data: schemas.LoginRequest, db=Depends(get_db)):
+    """
+    Sign in an existing, fully-onboarded user.
+
+    - Verifies password.
+    - Returns full profile if onboarding_complete=True.
+    - Returns 401 on wrong password or unknown username.
+    - Returns 403 if account exists but onboarding is incomplete
+      (user should complete Sign Up flow).
+    """
+    repo = UserRepository(db)
+    try:
+        user = await repo.signin(data.username, data.password)
+    except ValueError as e:
+        msg = str(e)
+        if "incomplete" in msg.lower():
+            raise HTTPException(status_code=403, detail=msg)
+        raise HTTPException(status_code=401, detail=msg)
+
+    profile = schemas.UserProfileResponse(
+        user_id=user["user_id"],
+        name=user.get("name") or user["user_id"],
+        email=user.get("email"),
+        age=user.get("age"),
+        gender=user.get("gender"),
+        height_cm=user.get("height_cm"),
+        weight_kg=user.get("weight_kg"),
+        activity_level=user.get("activity_level"),
+        fitness_goal=user.get("fitness_goal"),
+        diet_type=user.get("diet_type"),
+        target_weight_kg=user.get("target_weight_kg"),
+        medical_conditions=user.get("medical_conditions"),
+        custom_calorie_goal=user.get("custom_calorie_goal"),
+        onboarding_complete=True,
+        created_at=user.get("created_at"),
+        updated_at=user.get("updated_at"),
+    )
+
+    return schemas.LoginResponse(
+        user_id=user["user_id"],
+        username=user.get("username") or user["user_id"],
+        name=user.get("name") or user["user_id"],
+        is_new_user=False,
+        onboarding_complete=True,
         profile=profile,
     )
 

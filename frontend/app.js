@@ -64,22 +64,25 @@ function _bindAuthEvents() {
     if (!password) { siErr.textContent = 'Please enter your password.'; return; }
 
     siBtn.disabled = true; siBtn.textContent = 'Signing in…';
-    const res = await api.login(username, password);
+    const res = await api.signin(username, password);   // ← dedicated signin endpoint
     siBtn.disabled = false; siBtn.textContent = 'Sign In';
 
     if (!res.ok) {
+      // 403 = account exists but onboarding incomplete → redirect to Sign Up
+      if (res.status === 403) {
+        siErr.textContent = 'Account setup incomplete. Switching to Sign Up…';
+        setTimeout(() => {
+          switchTab('signup');
+          document.getElementById('su-username').value = username;
+          document.getElementById('su-password').value = password;
+          siErr.textContent = '';
+        }, 1200);
+        return;
+      }
       siErr.textContent = res.data?.detail || 'Sign in failed. Check username / password.';
       return;
     }
     const d = res.data;
-    // If this username exists but onboarding wasn't done, tell the user to sign up
-    if (!d.onboarding_complete) {
-      siErr.textContent = 'Profile incomplete — please use Sign Up to finish setting up your account.';
-      switchTab('signup');
-      document.getElementById('su-username').value = username;
-      document.getElementById('su-password').value = password;
-      return;
-    }
     session.set({ user_id: d.user_id, name: d.name, username: d.username });
     enterChat();
   });
@@ -122,14 +125,25 @@ function _bindAuthEvents() {
 
     suBtn.disabled = true; suBtn.textContent = 'Creating account…';
 
-    // Step 1: create / login the account
-    const loginRes = await api.login(username, password);
-    if (!loginRes.ok) {
+    // Step 1: register the account (dedicated signup endpoint — never checks existing password)
+    const signupRes = await api.signup(username, password);
+    if (!signupRes.ok) {
       suBtn.disabled = false; suBtn.textContent = 'Create Account & Start';
-      suErr.textContent = loginRes.data?.detail || 'Could not create account.';
+      // 409 = username already fully registered → tell user to sign in
+      if (signupRes.status === 409) {
+        suErr.textContent = 'Username already registered. Please use Sign In.';
+        setTimeout(() => {
+          switchTab('signin');
+          document.getElementById('si-username').value = username;
+          document.getElementById('si-password').value = password;
+          suErr.textContent = '';
+        }, 1500);
+        return;
+      }
+      suErr.textContent = signupRes.data?.detail || 'Could not create account. Please try again.';
       return;
     }
-    const d = loginRes.data;
+    const d = signupRes.data;
     session.set({ user_id: d.user_id, name: name, username: d.username });
 
     // Step 2: save full profile via onboard endpoint (sets onboarding_complete=true)

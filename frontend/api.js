@@ -48,7 +48,14 @@ const api = {
 
   // ---- Auth ----
   async login(username, password) {
+    // Legacy — kept for backward compat. New code uses signup/signin.
     return this._post('/api/auth/login', { username, password });
+  },
+  async signup(username, password) {
+    return this._post('/api/auth/signup', { username, password });
+  },
+  async signin(username, password) {
+    return this._post('/api/auth/signin', { username, password });
   },
 
   // ---- Chat ----

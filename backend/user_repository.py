@@ -136,32 +136,108 @@ class UserRepository:
         slug = slugify_username(username)
         return await self.collection.find_one({"user_id": slug}, {"_id": 0})
 
-    async def login_or_register(self, username: str, password: str) -> tuple[dict, bool]:
+    async def signup(self, username: str, password: str) -> dict:
         """
-        Authenticate an existing user or create a new one.
+        Register a new user. Safe to call even if a previous incomplete
+        signup attempt left a partial record (onboarding_complete=False).
 
-        Returns (user_doc, is_new_user).
+        Rules:
+        - If username does not exist → create fresh record.
+        - If username exists but onboarding_complete=False → overwrite
+          the password hash and return the record so the caller can
+          proceed to save the full profile. This handles the 'retry
+          signup after a failed attempt' case.
+        - If username exists and onboarding_complete=True → raise
+          ValueError so the frontend tells the user to Sign In instead.
 
-        New user  → inserted with hashed password, onboarding_complete=False,
-                    minimal profile defaults.  is_new_user=True.
-        Existing  → password verified; raises ValueError on wrong password.
-                    is_new_user=False.
+        Returns the user doc. Never raises on a brand-new username.
         """
         slug = slugify_username(username)
         existing = await self.get_by_username(username)
 
         if existing:
-            # Existing user — verify password
+            if existing.get("onboarding_complete"):
+                raise ValueError(
+                    "Username already taken. Please Sign In or choose a different username."
+                )
+            # Incomplete record from a previous signup attempt — reset password
+            # and let the caller complete onboarding.
+            await self.collection.update_one(
+                {"user_id": slug},
+                {"$set": {
+                    "password_hash": _hash_password(password),
+                    "updated_at":    datetime.now(timezone.utc),
+                }}
+            )
+            return await self.get_by_username(username)
+
+        # Brand-new user
+        doc = {
+            "user_id":             slug,
+            "username":            slug,
+            "name":                username.strip(),
+            "email":               None,
+            "password_hash":       _hash_password(password),
+            "age":                 None,
+            "gender":              None,
+            "height_cm":           None,
+            "weight_kg":           None,
+            "activity_level":      None,
+            "fitness_goal":        None,
+            "diet_type":           None,
+            "target_weight_kg":    None,
+            "medical_conditions":  None,
+            "custom_calorie_goal": None,
+            "onboarding_complete": False,
+            "created_at":          datetime.now(timezone.utc),
+            "updated_at":          None,
+        }
+        await self.collection.insert_one(doc)
+        return await self.get_by_username(username)
+
+    async def signin(self, username: str, password: str) -> dict:
+        """
+        Authenticate an existing, fully-onboarded user.
+
+        Raises ValueError with a user-visible message on any failure:
+        - username not found
+        - wrong password
+        - account exists but onboarding is incomplete (tell user to Sign Up)
+        """
+        existing = await self.get_by_username(username)
+
+        if not existing:
+            raise ValueError("Username not found. Please Sign Up to create an account.")
+
+        stored_hash = existing.get("password_hash") or ""
+        if stored_hash and not _verify_password(password, stored_hash):
+            raise ValueError("Incorrect password. Please try again.")
+
+        if not existing.get("onboarding_complete"):
+            raise ValueError(
+                "Your account setup is incomplete. Please use Sign Up to finish."
+            )
+
+        return existing
+
+    async def login_or_register(self, username: str, password: str) -> tuple[dict, bool]:
+        """
+        Legacy combined method — kept for backward compatibility.
+        New code should call signup() or signin() directly.
+        """
+        slug = slugify_username(username)
+        existing = await self.get_by_username(username)
+
+        if existing:
             stored_hash = existing.get("password_hash") or ""
             if stored_hash and not _verify_password(password, stored_hash):
                 raise ValueError("Incorrect password.")
             return existing, False
 
-        # New user — create minimal record
         doc = {
             "user_id":             slug,
             "username":            slug,
-            "name":                username.strip(),   # display name starts as typed
+            "name":                username.strip(),
             "email":               None,
             "password_hash":       _hash_password(password),
             "age":                 None,
