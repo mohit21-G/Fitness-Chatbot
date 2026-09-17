@@ -2206,8 +2206,9 @@ class ChatbotEngine:
             _method_words = {
                 "fry", "fried", "stir", "stir-fry", "roast", "roasted", "grilled",
                 "grill", "masala", "curry", "gravy", "dry", "tadka", "tikka",
-                "bhurji", "sabji", "sabzi", "shaak", "ki", "ka", "ke", "nu", "ni",
+                "bhurji", "sabji", "sabzi", "shaak", "shak", "ki", "ka", "ke", "nu", "ni",
                 "na", "with", "and", "of", "fresh", "homemade", "spicy",
+                "subji", "subzi", "wali", "wala", "vale",
             }
             _tokens = [w for w in re.findall(r"[a-z]+", cleaned_query.lower())]
             _content = [w for w in _tokens if w not in _method_words]

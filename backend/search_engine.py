@@ -246,7 +246,9 @@ TRANSLITERATION_MAP: dict[str, str] = {
     # aloo / potato
     "alu": "aloo",
     "alloo": "aloo",
-    "bataka": "aloo",       # Gujarati → potato in Hindi/English
+    "bataka": "aloo",       # Gujarati → potato
+    "bateka": "aloo",       # Gujarati alternate spelling → potato
+    "bateki": "aloo",       # Gujarati variant
     "batata": "aloo",
     "potato": "aloo",
     # paneer
@@ -323,6 +325,17 @@ TRANSLITERATION_MAP: dict[str, str] = {
     "chakale": "chakli",
     "murukku": "chakli",
     "muruku": "chakli",
+    # moong dal in Gujarati = "mag" or "mug"
+    "mag": "moong dal",
+    "mug": "moong dal",
+    "mung": "moong dal",
+    # sabji / subji / shak — Gujarati/Hinglish for vegetable dish
+    # These are stripped as method words in compound-fallback; the map entry
+    # here ensures they normalise consistently before cleaning.
+    "subji": "sabji",
+    "subzi": "sabzi",
+    "shak": "sabji",        # Gujarati shak = sabji/vegetable dish
+    "shaak": "sabji",       # alternate spelling
     "dhokala": "dhokla",
     "dhoklaa": "dhokla",
     "undhyu": "undhiyu",
@@ -480,6 +493,20 @@ def normalize(text: str) -> str:
         # Use word boundaries where possible
         pattern = r"\b" + re.escape(wrong.strip()) + r"\b"
         text = re.sub(pattern, right, text)
+
+    # 6. Strip sentence-ending eating/drinking verbs that are never part of a
+    #    food name (e.g. "gundi khadha" → "gundi", "dal khadhi" → "dal").
+    #    Only strip at word boundaries; multi-word food names survive.
+    _EAT_VERBS = (
+        "khadha", "khadhi", "khadhu", "khadho", "khaya", "khayi", "khaye", "khai",
+        "lidha", "lidhi", "lidhu", "lidho",
+        "jamya", "jamyu",
+        "pidha", "pidhi", "pidhu",
+        "piya", "piyi",
+        "ate", "eaten", "had", "drank",
+    )
+    for v in _EAT_VERBS:
+        text = re.sub(r"\b" + v + r"\b", " ", text)
 
     # Final collapse after replacements
     text = re.sub(r"\s+", " ", text).strip()

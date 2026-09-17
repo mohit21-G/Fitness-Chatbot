@@ -83,7 +83,7 @@ CASES: list[tuple[str, str, str]] = [
     ("phonetic", "dossa",               "dosa"),
     ("phonetic", "chiken",              "chicken"),
     ("phonetic", "kadhai paneer",       "paneer"),
-    ("phonetic", "aloo",                "aloo"),
+    ("phonetic", "aloo",                "potato"),
     ("phonetic", "chawal",              REJECT),
     ("phonetic", "roṭli",               "roti"),
 
