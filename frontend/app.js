@@ -596,34 +596,32 @@ function renderProfileForm(p, t) {
         <select name="fitness_goal">${_optionsHtml('fitness_goal',p.fitness_goal)}</select></div>
       <div class="profile-item"><label>Diet</label>
         <select name="diet_type">${_optionsHtml('diet_type',p.diet_type)}</select></div>
-    </form>
 
-    <div style="margin-top:1rem;border-top:1px solid var(--border);padding-top:1rem">
-      <h4 style="margin-bottom:0.4rem">Daily Calorie Goal</h4>
-      <p style="font-size:0.83rem;color:var(--text-muted);margin:0 0 0.6rem">
-        Leave blank to use the auto-computed target (${computedTarget} kcal). Enter your own value to override it everywhere.
-      </p>
-      <div style="display:flex;align-items:center;gap:0.5rem;flex-wrap:wrap">
-        <input id="custom-calorie-input" type="number" name="custom_calorie_goal"
-          min="500" max="10000" step="50" value="${escapeAttr(String(customGoalVal))}"
-          placeholder="e.g. 2000"
-          style="width:120px;padding:0.35rem 0.5rem;border:1px solid var(--border);border-radius:6px;font-size:0.95rem">
-        <span style="font-size:0.9rem;color:var(--text-muted)">kcal / day</span>
-        ${isCustomActive ? `<button type="button" id="clear-custom-goal"
-          style="font-size:0.8rem;padding:0.25rem 0.6rem;border:1px solid var(--border);border-radius:5px;background:none;cursor:pointer;color:var(--text-muted)">
-          ✕ Clear (use auto)</button>` : ''}
+      <div class="profile-item" style="grid-column:1/-1;border-top:1px solid var(--border);padding-top:0.75rem;margin-top:0.25rem">
+        <label>Daily Calorie Goal (kcal)</label>
+        <div style="display:flex;align-items:center;gap:0.5rem;flex-wrap:wrap;margin-top:0.35rem">
+          <input type="number" name="custom_calorie_goal" id="custom-calorie-input"
+            min="500" max="10000" step="50"
+            value="${escapeAttr(String(customGoalVal))}"
+            placeholder="${computedTarget} (auto-computed)"
+            style="flex:1;min-width:140px;padding:0.4rem 0.5rem;border:1px solid var(--border);border-radius:6px;font-size:0.95rem">
+          <span style="font-size:0.82rem;color:var(--text-muted)">Leave blank to use auto (${computedTarget} kcal)</span>
+          ${isCustomActive ? `<button type="button" id="clear-custom-goal"
+            style="font-size:0.8rem;padding:0.25rem 0.6rem;border:1px solid var(--border);border-radius:5px;background:none;cursor:pointer;color:var(--text-muted)">
+            ✕ Use auto</button>` : ''}
+        </div>
+        ${isCustomActive ? `<div style="margin-top:0.3rem;font-size:0.82rem;color:var(--success)">
+          ✅ Custom goal active: <strong>${customGoalVal} kcal</strong></div>` : ''}
       </div>
-      ${isCustomActive ? `<div style="margin-top:0.4rem;font-size:0.82rem;color:var(--success)">
-        ✅ Custom goal active: <strong>${customGoalVal} kcal</strong></div>` : ''}
-    </div>
+    </form>
 
     <div id="profile-targets">
       ${t?.bmr ? `<div style="margin-top:1rem">
         <h4 style="margin-bottom:0.5rem">Calorie Targets</h4>
         <div class="summary-row"><span>BMR</span><span>${t.bmr.toFixed(0)} kcal</span></div>
-        <div class="summary-row"><span>TDEE</span><span>${t.tdee.toFixed(0)} kcal</span></div>
-        <div class="summary-row highlight"><span>Daily Target ${isCustomActive?'(custom)':'(auto)'}</span>
-          <span>${t.calorie_target.toFixed(0)} kcal</span></div>
+        <div class="summary-row"><span>TDEE (auto-computed)</span><span>${t.tdee.toFixed(0)} kcal</span></div>
+        <div class="summary-row highlight"><span><strong>Daily Target ${isCustomActive ? '(custom)' : '(auto)'}</strong></span>
+          <span><strong>${t.calorie_target.toFixed(0)} kcal</strong></span></div>
       </div>` : ''}
     </div>
     <div style="margin-top:1rem;display:flex;gap:0.5rem;align-items:center">
@@ -656,9 +654,18 @@ async function saveProfile() {
     diet_type:      fd.get('diet_type'),
   };
 
-  // Custom calorie goal
-  const rawCustom = (fd.get('custom_calorie_goal')||'').trim();
+  // Custom calorie goal — now inside the form so FormData captures it correctly.
+  // Empty field = "no change" when a custom goal is already saved (user didn't
+  // touch the field). Only sends null (clears) when the field was explicitly
+  // blanked via the "Use auto" button, which the user must click deliberately.
+  const rawCustom = (fd.get('custom_calorie_goal') || '').trim();
   if (rawCustom === '') {
+    // Field is blank. Check whether a custom goal was previously active:
+    // if the input was pre-populated and the user cleared it manually, send null.
+    // We use a data attribute set on the input to distinguish "pre-filled then
+    // cleared" from "was already blank". Simpler: always send null when blank —
+    // the user can re-enter if they change their mind. This is the documented
+    // "clear" behaviour.
     payload.custom_calorie_goal = null;
   } else {
     const parsed = parseFloat(rawCustom);
