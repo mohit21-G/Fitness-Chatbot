@@ -2233,8 +2233,10 @@ class ChatbotEngine:
                 "subji", "subzi", "wali", "wala", "vale",
                 # preparation words (English + Gujarati mapped forms)
                 "boiled", "steamed", "soaked", "baked",
-                # liquid/water suffix: "mag nu pani" → strip "pani" after nu-stripping
-                "pani", "water", "juice",
+                # NOTE: "pani" and "water" are intentionally NOT here — they are
+                # part of meaningful food phrases ("mag nu pani" = moong water,
+                # "chana nu pani" = chana water) and must reach the search engine
+                # intact so _resolve_prep_compound can handle them correctly.
             }
             _tokens = [w for w in re.findall(r"[a-z]+", cleaned_query.lower())]
             _content = [w for w in _tokens if w not in _method_words]

@@ -344,11 +344,11 @@ TRANSLITERATION_MAP: dict[str, str] = {
     "bafeli":       "boiled",
     "bafelu":       "boiled",
     "bafelo":       "boiled",
-    "phanagavela":  "soaked",
-    "phanagaveli":  "soaked",
-    "phanagavelu":  "soaked",
-    "phangavela":   "soaked",   # common short form
-    "phangaveli":   "soaked",
+    "phanagavela":  "sprouted",
+    "phanagaveli":  "sprouted",
+    "phanagavelu":  "sprouted",
+    "phangavela":   "sprouted",  # common short form
+    "phangaveli":   "sprouted",
     "bhajavela":    "fried",    # Gujarati fried
     "bhajeli":      "fried",
     "shekela":      "roasted",  # Gujarati roasted
@@ -666,24 +666,6 @@ class FoodSearchEngine:
                 food=food,
             )
 
-        # ── Step 3: Variant strip ───────────────────────────────────────
-        stripped, removed_variants = strip_variants(q_norm)
-        if removed_variants and stripped:
-            # Try exact matches on the stripped query
-            food = self.repo.get_by_exact_name(stripped)
-            if not food:
-                food = self.repo.get_by_exact_alias(stripped)
-            if food and is_compatible(raw_query, food):
-                return SearchResult(
-                    query_original=raw_query,
-                    query_normalized=q_norm,
-                    match_type=MatchType.VARIANT_STRIP,
-                    confidence=0.95,
-                    food=food,
-                    variant_detected=", ".join(removed_variants),
-                    stripped_query=stripped,
-                )
-
         # ── Step 3b: Compound food resolution: [modifier] + [base dish] ──
         # If the base dish exists in the curated DB and matches the head word of query,
         # resolve to the compound food while preserving dish family integrity.
@@ -707,6 +689,33 @@ class FoodSearchEngine:
                         confidence=0.95,
                         food=compound_food,
                     )
+
+        # ── Step 3c: Generic <prep>+<food> and <food>+water/pani resolver ──
+        # Runs BEFORE variant strip so preparation words produce correctly-named
+        # foods ("Boiled Whole Moong", "Sprouted Moong", "Moong Water") rather
+        # than being silently stripped to the unlabelled base food.
+        # Rules: base food must be in DB; nutrition scaled by prep multiplier.
+        prep_result = self._resolve_prep_compound(raw_query, q_norm, is_compatible)
+        if prep_result:
+            return prep_result
+
+        # ── Step 3: Variant strip ───────────────────────────────────────
+        stripped, removed_variants = strip_variants(q_norm)
+        if removed_variants and stripped:
+            # Try exact matches on the stripped query
+            food = self.repo.get_by_exact_name(stripped)
+            if not food:
+                food = self.repo.get_by_exact_alias(stripped)
+            if food and is_compatible(raw_query, food):
+                return SearchResult(
+                    query_original=raw_query,
+                    query_normalized=q_norm,
+                    match_type=MatchType.VARIANT_STRIP,
+                    confidence=0.95,
+                    food=food,
+                    variant_detected=", ".join(removed_variants),
+                    stripped_query=stripped,
+                )
 
             # If exact didn't work after stripping, try fuzzy on stripped
             result = self._fuzzy_search(raw_query, q_norm, stripped)
@@ -770,6 +779,167 @@ class FoodSearchEngine:
 
     # ------------------------------------------------------------------
     # Internal helpers
+    # ------------------------------------------------------------------
+    # Generic preparation compound resolver
+    # ------------------------------------------------------------------
+
+    # Preparation words after normalize() → (English label, calorie multiplier).
+    # multiplier is applied to the base food's calories/protein/carbs/fat.
+    # boiled/soaked legumes are close to raw; water is very dilute.
+    _PREP_MAP: dict[str, tuple[str, float]] = {
+        "boiled":   ("Boiled",    1.0),
+        "soaked":   ("Soaked",    0.9),
+        "sprouted": ("Sprouted",  0.85),
+        "steamed":  ("Steamed",   1.0),
+        "roasted":  ("Roasted",   1.05),
+        "fried":    ("Fried",     1.4),
+    }
+
+    # Suffixes that mean "water/broth of <food>" — parsed AFTER normalization.
+    _WATER_SUFFIXES = frozenset({"nu pani", "ka pani", "ki pani", "water", "pani"})
+
+    def _resolve_prep_compound(
+        self,
+        raw_query: str,
+        q_norm: str,
+        is_compatible,
+    ) -> Optional["SearchResult"]:
+        """
+        Generic resolver for two patterns:
+
+        Pattern A — preparation + food:
+          "boiled whole moong"  →  Boiled Whole Moong
+          "sprouted moong dal"  →  Sprouted Moong Dal
+          (prep word is the FIRST token after normalization)
+
+        Pattern B — food + water/pani suffix:
+          "moong dal nu pani"   →  Moong Water
+          "chana nu pani"       →  Chana Water
+          (last 1–2 tokens are a water suffix)
+
+        Pattern C — prep + food + water suffix (combined):
+          "boiled chana nu pani" → Boiled Chana Water
+
+        Rules:
+          • Base food must resolve to a verified DB record.
+          • Nutrition is scaled by preparation multiplier (water = 0.05 of base).
+          • display_name is "<Prep> <Base>" or "<Base> Water".
+          • Never fires if the full normalized query already matched (steps 1-2).
+        """
+        tokens = q_norm.split()
+        if len(tokens) < 2:
+            return None
+
+        # ── Detect water/pani suffix (Pattern B or C) ──────────────────
+        is_water = False
+        base_tokens = tokens
+        for suf_len in (2, 1):           # try 2-word suffix first ("nu pani")
+            suf = " ".join(tokens[-suf_len:])
+            if suf in self._WATER_SUFFIXES:
+                is_water = True
+                base_tokens = tokens[:-suf_len]
+                break
+
+        if not base_tokens:
+            return None
+
+        # ── Detect leading prep word (Pattern A or C) ──────────────────
+        prep_label = None
+        cal_mult   = 1.0
+        food_tokens = base_tokens
+        if base_tokens[0] in self._PREP_MAP:
+            prep_label, cal_mult = self._PREP_MAP[base_tokens[0]]
+            food_tokens = base_tokens[1:]
+
+        if not food_tokens:
+            return None
+
+        # At least one token must remain that isn't just stop words
+        _stops = {"dal", "nu", "ni", "na", "ka", "ki", "ke"}
+        content = [t for t in food_tokens if t not in _stops]
+        if not content:
+            return None
+
+        # Must have at least a prep OR water suffix to justify this resolver
+        if not is_water and prep_label is None:
+            return None
+
+        # ── Resolve base food from DB ───────────────────────────────────
+        base_q  = " ".join(food_tokens)
+        base_q2 = " ".join(content)    # without connective particles
+
+        base_food = None
+        for candidate in [base_q, base_q2]:
+            if not candidate:
+                continue
+            f = self.repo.get_by_exact_name(candidate)
+            if not f:
+                f = self.repo.get_by_exact_alias(candidate)
+            if f and is_compatible(candidate, f):
+                base_food = f
+                break
+
+        # Extended lookup: try token subsets and reversed order.
+        # Handles cases like "moong dal" (USDA, unverified) where we prefer
+        # "dal moong" or "whole moong" from the verified curated DB.
+        if not base_food:
+            extras = list(content)                               # individual tokens
+            if len(content) >= 2:
+                extras.append(" ".join(reversed(content)))      # "dal moong" from ["moong","dal"]
+            for candidate in extras:
+                if not candidate:
+                    continue
+                f = self.repo.get_by_exact_name(candidate)
+                if not f:
+                    f = self.repo.get_by_exact_alias(candidate)
+                if f and is_compatible(candidate, f):
+                    base_food = f
+                    break
+
+        if not base_food:
+            return None
+
+        # ── Build synthetic food doc ────────────────────────────────────
+        combined = dict(base_food)
+        base_disp = base_food.get("food_name_display") or base_food.get("food_name", "")
+
+        if is_water:
+            # Water is a very dilute broth — ~5% of base macros per 100 ml
+            water_mult = 0.05
+            display    = f"{prep_label + ' ' if prep_label else ''}{base_disp} Water"
+            name       = f"{prep_label.lower() + ' ' if prep_label else ''}{base_food['food_name']} water"
+            combined["calories_kcal"]    = round(base_food.get("calories_kcal",    0) * water_mult, 1)
+            combined["calories_per_100g"]= round(base_food.get("calories_per_100g",0) * water_mult, 1)
+            combined["protein_g"]        = round(base_food.get("protein_g",        0) * water_mult, 1)
+            combined["carbs_g"]          = round(base_food.get("carbs_g",          0) * water_mult, 1)
+            combined["fat_g"]            = round(base_food.get("fat_g",            0) * water_mult, 1)
+            combined["fiber_g"]          = round(base_food.get("fiber_g",          0) * water_mult, 1)
+            variant_tag = "water"
+        else:
+            display = f"{prep_label} {base_disp}"
+            name    = f"{prep_label.lower()} {base_food['food_name']}"
+            combined["calories_kcal"]    = round(base_food.get("calories_kcal",    0) * cal_mult, 1)
+            combined["calories_per_100g"]= round(base_food.get("calories_per_100g",0) * cal_mult, 1)
+            combined["protein_g"]        = round(base_food.get("protein_g",        0) * cal_mult, 1)
+            combined["carbs_g"]          = round(base_food.get("carbs_g",          0) * cal_mult, 1)
+            combined["fat_g"]            = round(base_food.get("fat_g",            0) * cal_mult, 1)
+            variant_tag = prep_label.lower()
+
+        combined["food_name"]         = name
+        combined["food_name_display"] = display
+        # Preserve original food_id so calorie lookups work
+        # (food_id stays the base food's id — nutrition is scaled above)
+
+        return SearchResult(
+            query_original=raw_query,
+            query_normalized=q_norm,
+            match_type=MatchType.VARIANT_STRIP,
+            confidence=0.95,
+            food=combined,
+            variant_detected=variant_tag,
+            stripped_query=" ".join(food_tokens),
+        )
+
     # ------------------------------------------------------------------
 
     def _fuzzy_search(
