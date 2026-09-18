@@ -3092,42 +3092,52 @@ class ChatbotEngine:
         max_item_cal = max(50.0, min(remaining_cal * 0.85, 650.0)) if remaining_cal > 0 else 350.0
         min_item_cal = 30.0
 
-        # ── Priority categories (context-sensitive) ───────────────────
+        # ── Priority categories (goal + context-sensitive) ───────────────
+        goal = str(self.user.get("fitness_goal") or "maintain").lower()
+
+        # Goal → ordered macro priority: (protein_weight, carb_weight, fat_weight)
+        # Used later for scoring; here drives category list priority.
+        _goal_prio: dict[str, list[str]] = {
+            "lose_weight": [
+                "Dal", "Vegetable", "Salad", "Protein/Vegetarian",
+                "Main Dish", "Curry", "Breakfast", "Soup",
+                "Protein/Fish", "Protein/Meat",
+                "Bread", "Snack",
+            ],
+            "gain_muscle": [
+                "Protein/Vegetarian", "Protein/Fish", "Protein/Meat",
+                "Dal", "Main Dish", "Curry",
+                "Bread", "Rice Dish", "Breakfast", "Snack",
+            ],
+            "gain_weight": [
+                "Rice Dish", "Bread", "Main Dish", "Curry",
+                "Dal", "Breakfast", "Snack",
+                "Protein/Vegetarian", "Protein/Fish",
+            ],
+            "maintain": [
+                "Breakfast", "Dal", "Main Dish", "Curry", "Bread",
+                "Rice Dish", "Snack", "Vegetable", "Salad",
+                "Protein/Vegetarian", "Protein/Fish", "Protein/Meat",
+            ],
+        }
+        base_cats = _goal_prio.get(goal, _goal_prio["maintain"])
+
+        # Context override: exercise or low protein always boosts protein cats first
         if did_exercise or prot_status == "low":
-            if is_veg_user:
-                priority_cats = [
-                    "Dal", "Main Dish", "Curry", "Meal/Vegetarian",
-                    "Protein/Vegetarian",
-                    "Breakfast", "Bread", "Rice Dish", "Snack", "Vegetable",
-                ]
-            else:
-                priority_cats = [
-                    "Protein/Fish", "Protein/Meat", "Protein/Vegetarian",
-                    "Dal", "Curry", "Main Dish",
-                    "Bread", "Rice Dish", "Meal/Vegetarian", "Breakfast", "Snack",
-                ]
+            prot_cats = (["Protein/Fish", "Protein/Meat"] if not is_veg_user
+                         else ["Protein/Vegetarian"])
+            base_cats = prot_cats + [c for c in base_cats if c not in prot_cats]
         elif carb_status == "over":
-            if is_veg_user:
-                priority_cats = [
-                    "Protein/Vegetarian", "Dal", "Vegetable", "Salad",
-                ]
-            else:
-                priority_cats = [
-                    "Protein/Fish", "Protein/Meat", "Protein/Vegetarian",
-                    "Vegetable", "Salad", "Dal",
-                ]
-        else:
-            if is_veg_user:
-                priority_cats = [
-                    "Breakfast", "Dal", "Main Dish", "Curry", "Bread",
-                    "Rice Dish", "Meal/Vegetarian", "Snack", "Vegetable",
-                ]
-            else:
-                priority_cats = [
-                    "Breakfast", "Bread", "Dal", "Curry", "Main Dish",
-                    "Snack", "Rice Dish", "Meal/Vegetarian",
-                    "Protein/Fish", "Protein/Meat",
-                ]
+            low_carb_cats = ["Protein/Vegetarian", "Protein/Fish", "Protein/Meat",
+                             "Vegetable", "Salad", "Dal"]
+            base_cats = low_carb_cats
+
+        # Filter by veg if needed
+        if is_veg_user:
+            base_cats = [c for c in base_cats
+                         if c not in ("Protein/Fish", "Protein/Meat")]
+
+        priority_cats = base_cats
 
         # ── Fetch candidates from MongoDB ─────────────────────────────
         def _fetch_cats(category_list: list[str], per_cat: int = 10) -> list[dict]:
@@ -3174,24 +3184,52 @@ class ChatbotEngine:
 
         # ── Compute real nutrition for each candidate ─────────────────
         qty_1s = PQ(amount=1.0, unit="serving", raw_input="1 serving", confidence=1.0)
+
+        # Goal → scoring weights (protein_w, carb_w, fat_w, cal_fit_w)
+        _goal_weights = {
+            "lose_weight": (0.35, 0.05, 0.10, 0.50),
+            "gain_muscle": (0.45, 0.15, 0.05, 0.35),
+            "gain_weight": (0.15, 0.35, 0.15, 0.35),
+            "maintain":    (0.25, 0.20, 0.10, 0.45),
+        }
+        pw, cw, fw, calw = _goal_weights.get(goal, _goal_weights["maintain"])
+
+        # Keywords that indicate uncommon / restaurant-only / non-practical foods.
+        # Suggestions should be everyday home-cooked Indian foods.
+        _impractical = re.compile(
+            r"\b(cocktail|flambe|souffle|mousse|parfait|tartare|carpaccio|"
+            r"bisque|creme brulee|fondue|tempura|teriyaki|sashimi|taco|burrito|"
+            r"lasagna|risotto|paella|couscous|quinoa|acai|granola bar)\b",
+            re.I,
+        )
+
         scored: list[dict] = []
         for food in candidates:
             try:
                 if not (food.get("calories_kcal") and food.get("serving_size_g")):
                     continue
+                # Skip clearly non-practical / non-Indian foods
+                fname = food.get("food_name", "")
+                if _impractical.search(fname):
+                    continue
                 r = calc.calculate(food, qty_1s)
                 if r.calories < min_item_cal:
                     continue
-                # Protein density: g protein per 100 kcal (higher = better
-                # when protein is needed)
+                # Protein density: g protein per 100 kcal
                 pdens = (r.protein_g / r.calories * 100) if r.calories > 0 else 0
-                # Cal fit: how well does this food (×2 servings) match the budget?
-                cal_fit  = 1.0 - abs(r.calories * 2 - remaining_cal) / max(remaining_cal, 1)
-                prot_fit = (pdens / 10.0) if prot_status == "low" else 0.5
+                # Carb density: g carbs per 100 kcal
+                cdens = (r.carbs_g  / r.calories * 100) if r.calories > 0 else 0
+                # Calorie fit: 1.0 when 2 servings ≈ remaining budget
+                cal_fit = 1.0 - abs(r.calories * 2 - remaining_cal) / max(remaining_cal, 1)
+                # Goal-weighted score
+                score = (calw * max(0, cal_fit) +
+                         pw   * min(pdens / 15.0, 1.0) +
+                         cw   * min(cdens / 30.0, 1.0) +
+                         fw   * (1.0 - min(r.fat_g / max(r.calories * 0.01, 1), 1.0)))
                 scored.append({
                     "food":   food,
                     "result": r,
-                    "score":  cal_fit * 0.5 + prot_fit * 0.5,
+                    "score":  score,
                     "pdens":  pdens,
                     "cat":    (food.get("category") or "").lower(),
                 })

@@ -798,6 +798,18 @@ class FoodSearchEngine:
     # Suffixes that mean "water/broth of <food>" — parsed AFTER normalization.
     _WATER_SUFFIXES = frozenset({"nu pani", "ka pani", "ki pani", "water", "pani"})
 
+    # Suffixes that mean "vegetable dish / sabji of <food>" — normalized forms of
+    # Gujarati 'nu shak', 'ni shak', Hindi 'ki sabji', 'ka saag', etc.
+    # 'sabji' is what 'shak'/'shaak' normalizes to via TRANSLITERATION_MAP.
+    # These are NOT prep words — they indicate a cooked vegetable/dal preparation.
+    _SABJI_SUFFIXES = frozenset({
+        "nu sabji", "ni sabji", "na sabji",    # Gujarati genitive + sabji
+        "ka sabji", "ki sabji", "ke sabji",    # Hindi genitive + sabji
+        "sabji",                               # bare (after stripping nu/ni)
+        "nu shaak", "ni shaak",                # raw Gujarati (pre-normalize)
+        "nu shak",  "ni shak",                 # common short form
+    })
+
     def _resolve_prep_compound(
         self,
         raw_query: str,
@@ -830,15 +842,31 @@ class FoodSearchEngine:
         if len(tokens) < 2:
             return None
 
-        # ── Detect water/pani suffix (Pattern B or C) ──────────────────
-        is_water = False
+        # ── Detect sabji/shak suffix (Pattern D) ───────────────────────
+        # "<food> nu shak" / "<food> ki sabji" → "<Food> Sabji"
+        # Checked BEFORE water so "mag nu sabji" doesn't mis-fire as water.
+        is_sabji = False
         base_tokens = tokens
-        for suf_len in (2, 1):           # try 2-word suffix first ("nu pani")
+        for suf_len in (2, 1):
             suf = " ".join(tokens[-suf_len:])
-            if suf in self._WATER_SUFFIXES:
-                is_water = True
+            if suf in self._SABJI_SUFFIXES:
+                is_sabji = True
                 base_tokens = tokens[:-suf_len]
                 break
+        # Also match bare trailing 'sabji' after stripping particles
+        if not is_sabji and tokens[-1] == "sabji" and len(tokens) >= 2:
+            is_sabji = True
+            base_tokens = tokens[:-1]
+
+        # ── Detect water/pani suffix (Pattern B or C) ──────────────────
+        is_water = False
+        if not is_sabji:
+            for suf_len in (2, 1):           # try 2-word suffix first ("nu pani")
+                suf = " ".join(tokens[-suf_len:])
+                if suf in self._WATER_SUFFIXES:
+                    is_water = True
+                    base_tokens = tokens[:-suf_len]
+                    break
 
         if not base_tokens:
             return None
@@ -860,8 +888,8 @@ class FoodSearchEngine:
         if not content:
             return None
 
-        # Must have at least a prep OR water suffix to justify this resolver
-        if not is_water and prep_label is None:
+        # Must have at least a prep OR water OR sabji suffix to justify this resolver
+        if not is_water and not is_sabji and prep_label is None:
             return None
 
         # ── Resolve base food from DB ───────────────────────────────────
@@ -869,6 +897,7 @@ class FoodSearchEngine:
         base_q2 = " ".join(content)    # without connective particles
 
         base_food = None
+        _unverified_fallback = None
         for candidate in [base_q, base_q2]:
             if not candidate:
                 continue
@@ -876,12 +905,15 @@ class FoodSearchEngine:
             if not f:
                 f = self.repo.get_by_exact_alias(candidate)
             if f and is_compatible(candidate, f):
-                base_food = f
-                break
+                if f.get("is_verified"):
+                    base_food = f
+                    break
+                elif _unverified_fallback is None:
+                    _unverified_fallback = f
 
         # Extended lookup: try token subsets and reversed order.
-        # Handles cases like "moong dal" (USDA, unverified) where we prefer
-        # "dal moong" or "whole moong" from the verified curated DB.
+        # Prefers verified curated DB foods over USDA/unverified entries so
+        # nutritional profiles are more representative.
         if not base_food:
             extras = list(content)                               # individual tokens
             if len(content) >= 2:
@@ -893,8 +925,16 @@ class FoodSearchEngine:
                 if not f:
                     f = self.repo.get_by_exact_alias(candidate)
                 if f and is_compatible(candidate, f):
-                    base_food = f
-                    break
+                    # Prefer verified foods; keep looking if this one is unverified
+                    if f.get("is_verified"):
+                        base_food = f
+                        break
+                    elif _unverified_fallback is None:
+                        _unverified_fallback = f   # hold, keep looking for verified
+
+        # Use best verified food, fall back to unverified only if nothing else found
+        if not base_food:
+            base_food = _unverified_fallback
 
         if not base_food:
             return None
@@ -903,7 +943,35 @@ class FoodSearchEngine:
         combined = dict(base_food)
         base_disp = base_food.get("food_name_display") or base_food.get("food_name", "")
 
-        if is_water:
+        if is_sabji:
+            # Cooked vegetable/dal sabji — moderate calorie density (~60-80 kcal/100g).
+            # Use the base food's protein and fiber profile but scale calories to
+            # represent a typical Indian home-cooked preparation with tempering.
+            # A sabji serving is ~150g (1 katori).
+            sabji_serving_g = 150.0
+            # Scale base food macros to 100g equivalent first, then to 150g serving.
+            base_srv = base_food.get("serving_size_g") or 100.0
+            scale    = 100.0 / base_srv          # per-100g factors from base
+
+            base_cal_100g = base_food.get("calories_per_100g") or (
+                base_food.get("calories_kcal", 0) * scale)
+            # Cooked sabji calorie range: 50-90 kcal/100g (add oil/tempering ~20 kcal)
+            sabji_cal_100g = min(max(base_cal_100g * 0.8 + 20, 50), 90)
+
+            display  = f"{base_disp} Sabji"
+            name     = f"{base_food['food_name']} sabji"
+            combined["food_name"]          = name
+            combined["food_name_display"]  = display
+            combined["serving_size_g"]     = sabji_serving_g
+            combined["calories_kcal"]      = round(sabji_cal_100g * sabji_serving_g / 100, 1)
+            combined["calories_per_100g"]  = round(sabji_cal_100g, 1)
+            combined["protein_g"]          = round(base_food.get("protein_g", 0) * scale * sabji_serving_g / 100, 1)
+            combined["carbs_g"]            = round(base_food.get("carbs_g",   0) * scale * sabji_serving_g / 100, 1)
+            combined["fat_g"]              = round(base_food.get("fat_g",     0) * scale * sabji_serving_g / 100 + 3.0, 1)  # +3g for tempering oil
+            combined["fiber_g"]            = round(base_food.get("fiber_g",   0) * scale * sabji_serving_g / 100, 1)
+            variant_tag = "sabji"
+
+        elif is_water:
             # Water is a very dilute broth — ~5% of base macros per 100 ml
             water_mult = 0.05
             display    = f"{prep_label + ' ' if prep_label else ''}{base_disp} Water"
@@ -915,6 +983,8 @@ class FoodSearchEngine:
             combined["fat_g"]            = round(base_food.get("fat_g",            0) * water_mult, 1)
             combined["fiber_g"]          = round(base_food.get("fiber_g",          0) * water_mult, 1)
             variant_tag = "water"
+            combined["food_name"]         = name
+            combined["food_name_display"] = display
         else:
             display = f"{prep_label} {base_disp}"
             name    = f"{prep_label.lower()} {base_food['food_name']}"
@@ -924,9 +994,8 @@ class FoodSearchEngine:
             combined["carbs_g"]          = round(base_food.get("carbs_g",          0) * cal_mult, 1)
             combined["fat_g"]            = round(base_food.get("fat_g",            0) * cal_mult, 1)
             variant_tag = prep_label.lower()
-
-        combined["food_name"]         = name
-        combined["food_name_display"] = display
+            combined["food_name"]         = name
+            combined["food_name_display"] = display
         # Preserve original food_id so calorie lookups work
         # (food_id stays the base food's id — nutrition is scaled above)
 
