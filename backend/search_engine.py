@@ -286,7 +286,6 @@ TRANSLITERATION_MAP: dict[str, str] = {
     "chaa": "chai",
     "chha": "chai",
     "chaha": "chai",
-    "chaha": "chai",
     # curd / yogurt
     "yoghurt": "yogurt",
     # rice / chawal
@@ -294,9 +293,7 @@ TRANSLITERATION_MAP: dict[str, str] = {
     "chaval": "rice",
     "bhat": "rice",
     "bhaat": "rice",
-    # buttermilk — map to the canonical local food_name "chhas" (a real DB
-    # entry) rather than the generic word "buttermilk", which can collide with a
-    # branded packaged product learned from an external API.
+    # buttermilk — map to the canonical local food_name "chhas"
     "chhaas": "chhas",
     "chaas": "chhas",
     "chas": "chhas",
@@ -307,6 +304,37 @@ TRANSLITERATION_MAP: dict[str, str] = {
     "butter milk": "chhas",
     "chhaash": "chhas",
     "mattha": "chhas",
+    # Additional buttermilk/chaas variants
+    "chass":  "chhas",
+    "chhass": "chhas",
+    "takra":  "chhas",      # Gujarati/Sanskrit name for buttermilk
+    # Water — pani/paani are the most common Indian names
+    "pani":   "water",
+    "paani":  "water",
+    "neer":   "water",      # Tamil/Telugu name for water
+    # Sugarcane juice
+    "ganne ka ras":  "sugarcane juice",
+    "ganna juice":   "sugarcane juice",
+    "ganne":         "sugarcane juice",
+    "ganna ras":     "sugarcane juice",
+    # Lemon-based drinks
+    "limbu pani":   "lemonade",   # Gujarati lemon water
+    "nimbu pani":   "lemonade",   # Hindi lemon water
+    "nimbu paani":  "lemonade",
+    "shikanji":     "lemonade",   # spiced lemonade — closest common match
+    # Turmeric / almond enriched milk
+    "haldi doodh":  "turmeric milk",
+    "haldi milk":   "turmeric milk",
+    "badam doodh":  "almond milk",
+    "badam milk":   "almond milk",
+    # Cola / soft drink generic terms
+    "cola":         "soda",       # generic cola → soda (DB category match)
+    "cold drink":   "soda",
+    "soft drink":   "soda",
+    # Coconut water Gujarati/Hindi variants
+    "nariyal pani":  "coconut water",
+    "naariyal pani": "coconut water",
+    "nariyal paani": "coconut water",
     # Gujarati snacks & dishes
     "gathia": "gathiya",
     "gatiya": "gathiya",
