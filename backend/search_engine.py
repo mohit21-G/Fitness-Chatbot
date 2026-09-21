@@ -384,11 +384,11 @@ TRANSLITERATION_MAP: dict[str, str] = {
     "dhokala": "dhokla",
     "dhoklaa": "dhokla",
     "undhyu": "undhiyu",
-    "ringna": "brinjal",
-    "ringan": "brinjal",
+    "ringna": "eggplant",   # eggplant IS in DB; brinjal is not
+    "ringan": "eggplant",
     "dudhi": "bottle gourd",
     "tindola": "ivy gourd",
-    "karela": "bitter gourd",
+    "karela": "bitter gourd",   # bitter gourd → sabji resolver will handle it
     "methi": "fenugreek",
     "palak": "spinach",
     "panipuri": "pani puri",
@@ -415,6 +415,8 @@ TRANSLITERATION_MAP: dict[str, str] = {
     "saambar": "sambar",
     "paalak": "palak",
     "panir": "paneer",
+    "panear": "paneer",    # common English misspelling
+    "paner": "paneer",
     "lasssi": "lassi",
     "pizzza": "pizza",
     "burgur": "burger",
@@ -464,6 +466,104 @@ TRANSLITERATION_MAP: dict[str, str] = {
     "imli": "tamarind",
     "gur": "jaggery",
     "gud": "jaggery",
+    # ── Fix: map transliteration targets to actual DB food names ────────────
+    # ringna/ringan were mapped to "brinjal" which has no DB food;
+    # eggplant IS in DB — use it as the canonical target.
+    "ringna":  "eggplant",
+    "ringan":  "eggplant",
+    "vangi":   "eggplant",
+    "baigan":  "eggplant",
+    "begun":   "eggplant",
+    # bottle gourd / lauki
+    "lauki":   "bottle gourd",   # sabji resolver handles "bottle gourd nu shak"
+    "doodhi":  "bottle gourd",
+    # ivy gourd / tindora
+    "tindora": "ivy gourd",
+    "tindli":  "ivy gourd",
+    "kundru":  "ivy gourd",
+    # ridge gourd / turiya
+    "turiya":  "ridge gourd",
+    "turia":   "ridge gourd",
+    "gilki":   "ridge gourd",
+    "torai":   "ridge gourd",
+    # yam / suran
+    "suran":   "yam",
+    # sweet potato
+    "ratalu":      "sweet potato",
+    "sakarkand":   "sweet potato",
+    "shakarkand":  "sweet potato",
+    # peanuts / groundnut — point to "peanut" (added to DB)
+    "singdana":    "peanut",
+    "shengdana":   "peanut",
+    "mungfali":    "peanut",
+    "mungphali":   "peanut",
+    "moongfali":   "peanut",
+    "moongphali":  "peanut",
+    # garlic / lasan
+    "lasan":   "garlic",
+    "lasun":   "garlic",
+    # other Indian vegetables
+    "turai":   "ridge gourd",
+    "parwal":  "pointed gourd",
+    "kunduri": "ivy gourd",
+    # fish / meat common Hindi/Bengali
+    "machli":  "fish",
+    "maachh":  "fish",
+    "murga":   "chicken",
+    "maans":   "mutton",
+    # spices (may not resolve to standalone food — that's ok)
+    "jeera":   "cumin",
+    "dhania":  "coriander",
+    "haldi":   "turmeric",
+    # daliya — standalone means the Indian porridge
+    "dalia":   "daliya",
+    "daaliya": "daliya",
+    # moong dal joined
+    "moongdal": "moong dal",
+    "mungdal":  "moong dal",
+}
+
+# ---------------------------------------------------------------------------
+# Joined-word boundary table
+# ---------------------------------------------------------------------------
+# When users type food names without spaces (common on mobile / Hinglish),
+# we try to split at known word boundaries BEFORE the transliteration map runs.
+# Each entry maps a joined token → the spaced version.
+# Only add entries where the split produces words that appear in the
+# TRANSLITERATION_MAP or as DB food names / aliases.
+# KEEP THIS SHORT AND GENERIC — do NOT add individual food combinations here;
+# add only the head/suffix words that can combine with many partners.
+_JOINED_FOOD_SPLITS: dict[str, str] = {
+    # Chana combinations
+    "singchana":     "sing chana",
+    "bhunachana":    "bhuna chana",
+    # Dal combinations
+    "moongdal":      "moong dal",
+    "mungdal":       "moong dal",
+    "chhadal":       "chha dal",
+    # Paratha / roti combinations
+    "paneerparatha":  "paneer paratha",
+    "alooparatha":    "aloo paratha",
+    "gobhiparatha":   "gobhi paratha",
+    "methiparatha":   "methi paratha",
+    "maidaparatha":   "maida paratha",
+    "alooroti":       "aloo roti",
+    # Rice combinations
+    "rajmachawal":    "rajma chawal",
+    "dalichawal":     "dal chawal",
+    "kaddichawal":    "kaddi chawal",
+    # Puri combinations
+    "aloopuri":       "aloo puri",
+    # Vada / vadapav
+    "vadapav":        "vada pav",
+    "wadapav":        "wada pav",
+    # Pani puri
+    "panipuri":       "pani puri",   # already in map but add here too
+    "sevpuri":        "sev puri",
+    "dahipuri":       "dahi puri",
+    # Butter / ghee prefix
+    "butterroti":     "butter roti",
+    "gheechapati":    "ghee chapati",
 }
 
 
@@ -509,13 +609,22 @@ def normalize(text: str) -> str:
     candidate before scoring.
 
     Steps:
+      0a. Joined-word split (e.g. "singchana" → "sing chana")
+      0b. Native-script (Devanagari / Gujarati) -> Roman
       1. Unicode NFKD → strip accents
       2. Lowercase
-      3. Clean non-alphanumeric noise characters (convert punctuation like '=' to spaces)
+      3. Clean non-alphanumeric noise characters
       4. Collapse whitespace
       5. Apply transliteration map (word-level)
+      6. Strip eating verbs
     """
-    # 0. Native-script (Devanagari / Gujarati) -> Roman FIRST.
+    # 0a. Joined-word split — resolve no-space compound food words BEFORE
+    #     everything else so the rest of the pipeline sees spaced tokens.
+    text_lower = (text or "").strip().lower()
+    if text_lower in _JOINED_FOOD_SPLITS:
+        text = _JOINED_FOOD_SPLITS[text_lower]
+
+    # 0b. Native-script (Devanagari / Gujarati) -> Roman FIRST.
     #    Must run before NFKD, which strips the combining vowel signs (matras)
     #    that carry the syllable's vowel. Non-Indic text passes through unchanged.
     text = transliterate_indic(text)
