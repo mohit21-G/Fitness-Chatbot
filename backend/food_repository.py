@@ -56,7 +56,7 @@ def is_safe_learned_alias(alias: str) -> bool:
     never filtered by this.
     """
     a = (alias or "").strip().lower()
-    if len(a) < 2:
+    if len(a) < 3:
         return False
     tokens = re.findall(r"[^\W\d_]+", a)
     if not tokens:
@@ -183,7 +183,16 @@ class FoodRepository:
     # ------------------------------------------------------------------
 
     async def save_learned_food(self, query_normalized: str, food_dict: dict):
-        """Async save live-learned food with source attribution & overwrite protection."""
+        """Async save live-learned food with source attribution & overwrite protection.
+
+        Deduplication rules:
+        - If a VERIFIED local record exists for this food_name → reuse its
+          food_id and only add aliases; never overwrite curated data.
+        - If an UNVERIFIED learned record exists with the same food_name →
+          reuse its food_id to prevent duplicates; update nutrition if new
+          data is available.
+        - Otherwise → insert new record.
+        """
         if not food_dict:
             return
 
@@ -195,14 +204,19 @@ class FoodRepository:
         if cals <= 0:
             return  # Invalid live data validation
 
-        # Check existing
+        # Check existing by food_name (prevents duplicates across food_id variants)
         existing = await self.foods.find_one({"food_name": food_name_clean})
         if existing and existing.get("is_verified", False):
             # Never overwrite trusted local data; just add alias
             food_id = existing["food_id"]
         else:
+            # Reuse existing unverified food_id to prevent duplicates
+            food_id = (
+                (existing or {}).get("food_id")
+                or food_dict.get("food_id")
+                or f"food_live_{re.sub(r'[^\w]', '_', food_name_clean)}"
+            )
             source = food_dict.get("data_source") or food_dict.get("source", "Live API Import")
-            food_id = food_dict.get("food_id") or f"food_live_{re.sub(r'[^\w]', '_', food_name_clean)}"
             from import_to_mongodb import generate_food_schema_fields
             schema_fields = generate_food_schema_fields(food_name_clean, food_dict.get("category", ""), "", food_dict.get("serving_unit", ""))
 
@@ -282,6 +296,12 @@ class FoodRepositorySync:
     def save_learned_food_sync(self, query_normalized: str, food_dict: dict):
         """
         Sync save live-learned food with validation, source attribution & overwrite protection.
+
+        Deduplication rules:
+        - Verified local record by food_name → reuse food_id, add aliases only.
+        - Unverified record already exists with same food_name → reuse its
+          food_id to prevent duplicates across different external food_id slugs.
+        - Otherwise → insert new record.
         """
         if not food_dict:
             return
@@ -298,8 +318,13 @@ class FoodRepositorySync:
         if existing and existing.get("is_verified", False):
             food_id = existing["food_id"]
         else:
+            # Reuse existing unverified food_id to prevent duplicates
+            food_id = (
+                (existing or {}).get("food_id")
+                or food_dict.get("food_id")
+                or f"food_live_{re.sub(r'[^\w]', '_', food_name_clean)}"
+            )
             source = food_dict.get("data_source") or food_dict.get("source", "Live API Import")
-            food_id = food_dict.get("food_id") or f"food_live_{re.sub(r'[^\w]', '_', food_name_clean)}"
             from import_to_mongodb import generate_food_schema_fields
             schema_fields = generate_food_schema_fields(food_name_clean, food_dict.get("category", ""), "", food_dict.get("serving_unit", ""))
 

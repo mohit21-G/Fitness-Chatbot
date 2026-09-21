@@ -2333,9 +2333,9 @@ class ChatbotEngine:
                     try:
                         self.food_repo.save_learned_food_sync(cleaned_query, food)
                     except Exception:
-                        pass
+                        pass   # save failure must never drop the resolved food
             except Exception:
-                food = None
+                pass   # API failure → fall through to USDA, never null out food
 
         if food is None and _external_worthy:
             try:
@@ -2346,9 +2346,9 @@ class ChatbotEngine:
                     try:
                         self.food_repo.save_learned_food_sync(cleaned_query, food)
                     except Exception:
-                        pass
+                        pass   # save failure must never drop the resolved food
             except Exception:
-                food = None
+                pass   # API failure → fall through, never null out food
 
         # NO AI-ESTIMATE / INVENT TIER.
         # Food is accepted ONLY from MongoDB (name/alias/variant/confident fuzzy)
