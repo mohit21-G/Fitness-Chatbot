@@ -2410,14 +2410,15 @@ class ChatbotEngine:
                 if clean_words and any(w.lower() in ["rotlo", "rotla"] for w in clean_words):
                     display_name = " ".join(w.capitalize() for w in clean_words)
 
-        res_food_name = food["food_name"]
+        f_id = food.get("food_id") or food.get("id") or f"food_ext_{abs(hash(str(food.get('food_name', '')))) % 100000000:08x}"
+        res_food_name = food.get("food_name", cleaned_query)
         if any(w in (raw_item.lower() + " " + cleaned_query.lower()) for w in ["rotlo", "rotla"]):
             res_food_name = display_name
 
         return {
-            "food_id": food["food_id"],
+            "food_id": f_id,
             "food_name": res_food_name,
-            "food_name_display": display_name,
+            "food_name_display": display_name or res_food_name.title(),
             "category": food.get("category", ""),
             "serving_size_g": food.get("serving_size_g", 100),
             "quantity": supplied_qty_str,

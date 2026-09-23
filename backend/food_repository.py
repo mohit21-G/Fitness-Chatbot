@@ -262,6 +262,9 @@ class FoodRepository:
 class FoodRepositorySync:
     """Synchronous version using pymongo — for search_engine fuzzy matching."""
 
+    _names_cache: Optional[list[tuple[str, str]]] = None
+    _aliases_cache: Optional[list[tuple[str, str]]] = None
+
     def __init__(self, db):
         self.foods = db["foods"]
         self.aliases = db["food_aliases"]
@@ -279,12 +282,16 @@ class FoodRepositorySync:
         return None
 
     def get_all_names_with_ids(self) -> list[tuple[str, str]]:
-        docs = list(self.foods.find({}, {"food_name": 1, "food_id": 1, "_id": 0}))
-        return [(d["food_name"], d["food_id"]) for d in docs]
+        if FoodRepositorySync._names_cache is None:
+            docs = list(self.foods.find({}, {"food_name": 1, "food_id": 1, "_id": 0}))
+            FoodRepositorySync._names_cache = [(d["food_name"], d["food_id"]) for d in docs]
+        return FoodRepositorySync._names_cache
 
     def get_all_aliases_with_ids(self) -> list[tuple[str, str]]:
-        docs = list(self.aliases.find({}, {"alias": 1, "food_id": 1, "_id": 0}))
-        return [(d["alias"], d["food_id"]) for d in docs]
+        if FoodRepositorySync._aliases_cache is None:
+            docs = list(self.aliases.find({}, {"alias": 1, "food_id": 1, "_id": 0}))
+            FoodRepositorySync._aliases_cache = [(d["alias"], d["food_id"]) for d in docs]
+        return FoodRepositorySync._aliases_cache
 
     def get_foods_by_ids(self, food_ids: list[str]) -> list[dict]:
         if not food_ids:
@@ -362,3 +369,5 @@ class FoodRepositorySync:
                     {"$set": {"food_id": food_id, "alias": alias, "alias_type": "learned", "language": "en"}},
                     upsert=True
                 )
+        FoodRepositorySync._names_cache = None
+        FoodRepositorySync._aliases_cache = None

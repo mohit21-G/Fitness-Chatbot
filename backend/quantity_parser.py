@@ -86,6 +86,11 @@ UNIT_ALIASES: dict[str, str] = {
     "plate": "plate", "plates": "plate",
     # glass
     "glass": "glass", "glasses": "glass",
+    # can / bottle
+    "can": "can", "cans": "can",
+    "bottle": "bottle", "bottles": "bottle",
+    # litre
+    "litre": "litre", "litres": "litre", "liter": "litre", "liters": "litre", "l": "litre",
     # serving
     "serving": "serving", "servings": "serving", "serve": "serving",
     # spoon

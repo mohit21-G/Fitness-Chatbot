@@ -15,12 +15,17 @@ from typing import Optional
 _API_CACHE: dict[tuple[str, str], tuple[Optional[dict], float]] = {}
 CACHE_TTL_SECONDS = 3600  # 1 hour
 
+_OFF_CIRCUIT_BREAKER_UNTIL: float = 0.0
+_USDA_CIRCUIT_BREAKER_UNTIL: float = 0.0
+
 USER_AGENT = os.getenv("OPEN_FOOD_FACTS_USER_AGENT", "FitnessAIChatbot/1.0 (contact@fitnessai.local)")
+TIMEOUT_CONFIG = httpx.Timeout(connect=1.5, read=2.5, write=1.5, pool=1.5)
 
 
 class ExternalFoodAPIService:
     """
-    Service for querying Open Food Facts (Tier 2) and USDA FoodData Central (Tier 3).
+    Service for querying Open Food Facts (Tier 2) and USDA FoodData Central (Tier 3)
+    with circuit-breakers, resilient timeouts, validation, and MongoDB learning.
     """
 
     def __init__(self, usda_api_key: Optional[str] = None):
@@ -30,6 +35,7 @@ class ExternalFoodAPIService:
             usda_api_key
             or getattr(settings, "USDA_API_KEY", None)
             or os.getenv("USDA_API_KEY")
+            or "DEMO_KEY"
         )
 
     # ------------------------------------------------------------------
@@ -39,10 +45,15 @@ class ExternalFoodAPIService:
     async def search_open_food_facts(self, query: str) -> Optional[dict]:
         """
         Tier 2: Search Open Food Facts API (Packaged & Branded Foods).
-        Returns a standardized food dict or None if no match / API error.
+        Returns a standardized food dict or None if no match / API error / circuit broken.
         """
+        global _OFF_CIRCUIT_BREAKER_UNTIL
         q_norm = query.strip().lower()
         if not q_norm:
+            return None
+
+        # Check circuit breaker
+        if time.time() < _OFF_CIRCUIT_BREAKER_UNTIL:
             return None
 
         # Check cache
@@ -58,13 +69,18 @@ class ExternalFoodAPIService:
             "search_simple": "1",
             "action": "process",
             "json": "1",
-            "page_size": "5",
+            "page_size": "3",
         }
         headers = {"User-Agent": USER_AGENT}
 
         try:
-            async with httpx.AsyncClient(timeout=5.0) as client:
+            async with httpx.AsyncClient(timeout=TIMEOUT_CONFIG) as client:
                 response = await client.get(url, params=params, headers=headers)
+
+            if response.status_code == 503:
+                _OFF_CIRCUIT_BREAKER_UNTIL = time.time() + 120.0
+                _API_CACHE[cache_key] = (None, time.time())
+                return None
 
             if response.status_code != 200:
                 _API_CACHE[cache_key] = (None, time.time())
@@ -76,7 +92,6 @@ class ExternalFoodAPIService:
                 _API_CACHE[cache_key] = (None, time.time())
                 return None
 
-            # Pick best product candidate with nutrition data
             for prod in products:
                 nutr = prod.get("nutriments", {})
                 if not nutr:
@@ -96,29 +111,27 @@ class ExternalFoodAPIService:
                 fiber = float(nutr.get("fiber_100g") or nutr.get("fiber_serving") or 0.0)
 
                 raw_name = prod.get("product_name_en") or prod.get("product_name") or q_norm
-                serving_size = float(prod.get("serving_quantity") or 100.0)
-
-                slug = re.sub(r"[^\w]", "_", raw_name.lower()).strip("_")
                 food_dict = {
-                    "food_id": f"off_{slug}",
                     "food_name": raw_name.lower(),
                     "food_name_display": raw_name.strip().title(),
                     "category": "Packaged Food",
                     "serving_size_g": 100.0,
                     "serving_unit": "g",
                     "calories_kcal": round(float(cals), 1),
+                    "calories_per_100g": round(float(cals), 1),
                     "protein_g": round(protein, 1),
                     "carbs_g": round(carbs, 1),
                     "fat_g": round(fat, 1),
                     "fiber_g": round(fiber, 1),
                     "source": "Open Food Facts",
-                    "is_ai_estimated": False,
+                    "data_source": "Open Food Facts",
+                    "is_verified": False,
                 }
                 _API_CACHE[cache_key] = (food_dict, time.time())
                 return food_dict
 
         except Exception:
-            pass  # Graceful fallback on timeout/error
+            pass
 
         _API_CACHE[cache_key] = (None, time.time())
         return None
@@ -126,10 +139,15 @@ class ExternalFoodAPIService:
     async def search_usda(self, query: str) -> Optional[dict]:
         """
         Tier 3: Search USDA FoodData Central API (Generic / Raw Foods).
-        Returns a standardized food dict or None if no match / API error.
+        Returns a standardized food dict or None if no match / API error / circuit broken.
         """
+        global _USDA_CIRCUIT_BREAKER_UNTIL
         q_norm = query.strip().lower()
         if not q_norm:
+            return None
+
+        # Check circuit breaker
+        if time.time() < _USDA_CIRCUIT_BREAKER_UNTIL:
             return None
 
         # Check cache
@@ -142,13 +160,18 @@ class ExternalFoodAPIService:
         url = "https://api.nal.usda.gov/fdc/v1/foods/search"
         params = {
             "query": q_norm,
-            "pageSize": "5",
+            "pageSize": "3",
             "api_key": self.usda_api_key,
         }
 
         try:
-            async with httpx.AsyncClient(timeout=5.0) as client:
+            async with httpx.AsyncClient(timeout=TIMEOUT_CONFIG) as client:
                 response = await client.get(url, params=params)
+
+            if response.status_code == 429:
+                _USDA_CIRCUIT_BREAKER_UNTIL = time.time() + 180.0
+                _API_CACHE[cache_key] = (None, time.time())
+                return None
 
             if response.status_code != 200:
                 _API_CACHE[cache_key] = (None, time.time())
@@ -182,30 +205,130 @@ class ExternalFoodAPIService:
                 if cals <= 0 and protein == 0 and carbs == 0 and fat == 0:
                     continue
 
-                serving_size = float(f_item.get("servingSize") or 100.0)
-                unit = f_item.get("servingSizeUnit") or "g"
-
-                slug = re.sub(r"[^\w]", "_", description.lower()).strip("_")
                 food_dict = {
-                    "food_id": f"usda_{slug}",
                     "food_name": description.lower(),
                     "food_name_display": description.strip().title(),
-                    "category": "USDA Generic",
+                    "category": "Generic Food",
                     "serving_size_g": 100.0,
                     "serving_unit": "g",
                     "calories_kcal": round(cals, 1),
+                    "calories_per_100g": round(cals, 1),
                     "protein_g": round(protein, 1),
                     "carbs_g": round(carbs, 1),
                     "fat_g": round(fat, 1),
                     "fiber_g": round(fiber, 1),
-                    "source": "USDA FoodData",
-                    "is_ai_estimated": False,
+                    "source": "USDA FoodData Central",
+                    "data_source": "USDA FoodData Central",
+                    "is_verified": False,
                 }
                 _API_CACHE[cache_key] = (food_dict, time.time())
                 return food_dict
 
         except Exception:
-            pass  # Graceful fallback on timeout/error
+            pass
 
         _API_CACHE[cache_key] = (None, time.time())
         return None
+
+    def query_live_food_sync(self, term: str, repo=None) -> tuple[Optional[dict], Optional[str]]:
+        """
+        Synchronous live query with validation and optional MongoDB persistence.
+        """
+        global _USDA_CIRCUIT_BREAKER_UNTIL, _OFF_CIRCUIT_BREAKER_UNTIL
+        term_clean = term.strip().lower()
+        if not term_clean:
+            return None, None
+
+        # Check in-memory cache
+        for src in ("usda", "open_food_facts"):
+            if (src, term_clean) in _API_CACHE:
+                cached_doc, ts = _API_CACHE[(src, term_clean)]
+                if cached_doc and time.time() - ts < CACHE_TTL_SECONDS:
+                    return cached_doc, cached_doc.get("source", src)
+
+        # 1. USDA FoodData Central (sync)
+        if time.time() >= _USDA_CIRCUIT_BREAKER_UNTIL:
+            try:
+                url = "https://api.nal.usda.gov/fdc/v1/foods/search"
+                params = {"query": term_clean, "pageSize": "2", "api_key": self.usda_api_key}
+                with httpx.Client(timeout=TIMEOUT_CONFIG) as client:
+                    resp = client.get(url, params=params)
+                if resp.status_code == 429:
+                    _USDA_CIRCUIT_BREAKER_UNTIL = time.time() + 180.0
+                elif resp.status_code == 200:
+                    data = resp.json()
+                    for f in data.get("foods", []):
+                        nuts = {n.get("nutrientName", "").lower(): float(n.get("value", 0.0)) for n in f.get("foodNutrients", [])}
+                        cals = float(nuts.get("energy", 0.0))
+                        if cals > 0:
+                            from nutrition_validator import GenericNutritionValidator
+                            desc = (f.get("description") or term_clean).strip().lower()
+                            if GenericNutritionValidator.is_nutritionally_plausible(desc, cals, "Generic Food"):
+                                food_dict = {
+                                    "food_name": desc,
+                                    "food_name_display": desc.title(),
+                                    "category": "Generic Food",
+                                    "calories_kcal": round(cals, 1),
+                                    "calories_per_100g": round(cals, 1),
+                                    "protein_g": round(nuts.get("protein", 0.0), 1),
+                                    "carbs_g": round(nuts.get("carbohydrate, by difference", 0.0), 1),
+                                    "fat_g": round(nuts.get("total lipid (fat)", 0.0), 1),
+                                    "fiber_g": round(nuts.get("fiber, total dietary", 0.0), 1),
+                                    "data_source": "USDA FoodData Central",
+                                    "source": "USDA FoodData Central",
+                                }
+                                _API_CACHE[("usda", term_clean)] = (food_dict, time.time())
+                                if repo:
+                                    try:
+                                        repo.save_learned_food_sync(term_clean, food_dict)
+                                    except Exception:
+                                        pass
+                                return food_dict, "USDA FoodData Central"
+            except Exception:
+                pass
+
+        # 2. Open Food Facts (sync)
+        if time.time() >= _OFF_CIRCUIT_BREAKER_UNTIL:
+            try:
+                url = "https://world.openfoodfacts.org/cgi/search.pl"
+                params = {"search_terms": term_clean, "search_simple": "1", "action": "process", "json": "1", "page_size": "2"}
+                headers = {"User-Agent": USER_AGENT}
+                with httpx.Client(timeout=TIMEOUT_CONFIG) as client:
+                    resp = client.get(url, params=params, headers=headers)
+                if resp.status_code == 503:
+                    _OFF_CIRCUIT_BREAKER_UNTIL = time.time() + 120.0
+                elif resp.status_code == 200:
+                    data = resp.json()
+                    for p in data.get("products", []):
+                        nut = p.get("nutriments", {})
+                        cals = float(nut.get("energy-kcal_100g") or nut.get("energy-kcal") or 0.0)
+                        if cals > 0:
+                            from nutrition_validator import GenericNutritionValidator
+                            pname = (p.get("product_name") or term_clean).strip().lower()
+                            if GenericNutritionValidator.is_nutritionally_plausible(pname, cals, "Packaged Food"):
+                                food_dict = {
+                                    "food_name": pname,
+                                    "food_name_display": pname.title(),
+                                    "category": "Packaged Food",
+                                    "calories_kcal": round(cals, 1),
+                                    "calories_per_100g": round(cals, 1),
+                                    "protein_g": round(float(nut.get("proteins_100g") or 0.0), 1),
+                                    "carbs_g": round(float(nut.get("carbohydrates_100g") or 0.0), 1),
+                                    "fat_g": round(float(nut.get("fat_100g") or 0.0), 1),
+                                    "fiber_g": round(float(nut.get("fiber_100g") or 0.0), 1),
+                                    "data_source": "Open Food Facts",
+                                    "source": "Open Food Facts",
+                                }
+                                _API_CACHE[("open_food_facts", term_clean)] = (food_dict, time.time())
+                                if repo:
+                                    try:
+                                        repo.save_learned_food_sync(term_clean, food_dict)
+                                    except Exception:
+                                        pass
+                                return food_dict, "Open Food Facts"
+            except Exception:
+                pass
+
+        _API_CACHE[("usda", term_clean)] = (None, time.time())
+        _API_CACHE[("open_food_facts", term_clean)] = (None, time.time())
+        return None, None

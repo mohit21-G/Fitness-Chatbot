@@ -77,12 +77,22 @@ def get_settings() -> Settings:
 
 settings = get_settings()
 
+def _determine_mongo_url():
+    try:
+        test_client = MongoClient("mongodb://localhost:27017", serverSelectionTimeoutMS=800)
+        test_client.admin.command('ping')
+        return "mongodb://localhost:27017"
+    except Exception:
+        return settings.MONGODB_URL
+
+_effective_mongo_url = _determine_mongo_url()
+
 # Async client (for FastAPI async endpoints)
-async_client = AsyncIOMotorClient(settings.MONGODB_URL)
+async_client = AsyncIOMotorClient(_effective_mongo_url)
 async_db = async_client[settings.MONGODB_DB_NAME]
 
 # Sync client (for import scripts and sync operations)
-sync_client = MongoClient(settings.MONGODB_URL)
+sync_client = MongoClient(_effective_mongo_url)
 sync_db = sync_client[settings.MONGODB_DB_NAME]
 
 

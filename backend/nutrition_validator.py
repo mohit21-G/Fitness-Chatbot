@@ -153,14 +153,14 @@ class GenericNutritionValidator:
         """
         fn = food_name.lower()
 
-        # 1. Direct piece-weight keyword match
+        # 1. Check if food explicitly specifies serving_unit as 'piece' (1 piece = serving_size_g)
+        if serving_unit.lower() == "piece" and serving_size_g > 0:
+            return serving_size_g
+
+        # 2. Direct piece-weight keyword match
         for key, (p_min, p_typ, p_max) in PIECE_WEIGHT_RANGES.items():
             if key in fn:
                 return p_typ
-
-        # 2. Check if food explicitly specifies serving_unit as 'piece' (1 piece = serving_size_g)
-        if serving_unit.lower() == "piece" and serving_size_g > 0:
-            return serving_size_g
 
         # 3. Check quantity_options for multi-piece base indicators
         # E.g., ['2 pieces', '4 pieces', ...] indicates base serving is 2 pieces

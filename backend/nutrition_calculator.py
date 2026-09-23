@@ -36,6 +36,10 @@ DEFAULT_UNIT_GRAMS: dict[str, float] = {
     "cup": 240.0,         # standard metric cup
     "plate": 300.0,       # full plate
     "glass": 250.0,       # standard glass
+    "can": 330.0,         # standard beverage can
+    "bottle": 500.0,      # standard beverage bottle
+    "litre": 1000.0,      # standard litre
+    "liter": 1000.0,
     "serving": -1,        # sentinel: use food's serving_size_g
     "tablespoon": 15.0,
     "tbsp": 15.0,
@@ -113,9 +117,17 @@ CATEGORY_UNIT_OVERRIDES: dict[str, dict[str, float]] = {
     "chaat": {
         "plate": 150.0,
     },
+    "drink": {
+        "glass": 250.0,
+        "cup": 150.0,
+        "can": 330.0,
+        "bottle": 500.0,
+    },
     "beverage": {
         "glass": 250.0,
         "cup": 150.0,
+        "can": 330.0,
+        "bottle": 500.0,
     },
     "snack": {
         "bowl": 100.0,
@@ -482,6 +494,12 @@ class NutritionCalculator:
         # ── Rule 1: direct weight / volume ─────────────────────────────────────
         if unit in ("g", "ml"):
             return amount
+        if unit in ("litre", "liter", "l"):
+            return amount * 1000.0
+        if unit == "can":
+            return amount * (food["serving_size_g"] if food.get("serving_unit") == "can" and food.get("serving_size_g", 0) > 0 else 330.0)
+        if unit == "bottle":
+            return amount * (food["serving_size_g"] if food.get("serving_unit") == "bottle" and food.get("serving_size_g", 0) > 0 else 500.0)
 
         # ── Rule 3: explicit serving ────────────────────────────────────────────
         if unit == "serving":

@@ -32,7 +32,7 @@ from food_repository import FoodRepositorySync
 # ---------------------------------------------------------------------------
 
 # Minimum fuzzy score (0-100) to accept as a confident match
-FUZZY_CONFIDENT_THRESHOLD = 85
+FUZZY_CONFIDENT_THRESHOLD = 80
 
 # Below this score → return as low-confidence / needs clarification
 FUZZY_LOW_CONFIDENCE_THRESHOLD = 55
@@ -51,15 +51,26 @@ VARIANT_KEYWORDS: list[str] = [
     # cooking methods
     "deep fried", "pan fried", "stir fried", "fried",
     "boiled", "steamed", "baked", "grilled", "roasted",
-    "raw", "fresh",
+        # temperature & serving condition
+    "chilled", "ice cold", "iced", "cold", "thanda", "thandi", "thandu",
+    "hot", "garam", "warm", "fresh", "cold drink", "soft drink", "drink",
     # extras
     "with sugar", "without sugar",
     "with salt", "without salt",
     "masala", "spicy", "plain",
+    # regional styles & preparations
+    "punjabi", "gujarati", "kathiyawadi", "amritsari", "hyderabadi",
+    "maharashtrian", "south indian", "rajasthani", "bengali", "kashmiri",
+    "surti", "kolhapuri", "indori", "bombay", "delhi", "lucknowi",
+    "stuffed", "crispy", "kadak", "soft", "sweet", "spiced", "homestyle",
+    "special", "traditional", "thick", "thin", "dry",
     # portion descriptors (strip these too)
     "piece", "pieces", "slice", "slices",
-    "bowl", "bowls", "cup", "cups", "plate", "plates", "serving", "servings",
-    "glass", "glasses", "katori", "katoris", "bottle", "bottles", "packet", "packets",
+    "bowl", "bowls", "cup", "cups", "kap", "kaps", "plate", "plates", "serving", "servings",
+    "glass", "glasses", "glas", "gilas", "gls", "katori", "katoris",
+    "can", "cans", "ken", "kens", "kain", "kains",
+    "bottle", "bottles", "botal", "botale", "botlo", "btl", "btls", "packet", "packets",
+    "litre", "litres", "liter", "liters", "ml",
     "small", "medium", "large",
     "half", "full",
 ]
@@ -117,10 +128,10 @@ _INDIC_CONSONANTS = {
 _INDIC_MATRAS = {
     # Devanagari
     "ा": "a", "ि": "i", "ी": "i", "ु": "u", "ू": "u",
-    "ृ": "ri", "े": "e", "ै": "ai", "ो": "o", "ौ": "au",
+    "ृ": "ri", "े": "e", "ै": "ai", "ो": "o", "ौ": "au", "ॉ": "o",
     # Gujarati
     "ા": "a", "િ": "i", "ી": "i", "ુ": "u", "ૂ": "u",
-    "ૃ": "ri", "ે": "e", "ૈ": "ai", "ો": "o", "ૌ": "au",
+    "ૃ": "ri", "ે": "e", "ૈ": "ai", "ો": "o", "ૌ": "au", "ૉ": "o",
 }
 
 # Virama / halant — suppresses the inherent vowel of the preceding consonant.
@@ -153,16 +164,29 @@ def transliterate_indic(text: str) -> str:
         c = text[i]
         if c in _INDIC_CONSONANTS:
             base = _INDIC_CONSONANTS[c]
-            # Look ahead: matra, virama, or nasal?
+            offset = 1
             nxt = text[i + 1] if i + 1 < n else ""
+            if nxt in ("\u093C", "\u0ABC"):
+                if base == "j":
+                    base = "z"
+                elif base == "ph":
+                    base = "f"
+                elif base == "k":
+                    base = "q"
+                elif base == "kh":
+                    base = "kh"
+                elif base == "g":
+                    base = "gh"
+                offset = 2
+                nxt = text[i + 2] if i + 2 < n else ""
             if nxt in _INDIC_VIRAMA:
                 # Consonant cluster: no vowel, skip virama
                 out.append(base)
-                i += 2
+                i += offset + 1
                 continue
             if nxt in _INDIC_MATRAS:
                 out.append(base + _INDIC_MATRAS[nxt])
-                i += 2
+                i += offset + 1
                 continue
             # No matra following. Apply schwa deletion: a word-final consonant
             # (end of string, whitespace, or a non-Indic char follows) drops its
@@ -172,7 +196,7 @@ def transliterate_indic(text: str) -> str:
                 out.append(base)
             else:
                 out.append(base + "a")
-            i += 1
+            i += offset
             continue
         if c in _INDIC_VOWELS:
             out.append(_INDIC_VOWELS[c])
@@ -184,7 +208,12 @@ def transliterate_indic(text: str) -> str:
             i += 1
             continue
         if c in _INDIC_NASAL:
-            out.append("n")
+            # Phonetic assimilation: bilabials (p, ph, b, bh, m) take labial nasal 'm'
+            nxt = text[i + 1] if i + 1 < n else ""
+            if nxt in ("प", "फ", "ब", "भ", "म", "પ", "ફ", "બ", "ભ", "મ"):
+                out.append("m")
+            else:
+                out.append("n")
             i += 1
             continue
         if c in _INDIC_IGNORE:
@@ -198,6 +227,62 @@ def transliterate_indic(text: str) -> str:
 
 # Common Indian transliteration noise & typos (user types → canonical)
 TRANSLITERATION_MAP: dict[str, str] = {
+    # Diet / zero / soft drink transliteration & typos
+    "dayet": "diet",
+    "dayat": "diet",
+    "dait":  "diet",
+    "dite":  "diet",
+    "kok":   "coke",
+    "koka":  "coca",
+    "kola":  "cola",
+    "ziro":  "zero",
+    "zeero": "zero",
+    "jhiro": "zero",
+    "monstar": "monster",
+    "monstr":  "monster",
+    "altra":   "ultra",
+    "alatra":  "ultra",
+    "sugaraphri": "sugarfree",
+    "shugaraphri": "sugarfree",
+    "sugarfri": "sugarfree",
+    "shugarfri": "sugarfree",
+    "sugarfre": "sugarfree",
+    "protien": "protein",
+    "drnk": "drink",
+    "enrgy": "energy",
+    "votar": "water",
+    "vatar": "water",
+    "wotar": "water",
+    "sprte": "sprite",
+    "sprit": "sprite",
+    "pepsii": "pepsi",
+    "pepzi": "pepsi",
+    "fantta": "fanta",
+    "moutain": "mountain",
+    "frooty": "frooti",
+    "fruti": "frooti",
+    "phruti": "frooti",
+    "mazaa": "maaza",
+    "maza": "maaza",
+    "thams ap": "thums up",
+    "grin": "green",
+    "ti": "tea",
+    "kold": "cold",
+    "kofi": "coffee",
+    "kophi": "coffee",
+    "protin": "protein",
+    "shek": "shake",
+    "sheradi": "sherdi",
+    "sheradino": "sherdi no",
+    "santara": "santre",
+    "santare": "santre",
+    "santarano": "santre no",
+    "jus": "juice",
+    "sda": "soda",
+    "mirindaa": "mirinda",
+    "7 up": "7up",
+    "seven up": "7up",
+    "coca-cola": "coca cola",
     # bhakri / bhakhri
     "bhkhari": "bhakri",
     "bhkhri": "bhakri",
@@ -221,6 +306,8 @@ TRANSLITERATION_MAP: dict[str, str] = {
     "samoosa": "samosa",
     "samasa": "samosa",
     "smosa": "samosa",
+    # vada / bada
+    "bada": "vada",
     # roti variants
     "chappati": "chapati",
     "rotli": "roti",        # Gujarati
@@ -240,6 +327,14 @@ TRANSLITERATION_MAP: dict[str, str] = {
     "dhal": "dal",
     "daahl": "dal",
     "dahl": "dal",
+    # naan variants
+    "nan": "naan",
+    # butter transliteration (બટર / बटर -> batar)
+    "batar": "butter",
+    # pakoda / pakora
+    "pakoda": "pakora",
+    "pakode": "pakora",
+    "pakodi": "pakora",
     # puri
     "poori": "puri",
     "pooris": "puri",
@@ -269,7 +364,11 @@ TRANSLITERATION_MAP: dict[str, str] = {
     "checken": "chicken",
     "biriyani": "biryani",
     "biriyaani": "biryani",
+    "birayani": "biryani",
+    "biryaani": "biryani",
     "briyani": "biryani",
+    # veg variants
+    "vej": "veg",
     # pizza variants
     "margarita": "margherita",
     "margerita": "margherita",
@@ -293,6 +392,11 @@ TRANSLITERATION_MAP: dict[str, str] = {
     "chaval": "rice",
     "bhat": "rice",
     "bhaat": "rice",
+    "rais": "rice",
+    "raees": "rice",
+    # jeera transliterations
+    "jira": "jeera",
+    "zeera": "jeera",
     # buttermilk — map to the canonical local food_name "chhas"
     "chhaas": "chhas",
     "chaas": "chhas",
@@ -327,10 +431,6 @@ TRANSLITERATION_MAP: dict[str, str] = {
     "haldi milk":   "turmeric milk",
     "badam doodh":  "almond milk",
     "badam milk":   "almond milk",
-    # Cola / soft drink generic terms
-    "cola":         "soda",       # generic cola → soda (DB category match)
-    "cold drink":   "soda",
-    "soft drink":   "soda",
     # Coconut water Gujarati/Hindi variants
     "nariyal pani":  "coconut water",
     "naariyal pani": "coconut water",
@@ -338,6 +438,11 @@ TRANSLITERATION_MAP: dict[str, str] = {
     # Gujarati snacks & dishes
     "gathia": "gathiya",
     "gatiya": "gathiya",
+    "ganthiya": "gathiya",
+    "ganthia": "gathiya",
+    "gatihya": "gathiya",
+    "gtahiya": "gathiya",
+    "gahtiya": "gathiya",
     "khakra": "khakhra",
     "khakhara": "khakhra",
     "fafada": "fafda",
@@ -389,7 +494,7 @@ TRANSLITERATION_MAP: dict[str, str] = {
     "dudhi": "bottle gourd",
     "tindola": "ivy gourd",
     "karela": "bitter gourd",   # bitter gourd → sabji resolver will handle it
-    "methi": "fenugreek",
+    "fenugreek": "methi",
     "palak": "spinach",
     "panipuri": "pani puri",
     "paanipuri": "pani puri",
@@ -404,6 +509,9 @@ TRANSLITERATION_MAP: dict[str, str] = {
     "nudles": "noodles",
     "keechdi": "khichdi",
     "kichdi": "khichdi",
+    "khichadi": "khichdi",
+    "khichadai": "khichdi",
+    "khichri": "khichdi",
     "daliyaa": "daliya",
     "frnch": "french",
     "kaaju": "kaju",
@@ -599,9 +707,18 @@ class SearchResult:
     message: str = ""
 
 
-# ---------------------------------------------------------------------------
-# Normaliser
-# ---------------------------------------------------------------------------
+# Common conversational verbs stripped from food logging queries
+_EAT_VERBS = (
+    "khadha", "khadhi", "khadhu", "khadho", "khaya", "khayi", "khaye", "khai",
+    "lidha", "lidhi", "lidhu", "lidho", "liya", "liye", "lee",
+    "jamya", "jamyu",
+    "pidha", "pidhi", "pidhu", "pidho",
+    "piya", "piyi", "piye", "peeli", "pee",
+    "ate", "eaten", "had", "drank",
+    "eating", "consumed", "consuming", "logged", "logging", "taking", "took", "having", "enjoyed",
+    "maine", "aaje", "i ate", "i had", "i drank", "i logged",
+)
+
 
 def normalize(text: str) -> str:
     """
@@ -639,6 +756,9 @@ def normalize(text: str) -> str:
     # 3. Clean punctuation / non-alphanumeric symbols (e.g. n=me -> n me)
     text = re.sub(r"[^\w\s]", " ", text)
 
+    # 3b. Collapse character repetitions (e.g. "roooti" -> "rooti", "daaaal" -> "daal")
+    text = re.sub(r"([a-z])\1{2,}", r"\1\1", text)
+
     # 4. Collapse whitespace / trim
     text = re.sub(r"\s+", " ", text).strip()
 
@@ -650,37 +770,56 @@ def normalize(text: str) -> str:
 
     # 6. Strip sentence-ending eating/drinking verbs that are never part of a
     #    food name (e.g. "gundi khadha" → "gundi", "dal khadhi" → "dal").
-    #    Only strip at word boundaries; multi-word food names survive.
-    _EAT_VERBS = (
-        "khadha", "khadhi", "khadhu", "khadho", "khaya", "khayi", "khaye", "khai",
-        "lidha", "lidhi", "lidhu", "lidho",
-        "jamya", "jamyu",
-        "pidha", "pidhi", "pidhu",
-        "piya", "piyi",
-        "ate", "eaten", "had", "drank",
-    )
-    for v in _EAT_VERBS:
+    #    Sort by descending length so multi-word verbs ("i ate", "i had") match first.
+    for v in sorted(_EAT_VERBS, key=len, reverse=True):
         text = re.sub(r"\b" + v + r"\b", " ", text)
+
+    # Strip conversational logging subject pronouns at start of phrase
+    text = re.sub(r"^(i|we|me|maine|main|hu|hun)\s+", " ", text)
 
     # Final collapse after replacements
     text = re.sub(r"\s+", " ", text).strip()
     return text
 
 
-def strip_variants(text: str) -> tuple[str, list[str]]:
-    """
-    Remove cooking-method / portion keywords from `text`.
-    Returns (stripped_text, list_of_removed_keywords).
-    """
+_QTY_PAT = re.compile(
+    r"\b\d+(\.\d+)?\s*(g|gm|gms|gram|grams|ml|kg|l|plate|plates|bowl|bowls|cup|cups|kap|kaps|katori|katoris|piece|pieces|packet|packets|serving|servings|slice|slices|glass|glasses|glas|gilas|gls|can|cans|ken|kens|kain|kains|bottle|bottles|botal|botale|botlo|btl|btls|litre|litres|liter|liters)?\b|"
+    r"\b(one|two|three|four|five|six|seven|eight|nine|ten|half|full)\s+(plate|plates|bowl|bowls|cup|cups|kap|kaps|katori|katoris|piece|pieces|packet|packets|serving|servings|slice|slices|glass|glasses|glas|gilas|gls|can|cans|ken|kens|kain|kains|bottle|bottles|botal|botale|botlo|btl|btls|litre|litres|liter|liters)\b",
+    re.IGNORECASE
+)
+
+
+def strip_quantities(text: str) -> tuple[str, list[str]]:
+    """Strip explicit quantity expressions (e.g. '2 plates', '100g', '1 bowl')."""
     found: list[str] = []
 
     def _replacer(m: re.Match) -> str:
-        found.append(m.group(0).lower())
+        found.append(m.group(0).lower().strip())
+        return " "
+
+    stripped = _QTY_PAT.sub(_replacer, text)
+    stripped = re.sub(r"\s+", " ", stripped).strip()
+    return stripped, found
+
+
+def strip_cooking_variants(text: str) -> tuple[str, list[str]]:
+    """Remove cooking-method keywords from text (e.g. 'fried', 'steamed', 'masala')."""
+    found: list[str] = []
+
+    def _replacer(m: re.Match) -> str:
+        found.append(m.group(0).lower().strip())
         return " "
 
     stripped = _VARIANT_PATTERN.sub(_replacer, text)
     stripped = re.sub(r"\s+", " ", stripped).strip()
     return stripped, found
+
+
+def strip_variants(text: str) -> tuple[str, list[str]]:
+    """Legacy helper: Remove cooking-method / portion keywords from `text`."""
+    s_qty, q_found = strip_quantities(text)
+    s_var, v_found = strip_cooking_variants(s_qty)
+    return s_var, q_found + v_found
 
 
 # ---------------------------------------------------------------------------
@@ -717,7 +856,7 @@ class FoodSearchEngine:
         q_norm = normalize(raw_query)
 
         # Helper to check distinct food noun compatibility (never substitute popcorn for leg piece, or kheer for thepla!)
-        def is_compatible(q_str: str, f_doc: dict) -> bool:
+        def is_compatible(q_str: str, f_doc: dict, matched_alias: Optional[str] = None) -> bool:
             if not f_doc:
                 return False
             q_norm_words = set(re.findall(r"\w+", normalize(q_str)))
@@ -728,6 +867,14 @@ class FoodSearchEngine:
             f_words = set(re.findall(r"\w+", normalize(fn)))
             f_raw_words = set(re.findall(r"\w+", fn))
             f_all = f_words.union(f_raw_words)
+            f_disp = (f_doc.get("food_name_display") or "").lower()
+            if f_disp:
+                f_all.update(re.findall(r"\w+", normalize(f_disp)))
+            if matched_alias:
+                f_all.update(re.findall(r"\w+", normalize(matched_alias)))
+            for al in f_doc.get("aliases", []):
+                if isinstance(al, str):
+                    f_all.update(re.findall(r"\w+", normalize(al)))
 
             distinct_terms = {
                 "leg", "drumstick", "breast", "wings", "thigh", "lolipop", "lollipop", "popcorn", "nuggets",
@@ -736,14 +883,49 @@ class FoodSearchEngine:
                 "roti", "rotlo", "paratha", "bhakri", "naan", "dosa", "idli", "khakhra", "fafda",
                 "thepla", "kheer", "halwa", "raita", "salad", "puri", "kulcha", "bhatura", "chilla", "pancake",
                 "shake", "juice", "tea", "coffee", "lassi", "chhas", "cake", "cookie", "biscuit",
-                "burfi", "barfi", "ladoo", "mithai"
+                "burfi", "barfi", "ladoo", "mithai",
+                "gathiya", "khaman", "dhokla", "khandvi", "handvo", "patra", "locho",
+                "kachori", "samosa", "dabeli", "bhel", "chakli", "makhana",
+                "chaas", "sharbat", "mojito", "thandai", "jaljeera", "kahwa"
             }
             q_distinct = q_words.intersection(distinct_terms)
             if q_distinct and not q_distinct.intersection(f_all):
                 return False
 
+            # Strict Disambiguation: Regular vs Diet / Zero variants
+            # Never confuse regular sugary drinks with diet / zero variants.
+            diet_keywords = {
+                "diet", "zero", "sugarfree", "ultra", "white monster", "monster white", "ultra white",
+                "ડાયેટ", "ડાયટ", "ડાઈટ", "ઝીરો", "डाइट", "ज़ीरो", "जीरो", "dite", "sugaraphri", "shugaraphri"
+            }
+            q_str_lower = q_str.lower()
+            fn_lower = fn.lower()
+            q_has_diet = bool(
+                q_words.intersection(diet_keywords) or
+                any(k in q_str_lower for k in (
+                    "sugar free", "sugarfree", "no sugar", "zero sugar",
+                    "pepsi black", "diet", "white monster", "monster white"
+                ))
+            )
+            f_has_diet = bool(
+                f_words.intersection(diet_keywords) or
+                any(k in fn_lower for k in (
+                    "sugar free", "sugarfree", "no sugar", "zero sugar",
+                    "pepsi black", "diet"
+                ))
+            )
+
+            beverage_brands = {"coke", "coca", "pepsi", "sprite", "fanta", "dew", "red bull", "redbull", "monster", "thums up", "thumbs up", "7up", "limca", "sting"}
+            is_bev = bool(any(b in q_str_lower for b in beverage_brands) or any(b in fn_lower for b in beverage_brands))
+            if is_bev:
+                if q_has_diet and not f_has_diet:
+                    return False
+                if not q_has_diet and f_has_diet:
+                    if not (matched_alias and any(matched_alias.lower() == a.lower() for a in f_doc.get("aliases", []))):
+                        return False
+
             # Dish-family incompatibility: a flatbread is never a dessert/soup/raita
-            bread_terms = {"thepla", "roti", "rotlo", "paratha", "bhakri", "naan", "kulcha", "puri", "chilla"}
+            bread_terms = {"thepla", "roti", "rotlo", "paratha", "bhakri", "naan", "kulcha", "puri", "chilla", "chapati", "phulka"}
             dessert_terms = {"kheer", "halwa", "burfi", "barfi", "ladoo", "sweet", "mithai", "cake", "pudding"}
             liquid_terms = {"soup", "shorba", "raita", "juice", "shake"}
 
@@ -752,16 +934,45 @@ class FoodSearchEngine:
             if q_words.intersection(dessert_terms) and f_all.intersection(bread_terms):
                 return False
 
-            heavy_types = {"sandwich", "burger", "pizza", "momos", "roll", "frankie", "taco", "burrito"}
-            for ht in heavy_types:
-                if ht in f_all and ht not in q_words:
-                    return False
+            if not matched_alias:
+                heavy_types = {"sandwich", "burger", "pizza", "momos", "roll", "frankie", "taco", "burrito"}
+                for ht in heavy_types:
+                    if ht in f_all and ht not in q_words:
+                        return False
             return True
 
-        # ── Step 0: Direct match on raw/cleaned query (preserves Indian names like methi thepla, dudhi thepla) ──
-        q_raw_clean = re.sub(r"[^\w\s]", " ", raw_query.lower())
+        # ── Step 0: Direct match on raw query or cleaned query (preserves Indian names & Indic scripts) ──
+        raw_clean = raw_query.strip().lower()
+        if raw_clean:
+            # Also check if stripping sentence-ending verbs yields an exact name/alias
+            raw_no_verb = raw_clean
+            for v in _EAT_VERBS:
+                raw_no_verb = re.sub(r"\b" + v + r"\b", " ", raw_no_verb)
+            raw_no_verb = re.sub(r"\s+", " ", raw_no_verb).strip()
+
+            for cand in ([raw_clean] if raw_no_verb == raw_clean else [raw_clean, raw_no_verb]):
+                f_direct = self.repo.get_by_exact_name(cand)
+                if f_direct and is_compatible(raw_query, f_direct):
+                    return SearchResult(
+                        query_original=raw_query,
+                        query_normalized=q_norm,
+                        match_type=MatchType.EXACT_NAME,
+                        confidence=1.0,
+                        food=f_direct,
+                    )
+                f_direct_alias = self.repo.get_by_exact_alias(cand)
+                if f_direct_alias and is_compatible(raw_query, f_direct_alias, matched_alias=cand):
+                    return SearchResult(
+                        query_original=raw_query,
+                        query_normalized=q_norm,
+                        match_type=MatchType.EXACT_ALIAS,
+                        confidence=1.0,
+                        food=f_direct_alias,
+                    )
+
+        q_raw_clean = re.sub(r"[^\w\s\u0900-\u097F\u0A80-\u0AFF]", " ", raw_query.lower())
         q_raw_clean = re.sub(r"\s+", " ", q_raw_clean).strip()
-        if q_raw_clean and q_raw_clean != q_norm:
+        if q_raw_clean and q_raw_clean != raw_clean and q_raw_clean != q_norm:
             f_direct = self.repo.get_by_exact_name(q_raw_clean)
             if f_direct and is_compatible(raw_query, f_direct):
                 return SearchResult(
@@ -772,7 +983,7 @@ class FoodSearchEngine:
                     food=f_direct,
                 )
             f_direct_alias = self.repo.get_by_exact_alias(q_raw_clean)
-            if f_direct_alias and is_compatible(raw_query, f_direct_alias):
+            if f_direct_alias and is_compatible(raw_query, f_direct_alias, matched_alias=q_raw_clean):
                 return SearchResult(
                     query_original=raw_query,
                     query_normalized=q_norm,
@@ -794,7 +1005,7 @@ class FoodSearchEngine:
 
         # ── Step 2: Exact alias ─────────────────────────────────────────
         food = self.repo.get_by_exact_alias(q_norm)
-        if food and is_compatible(raw_query, food):
+        if food and is_compatible(raw_query, food, matched_alias=q_norm):
             return SearchResult(
                 query_original=raw_query,
                 query_normalized=q_norm,
@@ -803,29 +1014,184 @@ class FoodSearchEngine:
                 food=food,
             )
 
+        # ── Canonical Indian base dishes set ────────────────────────────
+        base_dishes = {
+            "thepla", "paratha", "roti", "chapati", "phulka", "rotlo", "rotla", "bhakri", "naan", "kulcha", "puri", "poori",
+            "bhatura", "bhature", "dosa", "idli", "vada", "wada", "khichdi", "rice", "bhat", "pulao", "biryani",
+            "dal", "daal", "kadhi", "curry", "sabji", "sabzi", "shaak", "shak", "saag",
+            "paneer", "chaat", "lassi", "chai", "tea", "coffee", "juice", "sharbat", "halwa", "kheer",
+            "ladoo", "laddu", "salad", "soup", "chutney", "raita", "papad", "tikki", "pakora", "bhajiya",
+            "poha", "upma", "pav", "chole", "rajma", "milk", "pani", "bhaji", "misal", "usal", "sev",
+            "farsan", "kachori", "samosa", "dhokla", "khandvi", "handvo", "fafda", "khakhra", "patra",
+            "bhel", "chivda", "roll", "frankie", "momos", "biscuit", "noodles",
+            "gathiya", "ganthiya", "khaman", "locho", "chorafali", "chevdo", "mamra", "makhana",
+            "chakli", "murukku", "bonda", "namkeen", "bhujia", "bhujiya", "mathri", "suvali",
+            "khaja", "dabeli", "papdi", "papadi", "chegodi", "nippattu", "shankarpali", "shakarpara",
+            "shakkarpara", "chana", "gota", "idada", "bhakarwadi", "bakharwadi", "ghooghra", "ghughra",
+            "mathiya", "nimki", "kodbale", "thattai", "chekkalu", "khurma", "khasta", "bhalla", "pakodi",
+            "coke", "cola", "pepsi", "sprite", "fanta", "dew", "limca", "chaas", "chhas", "soda", "mojito", "kahwa", "thandai", "shikanji", "jaljeera", "sting"
+        }
+
+        # ── Step 2c-1: Quantity-only strip exact match ──────────────────
+        # Check quantity-stripped query first so authentic compound food names
+        # (e.g. "masala mamra", "roasted makhana", "fried kachori") resolve
+        # to their full authentic food entry before stripping cooking variants.
+        stripped_qty, removed_qty = strip_quantities(q_norm)
+        if removed_qty and stripped_qty:
+            food_qty = self.repo.get_by_exact_name(stripped_qty) or self.repo.get_by_exact_alias(stripped_qty)
+            if food_qty and is_compatible(raw_query, food_qty, matched_alias=stripped_qty):
+                return SearchResult(
+                    query_original=raw_query,
+                    query_normalized=q_norm,
+                    match_type=MatchType.VARIANT_STRIP,
+                    confidence=0.95,
+                    food=food_qty,
+                    variant_detected=", ".join(removed_qty),
+                    stripped_query=stripped_qty,
+                )
+            base_for_split = stripped_qty
+        else:
+            base_for_split = q_norm
+
+        # ── Step 2c-2: Cooking variant strip exact match ────────────────
+        stripped_var, removed_var = strip_cooking_variants(base_for_split)
+        if removed_var and stripped_var:
+            food_var = self.repo.get_by_exact_name(stripped_var) or self.repo.get_by_exact_alias(stripped_var)
+            if food_var and is_compatible(raw_query, food_var, matched_alias=stripped_var):
+                return SearchResult(
+                    query_original=raw_query,
+                    query_normalized=q_norm,
+                    match_type=MatchType.VARIANT_STRIP,
+                    confidence=0.95,
+                    food=food_var,
+                    variant_detected=", ".join(removed_qty + removed_var),
+                    stripped_query=stripped_var,
+                )
+            q_norm_for_split = stripped_var
+        else:
+            q_norm_for_split = base_for_split
+
+        # ── Step 2b: Generic joined-words split ─────────────────────────
+        tokens = q_norm_for_split.split()
+        split_tokens = []
+        has_joined = False
+        for tok in tokens:
+            if len(tok) >= 6 and not (self.repo.get_by_exact_name(tok) or self.repo.get_by_exact_alias(tok)):
+                # 1. Exact base dish substring in tok
+                bases = [b for b in base_dishes if len(b) >= 3 and b in tok]
+                if bases:
+                    bases.sort(key=lambda b: len(b), reverse=True)
+                    best_b = bases[0]
+                    idx = tok.find(best_b)
+                    prefix = tok[:idx]
+                    suffix = tok[idx + len(best_b):]
+                    parts = [p for p in [prefix, best_b, suffix] if p]
+                    if len(parts) > 1:
+                        split_tokens.extend(parts)
+                        has_joined = True
+                        continue
+
+                # 2. Fuzzy suffix base dish match (e.g. "bhavnagarigahtiya" -> prefix "bhavnagari", base "gathiya")
+                split_fuzzy = False
+                for b in base_dishes:
+                    if len(b) >= 5 and len(tok) >= len(b) + 3:
+                        for offset in (0, -1, 1):
+                            s_len = len(b) + offset
+                            if 0 < s_len < len(tok):
+                                tok_suffix = tok[-s_len:]
+                                if fuzz.ratio(tok_suffix, b) >= 80.0:
+                                    prefix = tok[:-s_len]
+                                    split_tokens.extend([prefix, b])
+                                    has_joined = True
+                                    split_fuzzy = True
+                                    break
+                    if split_fuzzy:
+                        break
+                if split_fuzzy:
+                    continue
+
+                # 3. Two subwords both in repository
+                split_done = False
+                for i in range(3, len(tok) - 2):
+                    w1, w2 = tok[:i], tok[i:]
+                    if (self.repo.get_by_exact_name(w1) or self.repo.get_by_exact_alias(w1)) and \
+                       (self.repo.get_by_exact_name(w2) or self.repo.get_by_exact_alias(w2)):
+                        split_tokens.extend([w1, w2])
+                        split_done = True
+                        has_joined = True
+                        break
+                if not split_done:
+                    split_tokens.append(tok)
+            else:
+                split_tokens.append(tok)
+
+        # Base dish token typo normalization (e.g. "hadnvo" -> "handvo", "pakroa" -> "pakora", "lcoho" -> "locho")
+        fixed_tokens = []
+        has_typo_fix = False
+        for tok in split_tokens:
+            if len(tok) >= 4 and tok not in base_dishes and not (self.repo.get_by_exact_name(tok) or self.repo.get_by_exact_alias(tok)):
+                best_b = None
+                best_r = 0.0
+                for b in base_dishes:
+                    if len(b) >= 4 and abs(len(tok) - len(b)) <= 2:
+                        r = fuzz.ratio(tok, b)
+                        if r >= 80.0 and r > best_r:
+                            best_r = r
+                            best_b = b
+                if best_b:
+                    fixed_tokens.append(best_b)
+                    has_typo_fix = True
+                    continue
+            fixed_tokens.append(tok)
+        if has_typo_fix:
+            split_tokens = fixed_tokens
+            has_joined = True
+
+        if has_joined:
+            q_norm_joined = " ".join(split_tokens)
+            food_j = self.repo.get_by_exact_name(q_norm_joined) or self.repo.get_by_exact_alias(q_norm_joined)
+            if food_j and is_compatible(raw_query, food_j, matched_alias=q_norm_joined):
+                return SearchResult(
+                    query_original=raw_query,
+                    query_normalized=q_norm_joined,
+                    match_type=MatchType.EXACT_NAME,
+                    confidence=0.95,
+                    food=food_j,
+                )
+            q_norm = q_norm_joined
+
         # ── Step 3b: Compound food resolution: [modifier] + [base dish] ──
-        # If the base dish exists in the curated DB and matches the head word of query,
-        # resolve to the compound food while preserving dish family integrity.
-        tokens = q_raw_clean.split()
-        if len(tokens) >= 2:
-            base_cand = tokens[-1]
-            if base_cand in ("thepla", "paratha", "roti", "rotlo", "bhakri", "dosa", "khichdi", "rice"):
-                base_food = self.repo.get_by_exact_name(base_cand)
-                if not base_food:
-                    base_food = self.repo.get_by_exact_alias(base_cand)
-                if base_food and is_compatible(raw_query, base_food):
-                    compound_name = q_raw_clean
-                    compound_display = " ".join(t.capitalize() for t in tokens)
-                    compound_food = dict(base_food)
-                    compound_food["food_name"] = compound_name
-                    compound_food["food_name_display"] = compound_display
-                    return SearchResult(
-                        query_original=raw_query,
-                        query_normalized=q_norm,
-                        match_type=MatchType.EXACT_NAME,
-                        confidence=0.95,
-                        food=compound_food,
-                    )
+        # In Indian culinary syntax, compounds are head-final: [modifier] + [base dish]
+        # (e.g. "aloo paratha", "methi thepla", "butter locho", "bread pakora").
+        # The base dish MUST be the head noun (tok_list[-1]). Only if tok_list[-1] is
+        # not a recognized dish do we check head-initial categories (dal, curry, kadhi, soup, salad, juice).
+        head_initial_families = {
+            "dal", "daal", "kadhi", "curry", "sabji", "sabzi", "shaak", "shak",
+            "saag", "juice", "sharbat", "halwa", "kheer", "soup", "salad", "chutney", "raita"
+        }
+        for tok_list in (q_norm.split(), q_raw_clean.split()):
+            if len(tok_list) >= 2:
+                candidates_to_try = [tok_list[-1]]
+                if tok_list[0] in head_initial_families:
+                    candidates_to_try.append(tok_list[0])
+                for base_cand in candidates_to_try:
+                    if base_cand in base_dishes or self.repo.get_by_exact_name(base_cand) or self.repo.get_by_exact_alias(base_cand):
+                        base_food = self.repo.get_by_exact_name(base_cand)
+                        if not base_food:
+                            base_food = self.repo.get_by_exact_alias(base_cand)
+                        if base_food and is_compatible(raw_query, base_food):
+                            compound_name = " ".join(tok_list)
+                            compound_display = " ".join(t.capitalize() for t in tok_list)
+                            compound_food = dict(base_food)
+                            compound_food["food_name"] = compound_name
+                            compound_food["food_name_display"] = compound_display
+                            return SearchResult(
+                                query_original=raw_query,
+                                query_normalized=q_norm,
+                                match_type=MatchType.EXACT_NAME,
+                                confidence=0.95,
+                                food=compound_food,
+                            )
 
         # ── Step 3c: Generic <prep>+<food> and <food>+water/pani resolver ──
         # Runs BEFORE variant strip so preparation words produce correctly-named
@@ -1193,6 +1559,9 @@ class FoodSearchEngine:
                         return True
                     shorter, longer = (qw, fw) if len(qw) <= len(fw) else (fw, qw)
                     if len(shorter) >= 3 and longer.startswith(shorter):
+                        return True
+                    # Enhanced typo tolerance for transposition, missing character, and keyboard slips
+                    if len(shorter) >= 4 and fuzz.ratio(qw, fw) >= 75.0:
                         return True
             return False
 
