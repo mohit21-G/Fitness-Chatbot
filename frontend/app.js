@@ -463,7 +463,14 @@ async function showSummary() {
   modal.classList.remove('hidden');
 
   const res = await api.getDailySummary();
-  if (!res.ok) { body.innerHTML = '<p style="color:var(--error)">Failed to load summary</p>'; return; }
+  if (!res.ok) {
+    if (res.status === 404) {
+      body.innerHTML = '<p style="color:var(--error);margin-bottom:0.75rem">User session not found on server.</p><button onclick="handleLogout()" class="btn-primary" type="button">Log In Again</button>';
+      return;
+    }
+    body.innerHTML = '<p style="color:var(--error)">Failed to load summary</p>';
+    return;
+  }
 
   const d   = res.data;
   const pct = d.calorie_target > 0 ? Math.min((d.net_calories / d.calorie_target) * 100, 100) : 0;
@@ -563,7 +570,14 @@ async function showProfile() {
   modal.classList.remove('hidden');
 
   const [profileRes, targetRes] = await Promise.all([api.getProfile(), api.getCalorieTarget()]);
-  if (!profileRes.ok) { body.innerHTML = '<p style="color:var(--error)">Failed to load profile</p>'; return; }
+  if (!profileRes.ok) {
+    if (profileRes.status === 404) {
+      body.innerHTML = '<p style="color:var(--error);margin-bottom:0.75rem">User session not found on server.</p><button onclick="handleLogout()" class="btn-primary" type="button">Log In Again</button>';
+      return;
+    }
+    body.innerHTML = '<p style="color:var(--error)">Failed to load profile</p>';
+    return;
+  }
 
   renderProfileForm(profileRes.data, targetRes.ok ? targetRes.data : {});
 }

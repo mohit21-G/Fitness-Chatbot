@@ -11,7 +11,9 @@ from dataclasses import dataclass, field
 from datetime import date, datetime, timedelta, timezone
 from typing import Optional
 
-from llm_service import LLMService, LLMParseResult, Intent
+IST = timezone(timedelta(hours=5, minutes=30))
+
+from llm_service import LLMService, LLMParseResult, Intent, classify_recommendation_intent
 from food_repository import FoodRepositorySync
 from search_engine import FoodSearchEngine
 from quantity_parser import parse_quantity, ParsedQuantity
@@ -294,6 +296,7 @@ class ChatbotEngine:
             Intent.LOG_FOOD, Intent.LOG_EXERCISE, Intent.GET_SUMMARY,
             Intent.GET_CALORIES, Intent.GET_PROFILE, Intent.QUERY_MEAL,
             Intent.QUERY_EXERCISE, Intent.SKIP_MEAL, Intent.RECOMMEND_WORKOUT,
+            Intent.RECOMMEND_MEAL,
         }
         if intent not in _actionable and not (parse_result.food_query or "").strip():
             salvaged_q = self._clean_food_query(message, original_message=message)
@@ -370,15 +373,23 @@ class ChatbotEngine:
             if qty_parsed.amount is not None and qty_parsed.unit:
                 parse_result.quantity = f"{qty_parsed.amount} {qty_parsed.unit}"
 
+        # 4. Recommendation intent disambiguation / override
+        rec_intent = classify_recommendation_intent(message)
+        if rec_intent:
+            intent = rec_intent
+            parse_result.intent = rec_intent
+
         # ── Route ────────────────────────────────────────────────────────
         if intent == Intent.GREETING:
             response = self._handle_greeting()
         elif intent == Intent.RECOMMEND_WORKOUT:
             response = await self._handle_recommend_workout()
+        elif intent == Intent.RECOMMEND_MEAL:
+            response = await self._handle_recommend_meal(parse_result, original_message=message)
         elif intent == Intent.LOG_FOOD:
             response = await self._handle_log_food(parse_result, auto_log, original_message=message)
         elif intent == Intent.LOG_EXERCISE:
-            response = await self._handle_log_exercise(parse_result, auto_log)
+            response = await self._handle_log_exercise(parse_result, auto_log, original_message=message)
         elif intent == Intent.GET_SUMMARY:
             response = await self._handle_get_summary(parse_result)
         elif intent == Intent.GET_CALORIES:
@@ -641,21 +652,34 @@ class ChatbotEngine:
         User has replied with the exercise amount (e.g. "50") after the bot asked
         "Ketla pushups mara?". Parse the amount, calculate calories, show confirmation.
         """
+        # If user replied with a full structured workout routine, route to routine handler
+        from exercise_calculator import parse_workout_routine
+        routine = parse_workout_routine(message)
+        if routine and routine.items:
+            await self.flow_mgr.save_flow_state(PendingFlow())
+            return await self._handle_workout_routine(routine, message, auto_log=False)
+
         ex_data = flow.exercise_data or {}
         exercise_id = ex_data.get("exercise_id")
         native_unit = ex_data.get("native_unit", "reps")
         log_date_str = ex_data.get("log_date", "today")
 
         # Parse the amount from user's reply
-        ex_parsed = parse_exercise_input(message.strip())
-        amount = ex_parsed.amount
-
-        # If they gave just a number, that's fine
-        if amount is None:
-            import re as _re
-            m = _re.search(r"\d+(?:\.\d+)?", message)
-            if m:
-                amount = float(m.group())
+        from exercise_calculator import parse_duration_minutes
+        parsed_dur = parse_duration_minutes(message.strip())
+        is_duration_msg = any(w in message.lower() for w in ["hour", "houre", "hr", "ghanta", "kalak", "min", "sec"])
+        if parsed_dur is not None and (native_unit in ("minutes", "mins", "minute") or is_duration_msg):
+            amount = parsed_dur
+            parsed_unit = "minutes"
+        else:
+            ex_parsed = parse_exercise_input(message.strip())
+            amount = ex_parsed.amount
+            parsed_unit = ex_parsed.unit
+            if amount is None:
+                import re as _re
+                m = _re.search(r"\d+(?:\.\d+)?", message)
+                if m:
+                    amount = float(m.group())
 
         if amount is None or amount <= 0:
             # Still no amount — ask again
@@ -695,7 +719,7 @@ class ChatbotEngine:
         exercise["exercise_name_display"] = display_name
 
         calc_result = ExerciseCalculator().calculate(
-            exercise, amount=amount, unit=None, weight_kg=self._user_weight_kg(),
+            exercise, amount=amount, unit=parsed_unit, weight_kg=self._user_weight_kg(),
         )
         log_date = self._resolve_date(log_date_str)
 
@@ -707,7 +731,7 @@ class ChatbotEngine:
             "exercise_name": exercise["exercise_name"],
             "exercise_name_display": display_name,
             "category": exercise["category"],
-            "exercise_input": f"{int(amount)} {native_unit} {exercise['exercise_name']}",
+            "exercise_input": f"{int(amount)} {parsed_unit or native_unit} {exercise['exercise_name']}",
             "amount": calc_result.amount,
             "unit": calc_result.unit,
             "calories_min": calc_result.calories_min,
@@ -919,45 +943,257 @@ class ChatbotEngine:
     # Workout Recommendation
     # ------------------------------------------------------------------
 
+    def _looks_like_meal_recommendation(self, message: str) -> bool:
+        """
+        Deterministically detect a nutrition / meal recommendation request.
+        Must NEVER route to workout recommendations.
+        """
+        return classify_recommendation_intent(message) == Intent.RECOMMEND_MEAL
+
     def _looks_like_workout_recommendation(self, message: str) -> bool:
         """
         Deterministically detect a workout recommendation request.
-        Must NOT fire on exercise LOG messages ("did 30 min yoga") or
-        exercise READ messages ("show my workout history").
+        Must NOT fire on:
+        - Exercise LOG messages ("did 30 min yoga")
+        - Exercise READ messages ("show my workout history")
+        - Meal / nutrition recommendation requests ("post workout meal", "suggest high protein breakfast")
         """
-        m = " " + message.lower().strip() + " "
-
-        # Hard exclusion: actual exercise logs have a quantity/amount
-        import re as _re
-        if _re.search(r"\b\d+\s*(?:min|minute|minutes|rep|reps|set|sets|km|steps|laps|rounds|times)\b", m):
+        rec_intent = classify_recommendation_intent(message)
+        if rec_intent == Intent.RECOMMEND_MEAL:
             return False
-        # Also exclude eating verbs that can mention workout context
-        _eating = (" ate ", " eat ", " eaten ", " khaya ", " khadha ", " khadhi ",
-                   " khadhu ", " khadho ", " khayi ", " pidhi ", " piya ", " drank ")
-        if any(v in m for v in _eating):
-            return False
+        if rec_intent == Intent.RECOMMEND_WORKOUT:
+            return True
+        return False
 
-        # Recommendation cue words
-        _rec_cues = (
-            "recommend", "suggest", "suchav", "suchavo", "suchavjo",
-            "what should i do", "what to do tomorrow", "what workout",
-            "workout plan", "training plan", "exercise plan",
-            "what exercise", "which exercise",
-            "kal kya karna", "kal kya exercise", "aavti kal",
-            "mane workout", "workout suchav", "next workout",
-            "workout for tomorrow", "exercise for tomorrow",
-            "plan for tomorrow", "tomorrow workout", "tomorrow exercise",
-            "kal workout", "kal exercise",
-        )
-        if not any(c in m for c in _rec_cues):
-            return False
+    async def _handle_recommend_meal(self, parsed: Optional[LLMParseResult] = None, original_message: str = "") -> ChatResponse:
+        """
+        Build and return a personalized nutrition/meal recommendation using the user's
+        profile, daily calorie/macro targets, logged intake today, and meal context.
+        Supports English, Hindi, and Gujarati responses.
+        """
+        try:
+            from bmr_tdee_calculator import compute_full_target
 
-        # Must contain a forward-looking or planning cue (avoids "did you recommend X")
-        _forward = (
-            "tomorrow", "next", "kal", "aavti kal", "suggest", "recommend",
-            "plan", "should", "chahiye", "karna chahiye", "suchav",
-        )
-        return any(f in m for f in _forward)
+            msg = (original_message or "").lower()
+            today = datetime.now(IST).date()
+            user_id = self.user.get("user_id", "")
+
+            # Get user calorie & macro target
+            target = compute_full_target(self.user)
+            calorie_target = target.calorie_target
+            protein_target = getattr(target, "protein_target_g", getattr(target, "protein_g", 50.0))
+            goal = self.user.get("goal", "maintain")
+
+            # Get today's consumed food totals to find remaining calories
+            consumed_cals = 0.0
+            consumed_protein = 0.0
+            try:
+                food_totals = await self.log_repo.get_daily_food_totals(user_id, today)
+                consumed_cals = float(food_totals.get("total_calories", 0.0) or 0.0)
+                consumed_protein = float(food_totals.get("total_protein", 0.0) or 0.0)
+            except Exception:
+                pass
+
+            remaining_cals = max(0, int(calorie_target - consumed_cals))
+            remaining_protein = max(0, int(protein_target - consumed_protein))
+
+            # Detect meal context
+            meal_context = "general"
+            if any(w in msg for w in ["post workout", "post-workout", "after workout", "after gym", "gym pachi", "gym baad"]):
+                meal_context = "post_workout"
+            elif any(w in msg for w in ["pre workout", "pre-workout", "before workout", "before gym", "gym pehle"]):
+                meal_context = "pre_workout"
+            elif any(w in msg for w in ["breakfast", "nashta", "nasto", "savare", "subah"]):
+                meal_context = "breakfast"
+            elif any(w in msg for w in ["lunch", "dopahar", "bapore", "bapor"]):
+                meal_context = "lunch"
+            elif any(w in msg for w in ["dinner", "raat", "ratre"]):
+                meal_context = "dinner"
+            elif any(w in msg for w in ["snack", "snacks", "sanje", "shaam"]):
+                meal_context = "snack"
+
+            # Recommendations by context and language
+            if self.lang == "gu":
+                title_map = {
+                    "breakfast": "સવારના નાસ્તા (Breakfast) માટે સ્વસ્થ સૂચનો:",
+                    "lunch": "બપોરના ભોજન (Lunch) માટે સંતુલિત સૂચનો:",
+                    "dinner": "રાત્રિ ભોજન (Dinner) માટે હલકા અને પૌષ્ટિક સૂચનો:",
+                    "snack": "સાંજના નાસ્તા (Snacks) માટે પૌષ્ટિક વિકલ્પો:",
+                    "post_workout": "વર્કઆઉટ પછી (Post-Workout) પ્રોટીન-યુક્ત ખોરાક:",
+                    "pre_workout": "વર્કઆઉટ પહેલાં (Pre-Workout) એનર્જી આપતો ખોરાક:",
+                    "general": "તમારા લક્ષ્ય મુજબ સ્વસ્થ આહાર સૂચનો:",
+                }
+                options_map = {
+                    "breakfast": [
+                        "૧. વઘારેલા પૌંઆ (શેકેલા સીંગદાણા અને અંકુરિત મગ સાથે) (~૨૨૦ kcal, ૬g protein)",
+                        "૨. બેસન અથવા મગની દાળનો પુડલો (પનીરના છીણ સાથે) (~૨૪૦ kcal, ૧૪g protein)",
+                        "૩. ઓટ્સ દૂધ અને બદામ/ચિયા સીડ્સ સાથે (~૨૬૦ kcal, ૯g protein)",
+                        "૪. બાફેલા ઈંડા (૨ નંગ) અથવા પનીર ભુરજી + ૧ રોટલી (~૨૫૦ kcal, ૧૫g protein)",
+                    ],
+                    "lunch": [
+                        "૧. ૨ ઘઉં/બાજરીની રોટલી + ૧ વાટકી મિક્સ દાળ/કઠોળ + ૧ વાટકી શાક + કાચું સલાડ (~૩૮૦ kcal, ૧૬g protein)",
+                        "૨. દાળ, બ્રાઉન રાઇસ / ખીચડી, લીલું શાક અને ૧ ગ્લાસ છાશ (~૩૫૦ kcal, ૧૨g protein)",
+                        "૩. પનીર / સોયા સબ્જી, ૧ રોટલો અને તાજી છાશ (~૪૨૦ kcal, ૨૦g protein)",
+                    ],
+                    "dinner": [
+                        "૧. મગની દાળની હલકી ખીચડી, શેકેલો પાપડ અને તાજી છાશ (~૩૦૦ kcal, ૧૦g protein)",
+                        "૨. દૂધી/પાલક સૂપ સાથે પનીર અથવા ટોફુ ટિક્કા (~૨૪૦ kcal, ૧૬g protein)",
+                        "૩. ૧-૨ ફુલકા રોટલી + વઘારેલું કઠોળ (મગ/ચણા) + કાકડી/ટામેટા સલાડ (~૩૨૦ kcal, ૧૩g protein)",
+                    ],
+                    "snack": [
+                        "૧. શેકેલા મખાના (૧ વાટકી) (~૧૧૦ kcal, ૩g protein)",
+                        "૨. બાફેલા ચણા/મગની ચાટ (લીંબુ અને કાકડી સાથે) (~૧૫૦ kcal, ૭g protein)",
+                        "૩. ૧ ગ્લાસ જીરા છાશ અને મુઠ્ઠીભર શેકેલા ચણા (~૧૩૦ kcal, ૬g protein)",
+                    ],
+                    "post_workout": [
+                        "૧. વ્હે પ્રોટીન શેક (૧ સ્કૂપ) + ૧ કેળું (~૨૨૦ kcal, ૨૬g protein)",
+                        "૨. ૩ બાફેલા ઈંડા (સફેદ ભાગ) + ૧ ટોસ્ટ (~૧૬૦ kcal, ૧૪g protein)",
+                        "૩. પનીર ભુરજી (૧૦૦g) અથવા શેકેલા સોયા ચંક્સ (~૧૮૦ kcal, ૧૮g protein)",
+                        "૪. મીઠો વગરનું દહીં/ગ્રીક યોગર્ટ ડ્રાયફ્રૂટ્સ સાથે (~૧૭૦ kcal, ૧૨g protein)",
+                    ],
+                    "pre_workout": [
+                        "૧. ૧ કેળું અને ૫-૬ બદામ (~૧૪૦ kcal, ૩g protein)",
+                        "૨. ૨ ખજૂર પીનટ બટર સાથે (~૧૫૦ kcal, ૪g protein)",
+                        "૩. હલકી ઓટ્સ પોરીજ (~૧૬૦ kcal, ૫g protein)",
+                    ],
+                    "general": [
+                        "૧. પ્રોટીન-યુક્ત આહાર: દાળ, કઠોળ, પનીર, ઈંડા અને દહીંનો ઉપયોગ વધારો.",
+                        "૨. વધુ ફાઇબર અને વિટામિન્સ માટે દરરોજ પુષ્કળ સલાડ અને શાકભાજી લો.",
+                        "૩. તળેલા અને ખાંડવાળા ખોરાકથી દૂર રહો.",
+                    ],
+                }
+                body = f"🥗 **{title_map[meal_context]}**\n\n"
+                body += "\n".join(options_map[meal_context])
+                body += f"\n\n📊 *દૈનિક લક્ષ્ય: {calorie_target} kcal | બાકી: ~{remaining_cals} kcal | પ્રોટીન લક્ષ્ય: {protein_target}g*"
+
+            elif self.lang == "hi":
+                title_map = {
+                    "breakfast": "सुबह के नाश्ते (Breakfast) के लिए पौष्टिक सुझाव:",
+                    "lunch": "दोपहर के खाने (Lunch) के लिए संतुलित सुझाव:",
+                    "dinner": "रात के खाने (Dinner) के लिए हल्के और हेल्दी सुझाव:",
+                    "snack": "शाम के नाश्ते (Snacks) के लिए हेल्दी ऑप्शंस:",
+                    "post_workout": "वर्कआउट के बाद (Post-Workout) प्रोटीन से भरपूर डाइट:",
+                    "pre_workout": "वर्कआउट से पहले (Pre-Workout) एनर्जी देने वाला खाना:",
+                    "general": "आपके फिटनेस गोल के अनुसार हेल्दी डाइट सुझाव:",
+                }
+                options_map = {
+                    "breakfast": [
+                        "1. पोहा (मूंगफली और अंकुरित मूंग के साथ) (~220 kcal, 6g protein)",
+                        "2. बेसन या मूंग दाल का चीला पनीर स्टफिंग के साथ (~240 kcal, 14g protein)",
+                        "3. ओट्स दूध, बादाम और चिया सीड्स के साथ (~260 kcal, 9g protein)",
+                        "4. 2 उबले अंडे / पनीर भुर्जी + 1 मल्टीग्रेन टोस्ट (~250 kcal, 15g protein)",
+                    ],
+                    "lunch": [
+                        "1. 2 रोटी + 1 कटोरी दाल/राजमा/छोले + 1 कटोरी हरी सब्जी + सलाद (~380 kcal, 16g protein)",
+                        "2. ब्राउन राइस/दाल खिचड़ी + ताजी छाछ + सलाद (~350 kcal, 12g protein)",
+                        "3. पनीर/सोया भुर्जी + 2 फुल्का रोटी + खीरा-टमाटर सलाद (~400 kcal, 20g protein)",
+                    ],
+                    "dinner": [
+                        "1. मूंग दाल खिचड़ी, भुना हुआ पापड़ और दही/छाछ (~300 kcal, 10g protein)",
+                        "2. ग्रिल्ड पनीर/टोफू और सौते की हुई सब्जियां (~240 kcal, 16g protein)",
+                        "3. 1-2 रोटी + पालक दाल + ताजा सलाद (~320 kcal, 13g protein)",
+                    ],
+                    "snack": [
+                        "1. रोस्टेड मखाना (1 कटोरी) (~110 kcal, 3g protein)",
+                        "2. उबले चने की चाट (नींबू और प्याज-टमाटर के साथ) (~150 kcal, 7g protein)",
+                        "3. 1 ग्लास जीरा छाछ + मुट्ठीभर भुने चने (~130 kcal, 6g protein)",
+                    ],
+                    "post_workout": [
+                        "1. व्हे प्रोटीन शेक (1 स्कूप) + 1 केला (~220 kcal, 26g protein)",
+                        "2. 3 उबले अंडे (सफेद भाग) + 1 ब्राउन ब्रेड टोस्ट (~160 kcal, 14g protein)",
+                        "3. पनीर भुर्जी (100g) या सत्तू ड्रिंक (~180 kcal, 16g protein)",
+                        "4. ग्रीक योगर्ट / ताजा दही ड्राईफ्रूट्स के साथ (~170 kcal, 12g protein)",
+                    ],
+                    "pre_workout": [
+                        "1. 1 केला और 5-6 बादाम (~140 kcal, 3g protein)",
+                        "2. 2 खजूर पीनट बटर के साथ (~150 kcal, 4g protein)",
+                        "3. हल्की ओट्स कटोरी (~160 kcal, 5g protein)",
+                    ],
+                    "general": [
+                        "1. प्रोटीन स्रोतों (दाल, पनीर, सोया, अंडे) को हर भोजन में शामिल करें।",
+                        "2. रिफाइंड चीनी और ज्यादा तेल-मसाले से बचें।",
+                        "3. दिन भर में पर्याप्त पानी और फाइबर युक्त सलाद लें।",
+                    ],
+                }
+                body = f"🥗 **{title_map[meal_context]}**\n\n"
+                body += "\n".join(options_map[meal_context])
+                body += f"\n\n📊 *दैनिक लक्ष्य: {calorie_target} kcal | शेष: ~{remaining_cals} kcal | प्रोटीन लक्ष्य: {protein_target}g*"
+
+            else:
+                title_map = {
+                    "breakfast": "Nutritious & High-Protein Breakfast Ideas:",
+                    "lunch": "Balanced & Wholesome Lunch Suggestions:",
+                    "dinner": "Light, Nourishing Dinner Recommendations:",
+                    "snack": "Smart & Healthy Snack Options:",
+                    "post_workout": "Post-Workout Recovery & Protein Fuel:",
+                    "pre_workout": "Pre-Workout Energy Boost Options:",
+                    "general": "Personalized Healthy Meal Recommendations:",
+                }
+                options_map = {
+                    "breakfast": [
+                        "1. Moong Dal or Besan Chilla with grated paneer (~240 kcal, 14g protein)",
+                        "2. Rolled Oats porridge with milk, almonds & chia seeds (~260 kcal, 9g protein)",
+                        "3. 2 Boiled eggs / Paneer bhurji with 1 slice whole wheat toast (~250 kcal, 15g protein)",
+                        "4. Vegetable Poha with roasted peanuts & sprouted pulses (~220 kcal, 6g protein)",
+                    ],
+                    "lunch": [
+                        "1. 2 Whole wheat phulkas + 1 bowl Dal/Rajma/Chole + green sabzi + fresh salad (~380 kcal, 16g protein)",
+                        "2. Brown rice bowl with grilled paneer/tofu or chicken breast & steamed veggies (~420 kcal, 24g protein)",
+                        "3. Moong dal khichdi with 1 glass probiotic buttermilk (chaas) & cucumber salad (~350 kcal, 12g protein)",
+                    ],
+                    "dinner": [
+                        "1. Light yellow dal with sautéed spinach & 1-2 thin rotis (~310 kcal, 13g protein)",
+                        "2. Grilled paneer/tofu or chicken salad with olive oil & lemon dressing (~260 kcal, 18g protein)",
+                        "3. Vegetable soup with boiled chickpea / edamame bowl (~220 kcal, 11g protein)",
+                    ],
+                    "snack": [
+                        "1. Roasted makhana (foxnuts) with a pinch of rock salt (~110 kcal, 3g protein)",
+                        "2. Sprouted moong or boiled kala chana chaat (~150 kcal, 7g protein)",
+                        "3. 1 glass spiced buttermilk (chaas) + handful roasted grams (~130 kcal, 6g protein)",
+                    ],
+                    "post_workout": [
+                        "1. 1 scoop Whey protein shake + 1 medium banana (~220 kcal, 26g protein)",
+                        "2. 3 Boiled egg whites + 1 slice whole grain toast (~160 kcal, 14g protein)",
+                        "3. 100g Low-fat Paneer / Tofu scramble with veggies (~180 kcal, 16g protein)",
+                        "4. Greek yogurt with mixed berries & pumpkin seeds (~170 kcal, 14g protein)",
+                    ],
+                    "pre_workout": [
+                        "1. 1 Medium banana + 5-6 soaked almonds (~140 kcal, 3g protein)",
+                        "2. 2 Medjool dates with 1 tsp natural peanut butter (~150 kcal, 4g protein)",
+                        "3. Half cup warm oatmeal (~150 kcal, 4g protein)",
+                    ],
+                    "general": [
+                        "1. Focus on adequate protein (paneer, eggs, lentils, soy, dairy) across all meals.",
+                        "2. Keep refined sugar and deep-fried items minimal.",
+                        "3. Stay well-hydrated and include generous fresh salads for micronutrients.",
+                    ],
+                }
+                body = f"🥗 **{title_map[meal_context]}**\n\n"
+                body += "\n".join(options_map[meal_context])
+                body += f"\n\n📊 *Daily Target: {calorie_target} kcal | Remaining: ~{remaining_cals} kcal | Protein Target: {protein_target}g*"
+
+            return ChatResponse(
+                message=body,
+                intent=Intent.RECOMMEND_MEAL,
+                data={
+                    "meal_context": meal_context,
+                    "target_calories": calorie_target,
+                    "remaining_calories": remaining_cals,
+                    "target_protein_g": protein_target,
+                    "goal": goal,
+                },
+                success=True,
+                language=self.lang,
+            )
+        except Exception as e:
+            import logging
+            logging.getLogger(__name__).warning("Meal recommendation failed: %s", e)
+            return ChatResponse(
+                message="Here are some healthy meal ideas: try high-protein options like moong dal chilla, paneer salad, oats, or dal with whole wheat roti.",
+                intent=Intent.RECOMMEND_MEAL,
+                success=True,
+                language=self.lang,
+            )
 
     async def _handle_recommend_workout(self) -> ChatResponse:
         """
@@ -1214,7 +1450,16 @@ class ChatbotEngine:
         except (TypeError, ValueError):
             return None
 
-    async def _handle_log_exercise(self, parsed: LLMParseResult, auto_log: bool) -> ChatResponse:
+    async def _handle_log_exercise(self, parsed: LLMParseResult, auto_log: bool, original_message: str = "") -> ChatResponse:
+        # ── Structured workout routine check (multi-exercise/muscle-group) ──
+        from exercise_calculator import parse_workout_routine
+        routine = None
+        check_text = original_message or parsed.exercise_input or ""
+        if parsed.exercises or check_text:
+            routine = parse_workout_routine(check_text)
+        if routine and routine.items:
+            return await self._handle_workout_routine(routine, check_text, auto_log=auto_log)
+
         exercise_input = parsed.exercise_input
         if not exercise_input:
             return ChatResponse(message="What exercise did you do? Include duration or reps.",
@@ -1348,6 +1593,93 @@ class ChatbotEngine:
 
         return ChatResponse(message=msg, intent=Intent.LOG_EXERCISE, data={"exercise": pending},
                             needs_confirmation=True, pending_action=pending, success=True, language=self.lang)
+
+    async def _handle_workout_routine(
+        self, routine, original_message: str, auto_log: bool = False
+    ) -> ChatResponse:
+        """
+        Handle structured multi-exercise / multi-muscle-group workout routine.
+        Calculates calories from reps/sets or MET without inventing duration.
+        """
+        from exercise_calculator import calculate_routine
+        calc_res = calculate_routine(routine, weight_kg=self._user_weight_kg())
+
+        # If neither reps nor duration were provided, ask for amount
+        if routine.total_reps == 0 and routine.duration_min is None and calc_res.calories_avg <= 0:
+            msg = get_response("ask_routine_amount", self.lang)
+            return ChatResponse(
+                message=msg,
+                intent=f"flow:{FlowState.AWAITING_EXERCISE_AMOUNT}",
+                success=True,
+                language=self.lang,
+            )
+
+        log_date = self._resolve_date("today")
+        pending = {
+            "type": "log_exercise",
+            "user_id": self.user["user_id"],
+            "log_date": log_date.isoformat(),
+            "exercise_id": "workout_routine",
+            "exercise_name": "Workout Routine",
+            "exercise_name_display": routine.summary_text,
+            "category": "Strength",
+            "exercise_input": routine.summary_text,
+            "amount": routine.total_reps or (routine.duration_min if routine.duration_min is not None else 1),
+            "unit": "reps" if routine.total_reps else ("minutes" if routine.duration_min is not None else "session"),
+            "duration_min": routine.duration_min,
+            "reps": routine.total_reps,
+            "sets": routine.total_sets,
+            "routine_items": [
+                {
+                    "muscle_group": it.muscle_group,
+                    "exercise_name": it.exercise_name,
+                    "exercise_count": it.exercise_count,
+                    "sets": it.sets,
+                    "reps": it.reps,
+                    "duration_min": it.duration_min,
+                }
+                for it in routine.items
+            ],
+            "calories_min": calc_res.calories_min,
+            "calories_avg": calc_res.calories_avg,
+            "calories_max": calc_res.calories_max,
+            "search_confidence": 1.0,
+        }
+
+        if auto_log:
+            return await self._execute_exercise_log(pending)
+
+        flow = PendingFlow(
+            state=FlowState.AWAITING_CONFIRMATION,
+            exercise_input=routine.summary_text,
+            exercise_data=pending,
+        )
+        await self.flow_mgr.save_flow_state(flow)
+
+        rep_info = f" — {routine.total_reps} reps" if routine.total_reps and "reps" not in routine.summary_text else ""
+        if routine.duration_min is not None:
+            rep_info += f", {int(routine.duration_min)} minutes"
+
+        msg = get_response(
+            "confirm_workout_routine", self.lang,
+            routine_summary=f"{routine.summary_text}{rep_info}",
+            calories=calc_res.calories_avg,
+        )
+        msg += get_response("safety_disclaimer", self.lang)
+
+        return ChatResponse(
+            message=msg,
+            intent=Intent.LOG_EXERCISE,
+            data={"exercise": pending},
+            needs_confirmation=True,
+            pending_action=pending,
+            options=[
+                get_option("yes_save", self.lang),
+                get_option("no_cancel", self.lang),
+            ],
+            success=True,
+            language=self.lang,
+        )
 
     async def _resolve_exercise_external(self, query: str) -> tuple[Optional[dict], float]:
         """
@@ -1910,8 +2242,15 @@ class ChatbotEngine:
         # Any message that looks like an exercise log or exercise query must
         # break out of a pending food flow, not be fed into it as a variant
         # or quantity answer.
-        if self._looks_like_exercise(m):
+        if self._looks_like_exercise(m) or self._looks_like_structured_exercise(message):
             return True
+
+        try:
+            from exercise_calculator import parse_workout_routine
+            if parse_workout_routine(message):
+                return True
+        except Exception:
+            pass
 
         return False
 
@@ -4033,7 +4372,15 @@ class ChatbotEngine:
             )
             return await self._handle_query_exercise(parsed)
 
-        # 2b. Workout recommendation request → recommend_workout.
+        # 2b. Nutrition / meal recommendation request → recommend_meal (checked before workout).
+        if self._looks_like_meal_recommendation(message):
+            parsed = LLMParseResult(
+                intent=Intent.RECOMMEND_MEAL,
+                raw_response="deterministic_meal_rec", success=True,
+            )
+            return await self._handle_recommend_meal(parsed, original_message=message)
+
+        # 2c. Workout recommendation request → recommend_workout.
         if self._looks_like_workout_recommendation(message):
             return await self._handle_recommend_workout()
 
@@ -4073,7 +4420,7 @@ class ChatbotEngine:
                 intent=Intent.LOG_EXERCISE, exercise_input=message,
                 raw_response="deterministic_exercise_log", success=True,
             )
-            resp = await self._handle_log_exercise(parsed, auto_log)
+            resp = await self._handle_log_exercise(parsed, auto_log, original_message=message)
             # If exercise resolution failed (clarification), fall through to the
             # LLM path so a mis-detected exercise can still be tried as food.
             if resp is not None and resp.intent != Intent.CLARIFICATION_NEEDED:

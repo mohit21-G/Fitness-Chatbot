@@ -1,0 +1,151 @@
+Total failures: 150
+[structured_routine_no_duration] #5 'workout routine: Chest (4 exercises x 12 reps), Shoulder (3 exercises x 10 reps)' -> intent expected=log_exercise got=recommend_workout, reps expected>=20 got=None
+[structured_routine_no_duration] #7 'Chest 3 excercise x 15 reps, Shoulder 2 excercise x 12 reps' -> reps expected>=20 got=5.0
+[structured_routine_no_duration] #8 'me aaje Chest na 4 exercise ane Shoulder na 3 exercise karyo 12 reps' -> reps expected>=20 got=4.0
+[structured_routine_no_duration] #15 'workout routine: Back (4 exercises x 12 reps), Biceps (3 exercises x 10 reps)' -> intent expected=log_exercise got=recommend_workout, reps expected>=20 got=None
+[structured_routine_no_duration] #17 'Back 3 excercise x 15 reps, Biceps 2 excercise x 12 reps' -> reps expected>=20 got=5.0
+[structured_routine_no_duration] #18 'me aaje Back na 4 exercise ane Biceps na 3 exercise karyo 12 reps' -> reps expected>=20 got=4.0
+[structured_routine_no_duration] #25 'workout routine: Legs (4 exercises x 12 reps), Calves (3 exercises x 10 reps)' -> intent expected=log_exercise got=recommend_workout, reps expected>=20 got=None
+[structured_routine_no_duration] #27 'Legs 3 excercise x 15 reps, Calves 2 excercise x 12 reps' -> reps expected>=20 got=5.0
+[structured_routine_no_duration] #28 'me aaje Legs na 4 exercise ane Calves na 3 exercise karyo 12 reps' -> reps expected>=20 got=4.0
+[structured_routine_no_duration] #35 'workout routine: Chest (4 exercises x 12 reps), Back (3 exercises x 10 reps)' -> intent expected=log_exercise got=recommend_workout, reps expected>=20 got=None
+[structured_routine_no_duration] #37 'Chest 3 excercise x 15 reps, Back 2 excercise x 12 reps' -> reps expected>=20 got=5.0
+[structured_routine_no_duration] #38 'me aaje Chest na 4 exercise ane Back na 3 exercise karyo 12 reps' -> reps expected>=20 got=4.0
+[structured_routine_no_duration] #45 'workout routine: Shoulders (4 exercises x 12 reps), Arms (3 exercises x 10 reps)' -> intent expected=log_exercise got=recommend_workout, reps expected>=20 got=None
+[structured_routine_no_duration] #47 'Shoulders 3 excercise x 15 reps, Arms 2 excercise x 12 reps' -> reps expected>=20 got=5.0
+[structured_routine_no_duration] #48 'me aaje Shoulders na 4 exercise ane Arms na 3 exercise karyo 12 reps' -> reps expected>=20 got=4.0
+[structured_routine_no_duration] #55 'workout routine: Quadriceps (4 exercises x 12 reps), Hamstrings (3 exercises x 10 reps)' -> intent expected=log_exercise got=clarification_needed, reps expected>=20 got=None
+[structured_routine_no_duration] #57 'Quadriceps 3 excercise x 15 reps, Hamstrings 2 excercise x 12 reps' -> reps expected>=20 got=2.0
+[structured_routine_no_duration] #58 'me aaje Quadriceps na 4 exercise ane Hamstrings na 3 exercise karyo 12 reps' -> intent expected=log_exercise got=clarification_needed, reps expected>=20 got=None
+[structured_routine_no_duration] #65 'workout routine: Biceps (4 exercises x 12 reps), Triceps (3 exercises x 10 reps)' -> intent expected=log_exercise got=recommend_workout, reps expected>=20 got=None
+[structured_routine_no_duration] #67 'Biceps 3 excercise x 15 reps, Triceps 2 excercise x 12 reps' -> reps expected>=20 got=5.0
+[structured_routine_no_duration] #68 'me aaje Biceps na 4 exercise ane Triceps na 3 exercise karyo 12 reps' -> reps expected>=20 got=4.0
+[structured_routine_no_duration] #75 'workout routine: Chest (4 exercises x 12 reps), Triceps (3 exercises x 10 reps)' -> intent expected=log_exercise got=recommend_workout, reps expected>=20 got=None
+[structured_routine_no_duration] #77 'Chest 3 excercise x 15 reps, Triceps 2 excercise x 12 reps' -> reps expected>=20 got=5.0
+[structured_routine_no_duration] #78 'me aaje Chest na 4 exercise ane Triceps na 3 exercise karyo 12 reps' -> reps expected>=20 got=4.0
+[structured_routine_no_duration] #85 'workout routine: Upper Back (4 exercises x 12 reps), Lats (3 exercises x 10 reps)' -> intent expected=log_exercise got=recommend_workout, reps expected>=20 got=None
+[structured_routine_no_duration] #87 'Upper Back 3 excercise x 15 reps, Lats 2 excercise x 12 reps' -> reps expected>=20 got=5.0
+[structured_routine_no_duration] #88 'me aaje Upper Back na 4 exercise ane Lats na 3 exercise karyo 12 reps' -> reps expected>=20 got=4.0
+[structured_routine_no_duration] #95 'workout routine: Pectorals (4 exercises x 12 reps), Deltoids (3 exercises x 10 reps)' -> intent expected=log_exercise got=recommend_workout, reps expected>=20 got=None
+[structured_routine_no_duration] #96 'Pectorals 4 exercises 12 reps Deltoids 2 exercises 12 reps' -> reps expected>=20 got=4.0
+[structured_routine_no_duration] #97 'Pectorals 3 excercise x 15 reps, Deltoids 2 excercise x 12 reps' -> reps expected>=20 got=3.0
+[structured_routine_no_duration] #98 'me aaje Pectorals na 4 exercise ane Deltoids na 3 exercise karyo 12 reps' -> reps expected>=20 got=4.0
+[structured_routine_no_duration] #100 'Pectorals 5 exercises x 10 reps, Deltoids 3 exercises x 12 reps' -> reps expected>=20 got=5.0
+[indic_structured_routines] #101 'આજે મેં ચેસ્ટ 4 કસરત 12 રેપ્સ અને શોલ્ડર 2 કસરત 12 રેપ્સ કર્યા' -> intent expected=log_exercise got=recommend_workout, reps expected>=72 got=None
+[indic_structured_routines] #102 'dost આજે મેં ચેસ્ટ 4 કસરત 12 રેપ્સ અને શોલ્ડર 2 કસરત 12 રેપ્સ કર્યા' -> intent expected=log_exercise got=recommend_workout, reps expected>=72 got=None
+[indic_structured_routines] #103 'bhai આજે મેં ચેસ્ટ 4 કસરત 12 રેપ્સ અને શોલ્ડર 2 કસરત 12 રેપ્સ કર્યા' -> intent expected=log_exercise got=recommend_workout, reps expected>=72 got=None
+[indic_structured_routines] #104 'today આજે મેં ચેસ્ટ 4 કસરત 12 રેપ્સ અને શોલ્ડર 2 કસરત 12 રેપ્સ કર્યા' -> intent expected=log_exercise got=recommend_workout, reps expected>=72 got=None
+[indic_structured_routines] #105 'savare આજે મેં ચેસ્ટ 4 કસરત 12 રેપ્સ અને શોલ્ડર 2 કસરત 12 રેપ્સ કર્યા' -> intent expected=log_exercise got=recommend_workout, reps expected>=72 got=None
+[indic_structured_routines] #106 'subah આજે મેં ચેસ્ટ 4 કસરત 12 રેપ્સ અને શોલ્ડર 2 કસરત 12 રેપ્સ કર્યા' -> intent expected=log_exercise got=recommend_workout, reps expected>=72 got=None
+[indic_structured_routines] #107 'ચેસ્ટ: ૪ કસરત x ૧૨ રેપ્સ, શોલ્ડર: ૨ કસરત x ૧૨ રેપ્સ' -> intent expected=log_exercise got=recommend_workout, reps expected>=72 got=None
+[indic_structured_routines] #108 'dost ચેસ્ટ: ૪ કસરત x ૧૨ રેપ્સ, શોલ્ડર: ૨ કસરત x ૧૨ રેપ્સ' -> intent expected=log_exercise got=recommend_workout, reps expected>=72 got=None
+[indic_structured_routines] #109 'bhai ચેસ્ટ: ૪ કસરત x ૧૨ રેપ્સ, શોલ્ડર: ૨ કસરત x ૧૨ રેપ્સ' -> intent expected=log_exercise got=recommend_workout, reps expected>=72 got=None
+[indic_structured_routines] #110 'today ચેસ્ટ: ૪ કસરત x ૧૨ રેપ્સ, શોલ્ડર: ૨ કસરત x ૧૨ રેપ્સ' -> intent expected=log_exercise got=recommend_workout, reps expected>=72 got=None
+[indic_structured_routines] #111 'savare ચેસ્ટ: ૪ કસરત x ૧૨ રેપ્સ, શોલ્ડર: ૨ કસરત x ૧૨ રેપ્સ' -> intent expected=log_exercise got=recommend_workout, reps expected>=72 got=None
+[indic_structured_routines] #112 'subah ચેસ્ટ: ૪ કસરત x ૧૨ રેપ્સ, શોલ્ડર: ૨ કસરત x ૧૨ રેપ્સ' -> intent expected=log_exercise got=recommend_workout, reps expected>=72 got=None
+[indic_structured_routines] #113 'आज मैंने चेस्ट 4 एक्सरसाइज 12 रेप्स और ट्राइसेप्स 2 एक्सरसाइज 12 रेप्स किए' -> intent expected=log_exercise got=log_food, reps expected>=72 got=None
+[indic_structured_routines] #114 'dost आज मैंने चेस्ट 4 एक्सरसाइज 12 रेप्स और ट्राइसेप्स 2 एक्सरसाइज 12 रेप्स किए' -> intent expected=log_exercise got=log_food, reps expected>=72 got=None
+[indic_structured_routines] #115 'bhai आज मैंने चेस्ट 4 एक्सरसाइज 12 रेप्स और ट्राइसेप्स 2 एक्सरसाइज 12 रेप्स किए' -> intent expected=log_exercise got=log_food, reps expected>=72 got=None
+[indic_structured_routines] #116 'today आज मैंने चेस्ट 4 एक्सरसाइज 12 रेप्स और ट्राइसेप्स 2 एक्सरसाइज 12 रेप्स किए' -> intent expected=log_exercise got=log_food, reps expected>=72 got=None
+[indic_structured_routines] #117 'savare आज मैंने चेस्ट 4 एक्सरसाइज 12 रेप्स और ट्राइसेप्स 2 एक्सरसाइज 12 रेप्स किए' -> intent expected=log_exercise got=log_food, reps expected>=72 got=None
+[indic_structured_routines] #118 'subah आज मैंने चेस्ट 4 एक्सरसाइज 12 रेप्स और ट्राइसेप्स 2 एक्सरसाइज 12 रेप्स किए' -> intent expected=log_exercise got=log_food, reps expected>=72 got=None
+[indic_structured_routines] #119 'चेस्ट 4 एक्सरसाइज x 10 रेप्स, शोल्डर 3 एक्सरसाइज x 12 रेप्स' -> intent expected=log_exercise got=log_food, reps expected>=76 got=None
+[indic_structured_routines] #120 'dost चेस्ट 4 एक्सरसाइज x 10 रेप्स, शोल्डर 3 एक्सरसाइज x 12 रेप्स' -> intent expected=log_exercise got=log_food, reps expected>=76 got=None
+[indic_structured_routines] #121 'bhai चेस्ट 4 एक्सरसाइज x 10 रेप्स, शोल्डर 3 एक्सरसाइज x 12 रेप्स' -> intent expected=log_exercise got=log_food, reps expected>=76 got=None
+[indic_structured_routines] #122 'today चेस्ट 4 एक्सरसाइज x 10 रेप्स, शोल्डर 3 एक्सरसाइज x 12 रेप्स' -> intent expected=log_exercise got=log_food, reps expected>=76 got=None
+[indic_structured_routines] #123 'savare चेस्ट 4 एक्सरसाइज x 10 रेप्स, शोल्डर 3 एक्सरसाइज x 12 रेप्स' -> intent expected=log_exercise got=log_food, reps expected>=76 got=None
+[indic_structured_routines] #124 'subah चेस्ट 4 एक्सरसाइज x 10 रेप्स, शोल्डर 3 एक्सरसाइज x 12 रेप्स' -> intent expected=log_exercise got=log_food, reps expected>=76 got=None
+[indic_structured_routines] #131 'me savare leg day karyo: squats 4 exercises x 12 reps, calves 2 exercises x 15 reps' -> reps expected>=78 got=30.0
+[indic_structured_routines] #132 'dost me savare leg day karyo: squats 4 exercises x 12 reps, calves 2 exercises x 15 reps' -> reps expected>=78 got=30.0
+[indic_structured_routines] #133 'bhai me savare leg day karyo: squats 4 exercises x 12 reps, calves 2 exercises x 15 reps' -> reps expected>=78 got=30.0
+[indic_structured_routines] #134 'today me savare leg day karyo: squats 4 exercises x 12 reps, calves 2 exercises x 15 reps' -> reps expected>=78 got=30.0
+[indic_structured_routines] #135 'savare me savare leg day karyo: squats 4 exercises x 12 reps, calves 2 exercises x 15 reps' -> reps expected>=78 got=30.0
+[indic_structured_routines] #136 'subah me savare leg day karyo: squats 4 exercises x 12 reps, calves 2 exercises x 15 reps' -> reps expected>=78 got=30.0
+[single_exercise_reps_hi] #596 'aaj maine 20 dip lagaye' -> intent expected=log_exercise got=log_food
+[single_exercise_reps_hi] #600 'aaj maine 50 dip lagaye' -> intent expected=log_exercise got=log_food
+[single_exercise_reps_hi] #604 'aaj maine 100 dip lagaye' -> intent expected=log_exercise got=log_food
+[food_drinks] #1176 'aaje 1 scoop whey protein pidhu' -> intent expected=log_food got=get_calories
+[recommend_meal_isolation] #1182 'hey what should I eat for dinner?' -> intent expected=recommend_meal got=greeting
+[recommend_meal_isolation] #1187 'hey suggest high protein breakfast' -> intent expected=recommend_meal got=greeting
+[recommend_meal_isolation] #1192 'hey post workout meal suggest karo' -> intent expected=recommend_meal got=greeting
+[recommend_meal_isolation] #1194 'what to eat after gym' -> intent expected=recommend_meal got=clarification_needed
+[recommend_meal_isolation] #1195 'please what to eat after gym' -> intent expected=recommend_meal got=clarification_needed
+[recommend_meal_isolation] #1196 'bhai what to eat after gym' -> intent expected=recommend_meal got=clarification_needed
+[recommend_meal_isolation] #1197 'hey what to eat after gym' -> intent expected=recommend_meal got=greeting
+[recommend_meal_isolation] #1198 'can you tell me what to eat after gym' -> intent expected=recommend_meal got=clarification_needed
+[recommend_meal_isolation] #1202 'hey pre-workout snack idea' -> intent expected=recommend_meal got=greeting
+[recommend_meal_isolation] #1207 'hey bapore shu jamvu?' -> intent expected=recommend_meal got=greeting
+[recommend_meal_isolation] #1212 'hey dinner me kya khana chahiye?' -> intent expected=recommend_meal got=greeting
+[recommend_meal_isolation] #1217 'hey suggest a healthy lunch' -> intent expected=recommend_meal got=greeting
+[recommend_meal_isolation] #1222 'hey low calorie snacks for weight loss' -> intent expected=recommend_meal got=greeting
+[recommend_meal_isolation] #1227 'hey what food to eat to build muscle?' -> intent expected=recommend_meal got=greeting
+[recommend_meal_isolation] #1232 'hey what should I drink after workout?' -> intent expected=recommend_meal got=greeting
+[recommend_meal_isolation] #1237 'hey suggest some protein rich vegetarian foods' -> intent expected=recommend_meal got=greeting
+[recommend_meal_isolation] #1242 'hey ratre su banavu?' -> intent expected=recommend_meal got=greeting
+[recommend_meal_isolation] #1247 'hey healthy dinner recipes' -> intent expected=recommend_meal got=greeting
+[recommend_meal_isolation] #1252 'hey what can I eat before morning workout?' -> intent expected=recommend_meal got=greeting
+[recommend_meal_isolation] #1254 'post gym protein meal options' -> intent expected=recommend_meal got=clarification_needed
+[recommend_meal_isolation] #1255 'please post gym protein meal options' -> intent expected=recommend_meal got=clarification_needed
+[recommend_meal_isolation] #1256 'bhai post gym protein meal options' -> intent expected=recommend_meal got=clarification_needed
+[recommend_meal_isolation] #1257 'hey post gym protein meal options' -> intent expected=recommend_meal got=greeting
+[recommend_meal_isolation] #1258 'can you tell me post gym protein meal options' -> intent expected=recommend_meal got=clarification_needed
+[recommend_meal_isolation] #1262 'hey what to eat after heavy cardio?' -> intent expected=recommend_meal got=greeting
+[recommend_meal_isolation] #1267 'hey dinner ma su banavu?' -> intent expected=recommend_meal got=greeting
+[recommend_meal_isolation] #1272 'hey suggest food for fat loss' -> intent expected=recommend_meal got=greeting
+[recommend_meal_isolation] #1277 'hey protein diet plan options' -> intent expected=recommend_meal got=greeting
+[recommend_workout_isolation] #1282 'hey what workout should I do?' -> intent expected=recommend_workout got=greeting
+[recommend_workout_isolation] #1287 'hey what should I do tomorrow?' -> intent expected=recommend_workout got=greeting
+[recommend_workout_isolation] #1292 'hey workout after heavy dinner' -> intent expected=recommend_workout got=greeting
+[recommend_workout_isolation] #1297 'hey suggest a workout routine' -> intent expected=recommend_workout got=greeting
+[recommend_workout_isolation] #1302 'hey chest workout suggest karo' -> intent expected=recommend_workout got=greeting
+[recommend_workout_isolation] #1307 'hey exercise to burn pizza calories' -> intent expected=recommend_workout got=greeting
+[recommend_workout_isolation] #1312 'hey what exercise for tomorrow?' -> intent expected=recommend_workout got=greeting
+[recommend_workout_isolation] #1317 'hey kal kya exercise karein?' -> intent expected=recommend_workout got=greeting
+[recommend_workout_isolation] #1322 'hey aavti kal exercise suchavjo' -> intent expected=recommend_workout got=greeting
+[recommend_workout_isolation] #1327 'hey mane workout suggest karo' -> intent expected=recommend_workout got=greeting
+[recommend_workout_isolation] #1332 'hey full body workout plan for beginner' -> intent expected=recommend_workout got=greeting
+[recommend_workout_isolation] #1337 'hey cardio routine to burn fat' -> intent expected=recommend_workout got=greeting
+[recommend_workout_isolation] #1339 'what exercises to do after cheat meal?' -> intent expected=recommend_workout got=recommend_meal
+[recommend_workout_isolation] #1340 'please what exercises to do after cheat meal?' -> intent expected=recommend_workout got=recommend_meal
+[recommend_workout_isolation] #1341 'bhai what exercises to do after cheat meal?' -> intent expected=recommend_workout got=recommend_meal
+[recommend_workout_isolation] #1342 'hey what exercises to do after cheat meal?' -> intent expected=recommend_workout got=greeting
+[recommend_workout_isolation] #1343 'can you tell me what exercises to do after cheat meal?' -> intent expected=recommend_workout got=recommend_meal
+[recommend_workout_isolation] #1344 'gym routine for muscle gain' -> intent expected=recommend_workout got=clarification_needed
+[recommend_workout_isolation] #1345 'please gym routine for muscle gain' -> intent expected=recommend_workout got=clarification_needed
+[recommend_workout_isolation] #1346 'bhai gym routine for muscle gain' -> intent expected=recommend_workout got=clarification_needed
+[recommend_workout_isolation] #1347 'hey gym routine for muscle gain' -> intent expected=recommend_workout got=greeting
+[recommend_workout_isolation] #1348 'can you tell me gym routine for muscle gain' -> intent expected=recommend_workout got=clarification_needed
+[recommend_workout_isolation] #1352 'hey home workout without equipment' -> intent expected=recommend_workout got=greeting
+[recommend_workout_isolation] #1357 'hey kal subah kya workout karein?' -> intent expected=recommend_workout got=greeting
+[recommend_workout_isolation] #1362 'hey leg workout suggest karo' -> intent expected=recommend_workout got=greeting
+[recommend_workout_isolation] #1367 'hey workout to burn 500 calories' -> intent expected=recommend_workout got=greeting
+[recommend_workout_isolation] #1372 'hey suggest high intensity cardio' -> intent expected=recommend_workout got=greeting
+[recommend_workout_isolation] #1377 'hey back and biceps routine' -> intent expected=recommend_workout got=greeting
+[tricky_mixed_isolation] #1394 'protein snack after intense gym' -> intent expected=recommend_meal got=clarification_needed
+[tricky_mixed_isolation] #1395 'dost protein snack after intense gym' -> intent expected=recommend_meal got=clarification_needed
+[tricky_mixed_isolation] #1396 'bhai protein snack after intense gym' -> intent expected=recommend_meal got=clarification_needed
+[tricky_mixed_isolation] #1397 'jaldi protein snack after intense gym' -> intent expected=recommend_meal got=clarification_needed
+[tricky_mixed_isolation] #1398 'please protein snack after intense gym' -> intent expected=recommend_meal got=clarification_needed
+[tricky_mixed_isolation] #1449 'post dinner workout suggestions' -> intent expected=recommend_workout got=recommend_meal
+[tricky_mixed_isolation] #1450 'dost post dinner workout suggestions' -> intent expected=recommend_workout got=recommend_meal
+[tricky_mixed_isolation] #1451 'bhai post dinner workout suggestions' -> intent expected=recommend_workout got=recommend_meal
+[tricky_mixed_isolation] #1452 'jaldi post dinner workout suggestions' -> intent expected=recommend_workout got=recommend_meal
+[tricky_mixed_isolation] #1453 'please post dinner workout suggestions' -> intent expected=recommend_workout got=recommend_meal
+[tricky_mixed_isolation] #1464 'what cardio after cheat day' -> intent expected=recommend_workout got=log_food
+[tricky_mixed_isolation] #1465 'dost what cardio after cheat day' -> intent expected=recommend_workout got=log_food
+[tricky_mixed_isolation] #1466 'bhai what cardio after cheat day' -> intent expected=recommend_workout got=log_food
+[tricky_mixed_isolation] #1467 'jaldi what cardio after cheat day' -> intent expected=recommend_workout got=log_food
+[tricky_mixed_isolation] #1468 'please what cardio after cheat day' -> intent expected=recommend_workout got=log_food
+[tricky_mixed_isolation] #1474 'routine to burn yesterday sweets' -> intent expected=recommend_workout got=recommend_meal
+[tricky_mixed_isolation] #1475 'dost routine to burn yesterday sweets' -> intent expected=recommend_workout got=recommend_meal
+[tricky_mixed_isolation] #1476 'bhai routine to burn yesterday sweets' -> intent expected=recommend_workout got=recommend_meal
+[tricky_mixed_isolation] #1477 'jaldi routine to burn yesterday sweets' -> intent expected=recommend_workout got=recommend_meal
+[tricky_mixed_isolation] #1478 'please routine to burn yesterday sweets' -> intent expected=recommend_workout got=recommend_meal
+[greetings] #1485 'good morning' -> intent expected=greeting got=clarification_needed
+[greetings] #1486 'good evening' -> intent expected=greeting got=clarification_needed
+[query_exercise] #1496 'what exercise did I do today?' -> intent expected=query_exercise got=recommend_workout
+[query_exercise] #1497 'aaje me kya exercise kari?' -> intent expected=query_exercise got=recommend_workout
+[query_exercise] #1499 'which workout today?' -> intent expected=query_exercise got=recommend_workout
+[query_exercise] #1500 'kya exercise ki?' -> intent expected=query_exercise got=recommend_workout
+[query_meal] #1504 'aaje breakfast ma su lidhu?' -> intent expected=query_meal got=recommend_meal
+[query_meal] #1507 'dinner me kya khaya tha?' -> intent expected=query_meal got=recommend_meal

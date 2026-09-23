@@ -40,7 +40,10 @@ class UserRepository:
         self.collection = db["user_profiles"]
 
     async def get_by_id(self, user_id: str) -> Optional[dict]:
-        return await self.collection.find_one({"user_id": user_id}, {"_id": 0})
+        user = await self.collection.find_one({"user_id": user_id}, {"_id": 0})
+        if not user:
+            user = await self.collection.find_one({"username": user_id}, {"_id": 0})
+        return user
 
     async def get_by_email(self, email: str) -> Optional[dict]:
         return await self.collection.find_one({"email": email}, {"_id": 0})

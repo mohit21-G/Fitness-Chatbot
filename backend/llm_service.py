@@ -41,6 +41,8 @@ class Intent:
     QUERY_EXERCISE = "query_exercise"       # "aaje me kya exercise kari?" — check today's exercise logs
     SKIP_MEAL = "skip_meal"                 # "breakfast nathi karyu" — mark meal as skipped
     RECOMMEND_WORKOUT = "recommend_workout" # "what should I do tomorrow?" — workout suggestion
+    RECOMMEND_MEAL = "recommend_meal"       # "what should I eat for dinner?" — meal/nutrition suggestion
+    RECOMMEND_NUTRITION = "recommend_meal"  # backward-compatible alias for meal recommendation
     CLARIFICATION_NEEDED = "clarification_needed"
     GREETING = "greeting"
     UNKNOWN = "unknown"
@@ -70,6 +72,7 @@ class LLMParseResult:
     # the bot can ask ONLY for a specific missing detail. All optional — older
     # readers that use food_query/quantity/exercise_input keep working.
     foods: list = field(default_factory=list)   # multi-item: [{food_query, quantity, variant, meal_type}, ...]
+    exercises: list = field(default_factory=list) # multi-exercise/routine items: [{muscle_group, exercises_count, sets, reps, duration_min, exercise_name}, ...]
     reps: Optional[float] = None                 # exercise reps (counted movements)
     sets: Optional[float] = None                 # exercise sets
     distance: Optional[float] = None             # exercise distance amount
@@ -106,11 +109,17 @@ CORE PRINCIPLES:
 7. Capture EVERY food in a separate "foods" array entry. Connectives (and/aur/ane/sathe/with) are NOT foods.
 
 OUTPUT FORMAT (JSON only, all fields present):
-{"intent":"log_food|log_exercise|get_summary|get_calories|get_profile|query_meal|query_exercise|recommend_workout|clarification_needed|skip_meal|greeting|unknown","exact_term":null,"food_query":null,"quantity":null,"variant":null,"meal_type":null,"foods":[],"exercise_query":null,"exercise_input":null,"reps":null,"sets":null,"distance":null,"distance_unit":null,"duration_min":null,"intensity":null,"time_of_day":null,"date":"today","missing_detail":null,"clarification_question":null}
+{"intent":"log_food|log_exercise|get_summary|get_calories|get_profile|query_meal|query_exercise|recommend_workout|recommend_meal|clarification_needed|skip_meal|greeting|unknown","exact_term":null,"food_query":null,"quantity":null,"variant":null,"meal_type":null,"foods":[],"exercise_query":null,"exercise_input":null,"reps":null,"sets":null,"distance":null,"distance_unit":null,"duration_min":null,"intensity":null,"time_of_day":null,"date":"today","missing_detail":null,"clarification_question":null}
 
-RECOMMEND_WORKOUT intent:
-• Use intent "recommend_workout" when the user asks what workout/exercise to do tomorrow, next, or suggests a training plan.
-• Examples: "what should I do tomorrow?", "suggest a workout", "what exercise for tomorrow?", "kal kya karna chahiye?", "aavti kal exercise suchavjo", "mane workout suggest karo", "recommend a workout plan".
+RECOMMEND_WORKOUT vs RECOMMEND_MEAL intent rules:
+• RECOMMEND_MEAL intent:
+  - Use when the user asks what to eat/drink, asks for meal/snack/diet suggestions, recipe ideas, or nutrition recommendations.
+  - Examples: "what should I eat for dinner?", "suggest high protein breakfast", "bapore shu jamvu?", "dinner me kya khana chahiye?", "post workout meal suggest karo", "what to eat after gym", "pre-workout snack", "diet plan for fat loss", "healthy lunch suggestions", "ratre su banavu?".
+  - CRITICAL: If the query asks what to eat or drink around a workout ("post workout meal", "food after gym", "pre-workout snack"), the user is asking for FOOD → intent MUST be "recommend_meal", NEVER "recommend_workout".
+• RECOMMEND_WORKOUT intent:
+  - Use when the user asks what workout/exercise/routine to perform or a training plan.
+  - Examples: "what should I do tomorrow?", "suggest a workout", "what exercise for tomorrow?", "kal kya exercise karein?", "aavti kal exercise suchavjo", "mane workout suggest karo", "recommend a workout plan", "chest routine suggest karo", "workout to burn pizza calories".
+  - CRITICAL: If the user asks what exercise to do after eating or to burn calories ("workout after heavy dinner", "exercise after cheat meal"), the requested action is EXERCISE → intent MUST be "recommend_workout".
 
 EXERCISE EXTRACTION RULES (most important — always fill these fields):
 • exercise_query = English name of the exercise (e.g. "jogging", "squats", "cycling")
@@ -328,6 +337,305 @@ MEAL-TYPE RULE: Morning/subah/savare/vehli savar → breakfast. Midday/dopahar/b
 ALWAYS respond with ONLY the JSON object. Any field not mentioned by the user → null (foods:[] only for non-food intents)."""
 
 
+
+# ---------------------------------------------------------------------------
+# Semantic Recommendation Intent Classifier
+# ---------------------------------------------------------------------------
+
+def normalize_rec_text(text: str) -> str:
+    """Normalize text for recommendation intent classification (typos & phonetics)."""
+    t = (text or "").lower().strip()
+    t = re.sub(r"[?!.,;:\-_/\\()]+", " ", t)
+    t = re.sub(r"\s+", " ", t).strip()
+
+    typos = [
+        (r"\bwat\b", "what"),
+        (r"\bshud\b", "should"),
+        (r"\beet\b", "eat"),
+        (r"\bmeel\b", "meal"),
+        (r"\b(?:recom+end(?:ed|ing|ation|ations)?)\b", "recommend"),
+        (r"\b(?:recommand(?:ed|ing)?)\b", "recommend"),
+        (r"\b(?:recomnd|recmnd)\b", "recommend"),
+        (r"\b(?:sug+est(?:ed|ing|ion|ions)?)\b", "suggest"),
+        (r"\b(?:sugjest)\b", "suggest"),
+        (r"\b(?:suggetion)\b", "suggest"),
+        (r"\b(?:suchev(?:jo|o)?|suchvo)\b", "suchav"),
+        (r"\b(?:brakfast|brekfast|brekkie|breakfst)\b", "breakfast"),
+        (r"\b(?:din+r|diner)\b", "dinner"),
+        (r"\b(?:lunsh|lnch)\b", "lunch"),
+        (r"\b(?:snak|snaks|snaack)\b", "snack"),
+        (r"\b(?:proti+en|proten|prtein|protin)\b", "protein"),
+        (r"\b(?:helthy|helth|healhy)\b", "healthy"),
+        (r"\b(?:nutriton|nutritin|nutrishun)\b", "nutrition"),
+        (r"\b(?:diat|deit)\b", "diet"),
+        (r"\b(?:calori|cals)\b", "calories"),
+        (r"\b(?:wrkout|workot|workaut|warkout)\b", "workout"),
+        (r"\b(?:exersise|excercise|exercies|exersice|exrcise|exrsise)\b", "exercise"),
+        (r"\b(?:rotine|rotene|routin|rutine)\b", "routine"),
+        (r"\b(?:traing)\b", "training"),
+        (r"\b(?:sholder|shuldur)\b", "shoulder"),
+        (r"\b(?:equipmnt)\b", "equipment"),
+        (r"\b(?:beginer|begginer)\b", "beginner"),
+        (r"\b(?:kre)\b", "karein"),
+        (r"\bsu\s+jmvu\b", "su jamvu"),
+        (r"\bshu\s+jmvu\b", "shu jamvu"),
+        (r"\bsu\s+khvu\b", "su khavu"),
+        (r"\bshu\s+khvu\b", "shu khavu"),
+        (r"\bsu\s+bnavu\b", "su banavu"),
+        (r"\bshu\s+bnavu\b", "shu banavu"),
+        (r"\b(?:joye|joie|joyie)\b", "joiye"),
+        (r"\b(?:ky|kay|kaee|kayi)\b", "kai"),
+        (r"\b(?:karavi|karevi)\b", "karvi"),
+        (r"\b(?:houre|houres|hourse)\b", "hours"),
+    ]
+    for pat, rep in typos:
+        t = re.sub(pat, rep, t)
+    return t
+
+
+REC_CUES_REGEX = re.compile(
+    r"\b(?:"
+    r"suggest|suggests|suggesting|suggestion|suggestions|"
+    r"recommend|recommends|recommending|recommendation|recommendations|"
+    r"idea|ideas|option|options|plan|plans|routine|routines|recipe|recipes|"
+    r"what\s+should\s+i|what\s+can\s+i|what\s+to|which\s+should\s+i|"
+    r"should\s+i|can\s+i|shall\s+i|could\s+i|"
+    r"which\s+one\s+to|give\s+me|tell\s+me\s+what|help\s+me\s+choose|"
+    r"best|advice|tips|guide\s+me|guidance|schedule|routine\s+for|"
+    r"batao|batana|bataiye|bata\s+do|btao|"
+    r"suchav|suchavo|suchavjo|suchan|aapo|"
+    r"kya\s+khaye|kya\s+khana|kya\s+khau|kya\s+piye|kya\s+lu|kya\s+banaye|kya\s+banau|"
+    r"kya\s+karu|kya\s+kare|kya\s+karein|kya\s+karna|kya\s+kasrat|karna\s+chahiye|"
+    r"su\s+khavu|shu\s+khavu|su\s+jamvu|shu\s+jamvu|su\s+banavu|shu\s+banavu|"
+    r"su\s+pivu|shu\s+pivu|su\s+levu|shu\s+levu|su\s+karvo|su\s+karvi|su\s+karvu|shu\s+karvu|"
+    r"kai\s+kasrat|kai\s+exercise|konsi\s+exercise|konsa\s+workout|konsi\s+kasrat|"
+    r"chahiye|chahie|joiye|joye|joie|saru\s+rahe|kevu\s+rahe|kaisa\s+rahega|sarie|"
+    r"high\s+protein|low\s+calorie|low\s+carb|without\s+equipment|home\s+workout|"
+    r"healthy|nutritious|clean\s+eating|lose\s+(?:belly\s+)?fat|burn\s+fat|fat\s+loss|weight\s+loss|options\s+under|under\s+\d+\s+calories"
+    r")\b",
+    re.IGNORECASE,
+)
+
+INDIC_REC_CUES = [
+    "सुझाव", "सुझाएं", "सुझाओ", "सुझाइए", "बताओ", "बताइए", "बताएं", "योजना",
+    "क्या खाऊं", "क्या खाएं", "क्या खाना चाहिए", "क्या पिएं", "क्या बनाएं", "होना चाहिए", "क्या है",
+    "क्या करूं", "क्या करें", "कैसा रहेगा", "સૂચવો", "સૂચવજો", "સૂચન", "વિકલ્પ", "વિકલ્પો",
+    "શું ખાવું", "શું જમવું", "શું બનાવવું", "શું કરવું", "કેવું રહેશે", "જોઈએ", "શું લેવું",
+    "કઈ કસરત", "જણાવો", "આપો", "બતાવો", "યોજના", "કસરતો", "વ્યાયામ", "વર્કઆઉટ", "કસરત",
+    "કરો", "કરે", "ખોરાક", "બેહતરીન", "बेहतरीन", "सुझाव दें", "रूटीन", "कम कैलोरी",
+    "करना चाहिए", "कौन सा वर्कआउट", "व्यायाम", "कम करने के लिए",
+]
+
+NUT_WORDS_REGEX = re.compile(
+    r"\b(?:"
+    r"eat|eating|eats|eaten|drink|drinks|drinking|drunk|"
+    r"meal|meals|breakfast|lunch|dinner|snack|snacks|food|foods|diet|diets|dietary|"
+    r"nutrition|nutritious|recipe|recipes|dish|dishes|shake|smoothie|beverage|beverages|"
+    r"protein|carbs|carbohydrates|calories|kcal|macros|"
+    r"khana|khane|khaye|khau|bhojan|nashta|nashte|nasta|nasto|peena|piye|piyu|pivu|peevu|"
+    r"jamvu|jamvanu|jamva|khavu|khavanu|khava|khorak|"
+    r"shak|rotli|bhakri|thepla|khichdi|chaas|dudh|"
+    r"banana|coffee|oats|pizza|burger|biryani|cake|sweet|sweets|cheat\s+day|cheat\s+meal|cheat"
+    r")\b",
+    re.IGNORECASE,
+)
+
+INDIC_NUT_WORDS = [
+    "खाना", "नाश्ता", "भोजन", "डाइट", "दोपहर का खाना", "रात का खाना", "दूध", "पनीर", "आहार",
+    "નાસ્તો", "નાસ્તા", "નાસ્તામાં", "જમવાનું", "જમવું", "ખાવાનું", "ખાવું", "બપોરનું", "રાતનું", "શાક", "રોટલી",
+    "ડાયેટ", "પ્રોટીન", "દૂધ", "છાશ", "ખોરાક", "ભોજન", "કેલોરી", "પોષણ", "પૌષ્ટિક",
+]
+
+WORK_WORDS_REGEX = re.compile(
+    r"\b(?:"
+    r"workout|workouts|exercise|exercises|training|routine|routines|"
+    r"gym|cardio|hiit|aerobics|calisthenics|lifting|weightlifting|weights|bodyweight|"
+    r"running|jogging|cycling|swimming|stretching|yoga|pilates|crossfit|"
+    r"chest|triceps|biceps|back|shoulders|legs|arms|arm|leg\s+day|push\s+day|pull\s+day|"
+    r"abs|core|glutes|squats|pushups|pullups|deadlifts|bench\s+press|curls|plank|"
+    r"kasrat|kasarat|vyayam|dand|dand\s+baithak|daudna|jim|body\s+banana|"
+    r"chalvu|daudvu|tarvu"
+    r")\b",
+    re.IGNORECASE,
+)
+
+INDIC_WORK_WORDS = [
+    "कसरत", "व्यायाम", "जिम", "वर्कआउट", "દંડ", "દોડવું", "કસરત", "વ્યાયામ", "જીમ", "વર્કઆઉટ",
+    "कार्डियो", "स्ट्रेचिंग", "डंबल", "સ્ટેમિના", "ડંબેલ", "બાઈસેપ્સ", "છાતી", "પગ", "પીઠ",
+    "વ્યાયામ", "રૂટિન", "रूटीन", "लेग", "लेग डे",
+]
+
+EAT_ACTION_PHRASES = [
+    "what to eat", "what should i eat", "what can i eat", "what to drink", "what should i drink",
+    "what to have", "what should i have", "what to cook", "what should i cook",
+    "kya khaye", "kya khana chahiye", "kya khau", "kya piye", "kya khaye batao", "khana suggest",
+    "khana batao", "su khavu", "shu khavu", "su jamvu", "shu jamvu", "su banavu", "shu banavu",
+    "su pivu", "shu pivu", "su khavu joiye", "shu jamvu joiye", "ratre su khavu", "bapore su jamvu",
+    "dinner ma su", "lunch ma su", "breakfast ma su", "nashta me kya", "dinner me kya", "lunch me kya",
+    "kya khana", "khana chahiye", "jamva ma su",
+    "क्या खाऊं", "क्या खाएं", "क्या खाना चाहिए", "क्या पिएं", "क्या बनाएं", "શું ખાવું", "શું જમવું", "શું બનાવવું",
+]
+
+WORK_ACTION_PHRASES = [
+    "what workout", "what exercise", "which exercise", "which workout", "what cardio", "which cardio",
+    "suggest a workout", "suggest workout", "recommend a workout", "recommend workout", "workout plan",
+    "exercise plan", "suggest cardio", "cardio suggest",
+    "training plan", "gym routine", "workout routine", "exercise routine", "workout suggest",
+    "exercise suggest", "workout recommendation", "konsi exercise", "konsa workout", "kya exercise",
+    "kya workout", "kai exercise", "kai kasrat", "kasrat suchav", "workout suchav",
+    "exercise suchav", "gym ma su karvu", "gym me kya karein", "gym me pehle kya kare",
+    "kal kya exercise", "kal workout", "tomorrow workout", "tomorrow exercise",
+    "workout for tomorrow", "exercise for tomorrow", "what should i do tomorrow", "what to do tomorrow",
+    "kal kya karna",
+    "kai exercise karvi", "kai exercise karavi", "kai exercise", "ky exercise",
+    "mare kai exercise", "mare ky exercise", "kale kai exercise",
+    "what exercises should i", "what exercise should i", "which workout should i", "which exercise should i",
+    "कौन सी कसरत", "वर्कआउट प्लान", "કસરત સૂચવો", "વર્કઆઉટ પ્લાન", "કાલે શું કસરત",
+]
+
+
+def classify_recommendation_intent(message: str) -> Optional[str]:
+    """
+    Semantic nutrition-vs-workout recommendation intent classifier.
+    Supports multilingual input (English, Hindi, Gujarati, Indic scripts),
+    transliteration, typos, and mixed intents.
+
+    Returns:
+        Intent.RECOMMEND_MEAL ("recommend_meal")
+        Intent.RECOMMEND_WORKOUT ("recommend_workout")
+        None (if message is not a recommendation query)
+    """
+    if not message or not message.strip():
+        return None
+    raw = message.strip()
+    t = normalize_rec_text(raw)
+    padded = f" {t} "
+
+    # 0. Past-tense log reads: "what exercise did I do", "aaje me kya exercise kari", "aaje breakfast ma su lidhu" -> NOT recommendations!
+    past_verbs = (
+        " did i do ", " did i eat ", " did i have ", " kari ", " karyu ", " karya ", " kiya ", " kiye ", " ki ",
+        " kiti ", " kita ", " lidhu ", " lidhi ", " lidha ", " khadhu ", " khadhi ", " khadha ", " khaya ", " khaayi ", " piya ", " pidhu "
+    )
+    if any(pv in padded for pv in past_verbs) and any(w in padded for w in ["what", "which", "kya", "su", "how much", "how many", "ketli", "ketlu", "kitni", "kitna"]) and not any(cw in padded for cw in [" joiye ", " joye ", " joie ", " chahiye ", " chahie ", " suchav ", " recommend ", " suggest ", " batao ", " bataiye "]):
+        return None
+
+    # 1. Hard logging exclusion:
+    log_eating_verbs = (
+        " ate ", " had ", " eaten ", " drank ", " had eaten ",
+        " khaya ", " khaye ", " khayi ", " khadha ", " khadhi ", " khadhu ", " khadho ",
+        " pidhi ", " pidhu ", " pidho ", " piya ", " piye ", " lidhu ", " lidhi ",
+    )
+    has_eat_log = any(v in padded for v in log_eating_verbs)
+    has_portion = bool(re.search(
+        r"\b\d+\s*(?:g|gm|gram|grams|kg|ml|l|liter|liters|piece|pieces|plate|plates|"
+        r"bowl|bowls|cup|cups|glass|glasses|katori|slice|slices|scoop|scoops|"
+        r"rotli|roti|thepla|eggs?|bananas?)\b", padded))
+
+    has_rec_cue = bool(REC_CUES_REGEX.search(padded)) or any(c in raw for c in INDIC_REC_CUES)
+
+    # Logging statements without recommendation cue -> not a recommendation
+    if has_eat_log and has_portion and not has_rec_cue:
+        return None
+
+    ex_log_pattern = r"\b\d+\s*(?:min|mins|minute|minutes|reps?|sets?|km|miles|laps|rounds)\b"
+    ex_action_verbs = (" did ", " ran ", " jogged ", " walked ", " cycled ", " lifted ", " completed ", " done ")
+    if any(v in padded for v in ex_action_verbs) and re.search(ex_log_pattern, padded) and not has_rec_cue:
+        return None
+
+    # Calorie query pattern ("calories in 1 apple", "how much protein in eggs")
+    if re.search(r"^(?:how\s+many\s+calories|how\s+much\s+(?:calories|protein|carbs?|fat|sugar)|calories|protein|carbs?|fat|sugar)\s+(?:in|for|of)\b", padded.strip()) and not has_rec_cue:
+        return None
+
+    # Summary query pattern ("show today's summary", "aaj kya khaya", "what did i eat today")
+    if re.search(r"\b(?:today(?:'s)?|yesterday(?:'s)?|aaj|aaje|kal|kale)\s+(?:summary|total|report|logs?)\b", padded) or \
+       re.search(r"\b(?:what\s+did\s+i\s+eat|kitna\s+khaya|su\s+khadhu\s+aaje|aaj\s+kya\s+khaya)\b", padded):
+        return None
+
+    has_nut = bool(NUT_WORDS_REGEX.search(padded)) or any(s in raw for s in INDIC_NUT_WORDS)
+    has_work = bool(WORK_WORDS_REGEX.search(padded)) or any(w in raw for w in INDIC_WORK_WORDS)
+
+    has_eat_action = any(p in padded for p in EAT_ACTION_PHRASES) or any(p in raw for p in EAT_ACTION_PHRASES)
+    has_work_action = (
+        any(p in padded for p in WORK_ACTION_PHRASES) or
+        any(p in raw for p in WORK_ACTION_PHRASES) or
+        bool(re.search(r"\bwhat\s+(?:\w+\s+)?(?:exercises?|workout|cardio)\s+should\s+i\s+do\b", padded)) or
+        bool(re.search(r"\b(?:kai|konsi|konsa|su|shu|which|what|ky)\s+(?:exercise|workout|kasrat|cardio)\s*(?:karvi|karavi|karein|kare|karvu|do)?\b", padded))
+    )
+
+    # 5. Mixed Intent Resolution:
+    if has_nut and has_work:
+        # Pattern 1: Post-eating / compensating for food with exercise:
+        # User ate food (dinner, lunch, pizza, cheat meal, etc.) and is asking what exercise/workout to do!
+        is_workout_after_eating = bool(re.search(
+            r"\b(?:workout|exercises?|routine|cardio|kasrat|running)\b.*"
+            r"\b(?:after|post|ke\s+baad|baad|pachi|pachhi)\b.*"
+            r"\b(?:eating|food|dinner|lunch|pizza|cheat\s+meal|cheat\s+day|biryani|sweets?|cake|burger|fast\s+food)\b",
+            padded
+        )) or bool(re.search(
+            r"\b(?:after|post|ke\s+baad|baad|pachi|pachhi)\b.*"
+            r"\b(?:eating|food|dinner|lunch|pizza|cheat\s+meal|cheat\s+day|biryani|sweets?|cake|burger|fast\s+food)\b.*"
+            r"\b(?:workout|exercises?|routine|cardio|kasrat|running)\b",
+            padded
+        )) or bool(re.search(
+            r"\b(?:how\s+to|what\s+(?:workout|exercises?|cardio)\s+to)\s+burn\b",
+            padded
+        )) or bool(re.search(
+            r"\b(?:exercises?|workout|cardio|running|kasrat|routine)\s+to\s+burn\b",
+            padded
+        )) or bool(re.search(
+            r"\bto\s+burn\s+.*(?:food|calories|fat|pizza|burger|fast\s+food|sweets?|dessert|sugar)\b",
+            padded
+        )) or bool(re.search(
+            r"\b(?:overeating|cheat\s+meal|cheat\s+day|bahut\s+(?:jyada\s+)?khana|zyada\s+calories).*(?:workout|exercises?|kasrat)\b",
+            padded
+        )) or bool(re.search(
+            r"\b(?:calories?|fat|food|charbi)\s+.*(?:burn|kam)\b.*(?:exercises?|workout|kasrat|running|cardio|vyayam)\b",
+            padded
+        )) or bool(re.search(
+            r"\b(?:burn|jalane)\b.*(?:exercises?|workout|kasrat|running|cardio|vyayam)\b",
+            padded
+        )) or bool(re.search(
+            r"\b(?:pizza|biryani|burger|heavy\s+dinner|heavy\s+lunch|sweet|sweets?|khana|food)\s+.*(?:baad|pachi|pachhi).*(?:exercises?|running|workout|kasrat)\b",
+            padded
+        ))
+
+        if is_workout_after_eating:
+            return Intent.RECOMMEND_WORKOUT
+
+        # Pattern 2: Otherwise, any query with food/nutrition around workout
+        # (post-workout meal, pre-workout snack, what to eat after workout, food after gym, etc.)
+        # is unequivocally a NUTRITION / MEAL recommendation!
+        return Intent.RECOMMEND_MEAL
+
+    # 6. Pure Nutrition Recommendation:
+    if has_nut and (has_rec_cue or has_eat_action):
+        return Intent.RECOMMEND_MEAL
+
+    # 7. Pure Workout Recommendation:
+    if has_work and (has_rec_cue or has_work_action):
+        return Intent.RECOMMEND_WORKOUT
+
+    # 8. Action phrases without explicit cue word:
+    if has_eat_action:
+        return Intent.RECOMMEND_MEAL
+    if has_work_action:
+        return Intent.RECOMMEND_WORKOUT
+
+    # 9. Forward / planning recommendation without food/workout noun:
+    if any(q in padded for q in ["what should i do tomorrow", "kal kya karna", "kal kya karna chahiye", "aavti kal su karvu"]):
+        return Intent.RECOMMEND_WORKOUT
+
+    # 10. Specific target fitness goal phrases
+    if has_work and any(w in padded for w in ["charbi", "fat loss", "muscle", "stamina", "strength", "weight loss"]):
+        return Intent.RECOMMEND_WORKOUT
+
+    # 11. Specific target nutrition goal phrases
+    if has_nut and any(w in padded for w in ["fat loss", "muscle", "weight loss", "protein"]):
+        return Intent.RECOMMEND_MEAL
+
+    return None
+
+
 # ---------------------------------------------------------------------------
 # Service
 # ---------------------------------------------------------------------------
@@ -345,7 +653,7 @@ class LLMService:
         # when the FastAPI server is running), fall back to reading .env
         # directly so standalone scripts (benchmarks, eval) work even when
         # MongoDB is unreachable.
-        if account_id and api_token:
+        if account_id is not None and api_token is not None:
             self.account_id = account_id
             self.api_token  = api_token
             self.model      = model or os.getenv("CF_MODEL", "@cf/qwen/qwen3-30b-a3b-fp8")
@@ -375,6 +683,36 @@ class LLMService:
             f"{self.account_id}/ai/run/{self.model}"
         )
 
+    def _build_routine_parse_result(self, routine, message: str) -> LLMParseResult:
+        msg_low = message.lower()
+        routine_exercises = [
+            {
+                "muscle_group": it.muscle_group,
+                "exercise_name": it.exercise_name,
+                "exercise_count": it.exercise_count,
+                "exercises_count": it.exercise_count,
+                "sets": it.sets,
+                "reps": it.reps,
+                "duration_min": it.duration_min,
+            }
+            for it in routine.items
+        ]
+        _ex_date = "yesterday" if any(w in msg_low for w in ["yesterday", "kal", "kale", "gatkale", "gatkal"]) else "today"
+        return LLMParseResult(
+            intent=Intent.LOG_EXERCISE,
+            exact_term=routine.summary_text,
+            exercise_query="workout routine",
+            exercise_input=routine.summary_text,
+            reps=float(routine.total_reps) if routine.total_reps else None,
+            sets=float(routine.total_sets) if routine.total_sets else None,
+            duration_min=float(routine.duration_min) if routine.duration_min is not None else None,
+            exercises=routine_exercises,
+            missing_detail=None if (routine.total_reps or routine.duration_min) else "amount",
+            date=_ex_date,
+            raw_response="routine_parser",
+            success=True,
+        )
+
     async def parse_intent(self, user_message: str, context: Optional[str] = None) -> LLMParseResult:
         """
         Send user message to Qwen3 and get structured intent.
@@ -386,6 +724,15 @@ class LLMService:
         Returns:
             LLMParseResult with extracted intent and entities.
         """
+        # Fast-path for structured workout routines
+        try:
+            from exercise_calculator import parse_workout_routine
+            routine = parse_workout_routine(user_message)
+            if routine and routine.items:
+                return self._build_routine_parse_result(routine, user_message)
+        except Exception:
+            pass
+
         if not self.account_id or not self.api_token:
             # Fallback: use rule-based parsing if no API keys
             return self._fallback_parse(user_message)
@@ -445,6 +792,15 @@ class LLMService:
 
     def parse_intent_sync(self, user_message: str, context: Optional[str] = None) -> LLMParseResult:
         """Synchronous version for testing."""
+        # Fast-path for structured workout routines
+        try:
+            from exercise_calculator import parse_workout_routine
+            routine = parse_workout_routine(user_message)
+            if routine and routine.items:
+                return self._build_routine_parse_result(routine, user_message)
+        except Exception:
+            pass
+
         if not self.account_id or not self.api_token:
             return self._fallback_parse(user_message)
 
@@ -619,8 +975,8 @@ class LLMService:
         """
         if len(tok) < 3:
             return False
-        # Exception: known transliterations with consonant clusters like "bhkri", "bhkhri"
-        if tok in ("bhkri", "bhkhri", "bhkari"):
+        # Exception: known words/transliterations without standard a/e/i/o/u vowels
+        if tok in ("gym", "gyms", "bhkri", "bhkhri", "bhkari", "dry", "fry", "rye", "sky", "fly"):
             return False
         # A real word/food almost always contains a true vowel (a/e/i/o/u).
         # 'y' alone does NOT count, so "vvysdv"/"bcdfg"/"dvrbbwg" are gibberish
@@ -1051,8 +1407,19 @@ class LLMService:
                     parts.append(f"{_num(data.get('distance')):g} {data.get('distance_unit') or 'km'}")
                 exercise_input = (f"{exercise_query} " + " ".join(parts)).strip() if parts else exercise_query
 
+            parsed_intent = data.get("intent", Intent.UNKNOWN)
+            # Misroute Guard: Nutrition/Meal recommendations must NEVER route to workout recommendations
+            if parsed_intent == Intent.RECOMMEND_WORKOUT:
+                rec_intent = classify_recommendation_intent(original_message)
+                if rec_intent == Intent.RECOMMEND_MEAL:
+                    parsed_intent = Intent.RECOMMEND_MEAL
+            elif parsed_intent not in (Intent.RECOMMEND_MEAL, Intent.RECOMMEND_WORKOUT):
+                rec_intent = classify_recommendation_intent(original_message)
+                if rec_intent:
+                    parsed_intent = rec_intent
+
             return LLMParseResult(
-                intent=data.get("intent", Intent.UNKNOWN),
+                intent=parsed_intent,
                 food_query=data.get("food_query"),
                 quantity=data.get("quantity"),
                 variant=data.get("variant"),
@@ -1064,6 +1431,7 @@ class LLMService:
                 success=True,
                 # structured entities
                 foods=foods,
+                exercises=data.get("exercises") or [],
                 reps=_num(data.get("reps")),
                 sets=_num(data.get("sets")),
                 distance=_num(data.get("distance")),
@@ -1086,9 +1454,29 @@ class LLMService:
         """
         msg = message.lower().strip()
 
-        # Greetings
-        greetings = {"hi", "hello", "hey", "namaste", "namaskar", "kem cho", "su haal"}
-        if msg in greetings or any(msg.startswith(g + " ") for g in greetings) or msg in greetings:
+        # 1. Structured workout routine fast-path
+        try:
+            from exercise_calculator import parse_workout_routine
+            routine = parse_workout_routine(message)
+            if routine and routine.items:
+                return self._build_routine_parse_result(routine, message)
+        except Exception:
+            pass
+
+        # 2. Recommendation keywords (semantic nutrition-vs-workout disambiguation)
+        rec_intent = classify_recommendation_intent(message)
+        if rec_intent == Intent.RECOMMEND_MEAL:
+            return LLMParseResult(intent=Intent.RECOMMEND_MEAL, raw_response="semantic_rec", success=True)
+        elif rec_intent == Intent.RECOMMEND_WORKOUT:
+            return LLMParseResult(intent=Intent.RECOMMEND_WORKOUT, raw_response="semantic_rec", success=True)
+
+        # 3. Greetings (only match standalone greetings or short greetings, not questions starting with 'hey')
+        greetings = {
+            "hi", "hello", "hey", "namaste", "namaskar", "kem cho", "kemcho", "su haal",
+            "good morning", "good evening", "good afternoon", "good night",
+        }
+        tokens = msg.split()
+        if msg in greetings or (len(tokens) <= 2 and tokens[0] in {"hi", "hello", "hey", "namaste", "namaskar"}):
             return LLMParseResult(intent=Intent.GREETING, raw_response="fallback", success=True)
 
         # Junk / gibberish / off-topic → clarification_needed (before food path)
@@ -1143,17 +1531,6 @@ class LLMService:
         profile_kw = ["my profile", "mera profile", "profile dikhao", "my stats", "my details"]
         if any(kw in msg for kw in profile_kw):
             return LLMParseResult(intent=Intent.GET_PROFILE, raw_response="fallback", success=True)
-
-        # Recommend-workout keywords (check before summary so "workout plan" doesn't bleed)
-        _workout_rec_kw = [
-            "recommend", "suggest a workout", "suggest workout", "workout suggest",
-            "what should i do tomorrow", "what exercise tomorrow", "exercise tomorrow",
-            "kal kya karna", "kal kya exercise", "workout plan", "training plan",
-            "aavti kal exercise", "kal exercise suchav", "mane workout", "workout suchav",
-            "next workout", "workout for tomorrow", "exercise for tomorrow",
-        ]
-        if any(kw in msg for kw in _workout_rec_kw):
-            return LLMParseResult(intent=Intent.RECOMMEND_WORKOUT, raw_response="fallback", success=True)
 
         # Summary keywords
         summary_kw = ["summary", "aaj ka", "today summary", "dikhao", "report",
@@ -1223,7 +1600,8 @@ class LLMService:
             # coffee with sugar", "ate 150g almonds") rather than a nutrition
             # question, let it fall through to the food-logging path.
             _eating_verbs = ("had ", "ate ", "drank ", "eat ", "drink ",
-                             "khadhu", "khadhi", "khadha", "khadho", "pidhi", "piya")
+                             "khadhu", "khadhi", "khadha", "khadho", "pidhi", "piya", "pidhu", "pidha", "piyu",
+                             "lidhu", "lidha", "lidhi", "khaya", "khaye", "khayi", "liya", "liye")
             _eating_stmt = (msg.split()[0] in ("had","ate","drank","eat","drink")
                             or any(v in msg for v in _eating_verbs))
             _question_markers = ["how much", "how many", "kitni", "kitna", "ketli",
@@ -1314,6 +1692,7 @@ class LLMService:
             "crunches", "crunch",
             "sit-up", "situp", "sit ups",
             "pull up", "pull-up", "pullup", "pull ups",
+            "dips", "dip",
             "treadmill",
             "hiit", "h.i.i.t",   # added HIIT
             "bench press", "shoulder press", "bicep curl", "lat pulldown",
@@ -1422,7 +1801,7 @@ class LLMService:
             "exercise ki", "workout ki",
             # English — "show my X", "what X", "list X", "my X today"
             "what exercise", "what workout", "how much exercise",
-            "which exercise", "which exercises",
+            "which exercise", "which exercises", "which workout", "which workouts",
             "show my workout", "show my exercise", "show my training",
             "show workout", "show exercise", "show training",
             "list my workout", "list my exercise", "list workouts",
@@ -1445,6 +1824,15 @@ class LLMService:
             )
 
         # --- EXERCISE LOGGING ---
+        # Structured workout routine fast-path
+        try:
+            from exercise_calculator import parse_workout_routine
+            routine = parse_workout_routine(message)
+            if routine and routine.items:
+                return self._build_routine_parse_result(routine, message)
+        except Exception:
+            pass
+
         # Pre-normalise the message through the same typo map ExerciseSearcher uses,
         # so misspellings like "puchups", "squot", "cyclin" all match exercise_names.
         _exercise_typo_map = {
@@ -1512,6 +1900,10 @@ class LLMService:
             # Check if it has a time/rep/distance component
             has_amount = any(tk in exercise_input for tk in time_kw) or any(c.isdigit() for c in exercise_input)
             if not has_amount:
+                # Question / advice / modal intent guard: never convert a workout inquiry into an exercise logging target
+                rec_check = classify_recommendation_intent(message)
+                if rec_check:
+                    return LLMParseResult(intent=rec_check, raw_response="semantic_rec", success=True)
                 exercise_input = matched_exercise
 
             # Parse structured exercise fields from exercise_input so downstream
@@ -1531,17 +1923,14 @@ class LLMService:
                 exercise_input, re.I)
             if _sr:
                 sets, reps, missing = float(_sr.group(1)), float(_sr.group(2)), None
-            # Duration: "30 min", "45 minutes", "1 hour", "1 ghanta"
+            # Duration: centralized parsing (hours, minutes, typos, fractions, ghanta/kalak)
             if dur_min is None:
-                _dm = re.search(
-                    r"(\d+(?:\.\d+)?)\s*(?:min(?:utes?)?|minute|hrs?|hour|ghanta|ghante)",
-                    exercise_input, re.I)
-                if _dm:
-                    v = float(_dm.group(1))
-                    # convert hours/ghanta
-                    if re.search(r"h(?:our|r)", _dm.group(0), re.I) or "ghanta" in _dm.group(0).lower():
-                        v *= 60
-                    dur_min, missing = v, None
+                from exercise_calculator import parse_duration_minutes
+                _pd = parse_duration_minutes(exercise_input)
+                if _pd is None:
+                    _pd = parse_duration_minutes(msg_normalised)
+                if _pd is not None:
+                    dur_min, missing = _pd, None
             # Distance: "10 km", "5.5 kms", "1000 m", "3 miles"
             if dist is None:
                 _dd = re.search(

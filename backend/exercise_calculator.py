@@ -48,7 +48,9 @@ EXERCISE_UNIT_ALIASES: dict[str, str] = {
     "jump": "jumps", "jumps": "jumps", "skip": "jumps", "skips": "jumps",
     "session": "session", "sessions": "session",
     "set": "sets", "sets": "sets",
-    "hr": "minutes", "hour": "minutes", "hours": "minutes",  # convert later
+    "hr": "minutes", "hour": "minutes", "hours": "minutes",
+    "houre": "minutes", "houres": "minutes", "hourse": "minutes",
+    "ghanta": "minutes", "ghante": "minutes", "kalak": "minutes",
     "hold": "minutes",
     # distance
     "km": "km", "kms": "km", "kilometer": "km", "kilometers": "km",
@@ -161,6 +163,57 @@ class ExerciseCalcResult:
     calculation_note: str
 
 
+@dataclass
+class WorkoutExerciseItem:
+    """Single exercise item within a structured workout routine."""
+    muscle_group: str
+    exercise_name: str
+    exercise_count: int = 1
+    sets: Optional[int] = None
+    reps: Optional[int] = None
+    weight_kg: Optional[float] = None
+    duration_min: Optional[float] = None
+
+
+@dataclass
+class ParsedWorkoutRoutine:
+    """Structured workout routine containing multiple exercises/muscle groups."""
+    items: list[WorkoutExerciseItem]
+    total_exercises: int
+    total_sets: int
+    total_reps: int
+    duration_min: Optional[float]
+    raw_input: str
+
+    @property
+    def summary_text(self) -> str:
+        parts = []
+        for it in self.items:
+            part = f"{it.muscle_group.title()} ({it.exercise_count} exercises"
+            if it.sets and it.reps:
+                part += f" × {it.sets} sets × {it.reps} reps)"
+            elif it.reps:
+                part += f" × {it.reps} reps)"
+            elif it.sets:
+                part += f" × {it.sets} sets)"
+            else:
+                part += ")"
+            parts.append(part)
+        return ", ".join(parts)
+
+
+@dataclass
+class RoutineCalcResult:
+    """Calorie and display result for a structured workout routine."""
+    routine: ParsedWorkoutRoutine
+    calories_min: float
+    calories_avg: float
+    calories_max: float
+    summary_text: str
+    duration_min: Optional[float]
+    total_reps: int
+
+
 # ---------------------------------------------------------------------------
 # Input parser
 # ---------------------------------------------------------------------------
@@ -173,14 +226,14 @@ _PAT_SETS = re.compile(
 
 # Pattern: number + unit at end or start (incl. distance km / metres)
 _PAT_NUM_UNIT = re.compile(
-    r"(\d+(?:\.\d+)?)\s*(min(?:ute)?s?|reps?|rounds?|laps?|jumps?|skips?|sessions?|sets?|hr|hours?|"
+    r"(\d+(?:\.\d+)?)\s*(min(?:ute)?s?|reps?|rounds?|laps?|jumps?|skips?|sessions?|sets?|hr|hours?|houres?|hourse|ghanta|ghante|kalak|"
     r"km|kms|kilometer|kilometers|kilometre|kilometres|metre|metres|meter|meters|steps?)\b",
     re.IGNORECASE,
 )
 
 # Pattern: "for X minutes/reps" at end
 _PAT_FOR_DURATION = re.compile(
-    r"\bfor\s+(\d+(?:\.\d+)?)\s*(min(?:ute)?s?|reps?|rounds?|laps?|hours?|km|kms|kilometers?)\b",
+    r"\bfor\s+(\d+(?:\.\d+)?)\s*(min(?:ute)?s?|reps?|rounds?|laps?|hours?|houres?|hourse|hrs?|ghanta|ghante|kalak|km|kms|kilometers?)\b",
     re.IGNORECASE,
 )
 
@@ -201,9 +254,82 @@ _WORD_NUMS_RE = (
 )
 _PAT_WORD_NUM_UNIT = re.compile(
     r"\b(" + _WORD_NUMS_RE + r")\s+"
-    r"(min(?:ute)?s?|reps?|rounds?|laps?|hours?|sessions?)\b",
+    r"(min(?:ute)?s?|reps?|rounds?|laps?|hours?|houres?|hourse|sessions?)\b",
     re.IGNORECASE,
 )
+
+
+def parse_duration_minutes(text: str) -> Optional[float]:
+    """
+    Parse a natural language duration string into total minutes.
+    Handles:
+      - Hours: "1 hour", "1 houre", "1.5 hours", "2 hrs", "0.5 hr", "2.5 ghanta", "1 kalak"
+      - Minutes: "30 min", "45 mins", "45 minutes", "15 minute"
+      - Seconds: "90 seconds", "90 sec" -> 1.5 min
+      - Colloquial / fractions: "half an hour", "half hour", "aadha ghanta", "aadho kalak", "dedh ghanta"
+      - Word numbers: "one hour", "ek ghanta", "two hours", etc.
+    """
+    if not text or not str(text).strip():
+        return None
+    raw = str(text).strip().lower()
+
+    # Pre-checks for colloquial terms
+    if re.search(r"\b(?:half\s+(?:an\s+)?hour|aadha\s+ghanta|aadho\s+kalak|adho\s+kalak|adha\s+ghanta)\b", raw):
+        return 30.0
+    if re.search(r"\b(?:dedh|dhedh)\s+ghanta\b", raw):
+        return 90.0
+    if re.search(r"\b(?:dhai|adhai)\s+ghanta\b", raw):
+        return 150.0
+
+    # Hours pattern: numeric + hour unit (including typos like houre, houres, hourse)
+    hr_match = re.search(
+        r"(\d+(?:\.\d+)?)\s*(?:hours?|houres?|hourse|hrs?|ghanta|ghante|kalak)\b",
+        raw, re.I
+    )
+    if hr_match:
+        return float(hr_match.group(1)) * 60.0
+
+    # Minutes pattern: numeric + minute unit
+    min_match = re.search(
+        r"(\d+(?:\.\d+)?)\s*(?:mins?|minutes?)\b",
+        raw, re.I
+    )
+    if min_match:
+        return float(min_match.group(1))
+
+    # Seconds pattern: numeric + second unit
+    sec_match = re.search(
+        r"(\d+(?:\.\d+)?)\s*(?:sec(?:ond)?s?)\b",
+        raw, re.I
+    )
+    if sec_match:
+        return round(float(sec_match.group(1)) / 60.0, 2)
+
+    # Word numbers for hours: "one hour", "ek ghanta", "two hours", etc.
+    word_hr_match = re.search(
+        r"\b(one|two|three|four|five|ek|do|teen|char)\s+(?:hours?|houres?|hourse|hrs?|ghanta|ghante|kalak)\b",
+        raw, re.I
+    )
+    if word_hr_match:
+        w_map = {"one": 1, "two": 2, "three": 3, "four": 4, "five": 5, "ek": 1, "do": 2, "teen": 3, "char": 4}
+        return w_map[word_hr_match.group(1).lower()] * 60.0
+
+    # Word numbers for minutes: "thirty minutes", "twenty mins", "pandrah minute", etc.
+    word_min_match = re.search(
+        r"\b(" + _WORD_NUMS_RE + r")\s+(?:mins?|minutes?)\b",
+        raw, re.I
+    )
+    if word_min_match:
+        val = WORD_NUMBERS.get(word_min_match.group(1).lower())
+        if val is not None:
+            return float(val)
+
+    # Bare number check: e.g. "30", "45", "60"
+    bare_match = re.fullmatch(r"^\s*(\d+(?:\.\d+)?)\s*$", raw)
+    if bare_match:
+        return float(bare_match.group(1))
+
+    return None
 
 
 def parse_exercise_input(raw: str) -> ParsedExerciseInput:
@@ -262,7 +388,7 @@ def parse_exercise_input(raw: str) -> ParsedExerciseInput:
     if m:
         amount = float(m.group(1))
         unit = _resolve_exercise_unit(m.group(2))
-        if unit == "minutes" and "hour" in m.group(2).lower():
+        if unit == "minutes" and any(h in m.group(2).lower() for h in ("hour", "houre", "hr", "ghanta", "kalak")):
             amount *= 60
         exercise_part = _PAT_FOR_DURATION.sub("", text).strip()
         return ParsedExerciseInput(
@@ -275,7 +401,7 @@ def parse_exercise_input(raw: str) -> ParsedExerciseInput:
     if m:
         amount = WORD_NUMBERS.get(m.group(1).lower(), 1.0)
         unit = _resolve_exercise_unit(m.group(2))
-        if unit == "minutes" and "hour" in m.group(2).lower():
+        if unit == "minutes" and any(h in m.group(2).lower() for h in ("hour", "houre", "hr", "ghanta", "kalak")):
             amount *= 60
         exercise_part = _PAT_WORD_NUM_UNIT.sub("", text).strip()
         return ParsedExerciseInput(
@@ -288,7 +414,7 @@ def parse_exercise_input(raw: str) -> ParsedExerciseInput:
     if m:
         amount = float(m.group(1))
         unit = _resolve_exercise_unit(m.group(2))
-        if unit == "minutes" and "hour" in m.group(2).lower():
+        if unit == "minutes" and any(h in m.group(2).lower() for h in ("hour", "houre", "hr", "ghanta", "kalak")):
             amount *= 60
         exercise_part = _PAT_NUM_UNIT.sub("", text).strip()
         return ParsedExerciseInput(
@@ -319,6 +445,216 @@ def parse_exercise_input(raw: str) -> ParsedExerciseInput:
     return ParsedExerciseInput(
         exercise_query=_clean_exercise_name(text),
         amount=None, unit=None, raw_input=raw,
+    )
+
+
+def parse_workout_routine(text: str) -> Optional[ParsedWorkoutRoutine]:
+    """
+    Parse structured workout routines with muscle groups, exercise counts, sets, reps.
+    Examples:
+      - 'Chest: 4 exercises × 12 reps Shoulder: 2 exercises × 12 reps Triceps: 2 exercises × 12 reps'
+      - '4 chest exercises 12 reps, 2 shoulder exercises 12 reps'
+      - 'Chest 4 exercises 12 reps each'
+      - 'Back 3 exercises x 10 reps, Biceps 2 exercises x 12 reps for 45 minutes'
+      - '3 sets of 12 reps bench press, 4 sets of 10 reps shoulder press'
+    
+    IMPORTANT: Never infer workout duration from reps or exercise count.
+    Only extracts duration_min when an explicit duration phrase is present (e.g. 'for 45 minutes').
+    """
+    if not text or not text.strip():
+        return None
+    raw = text.strip()
+
+    # 1. Check for overall duration in the string (explicit only!)
+    dur_min = None
+    dur_match = re.search(
+        r"\b(?:for\s+)?(\d+(?:\.\d+)?)\s*(?:mins?|minutes?|hrs?|hours?|houres?|hourse|ghanta|ghante|kalak)\b",
+        raw, re.I
+    )
+    if dur_match:
+        val = float(dur_match.group(1))
+        unit_str = dur_match.group(0).lower()
+        if any(h in unit_str for h in ["hr", "hour", "houre", "ghanta", "kalak"]):
+            val *= 60.0
+        dur_min = val
+
+    # Clean sentence for item matching: remove overall duration phrase
+    clean_text = dur_match.re.sub(" ", raw) if dur_match else raw
+    # Normalize multiplication signs
+    clean_text = re.sub(r"[×*]", " x ", clean_text)
+
+    # Indic digit conversion (Gujarati & Devanagari numerals)
+    _indic_digits = {
+        "૧": "1", "૨": "2", "૩": "3", "૪": "4", "૫": "5",
+        "૬": "6", "૭": "7", "૮": "8", "૯": "9", "૦": "0",
+        "१": "1", "२": "2", "३": "3", "४": "4", "५": "5",
+        "६": "6", "७": "7", "८": "8", "९": "9", "०": "0",
+    }
+    for ind_d, num_d in _indic_digits.items():
+        clean_text = clean_text.replace(ind_d, num_d)
+
+    # Indic script & transliteration normalization
+    _indic_routine_map = {
+        "ચેસ્ટ": "chest", "ચેસ": "chest", "ચેસ્ટની": "chest", "ચેસ્ટના": "chest",
+        "શોલ્ડર": "shoulder", "શોલ્ડર્સ": "shoulder",
+        "ટ્રાઇસેપ્સ": "triceps", "ટ્રાયસેપ્સ": "triceps",
+        "બાઇસેપ્સ": "biceps", "બાયસેપ્સ": "biceps",
+        "બેક": "back", "લેગ્સ": "legs", "લેગ": "legs", "એબ્સ": "abs",
+        "કસરત": "exercise", "કસરતો": "exercises", "રેપ્સ": "reps", "રેપ": "reps",
+        "સેટ્સ": "sets", "સેટ": "sets",
+        "चेस्ट": "chest", "शोल्डर": "shoulder", "शोल्डर्स": "shoulder",
+        "ट्राइसेप्स": "triceps", "बाइसेप्स": "biceps", "बैक": "back",
+        "लेग्स": "legs", "एब्स": "abs", "कसरत": "exercise",
+        "एक्सरसाइज": "exercise", "रेप्स": "reps", "रेप": "reps",
+        "सेट्स": "sets", "सेट": "sets",
+        # Common typos & variations
+        "excercise": "exercise", "excercises": "exercises",
+        "excersise": "exercise", "excersises": "exercises",
+        "excerise": "exercise", "excerises": "exercises",
+        "kasarat": "exercise", "kasrat": "exercise",
+        "repetition": "reps", "repetitions": "reps",
+        "rap": "reps", "raps": "reps",
+        "pectorals": "chest", "pectoral": "chest", "pecs": "chest",
+        "deltoids": "shoulder", "deltoid": "shoulder", "delts": "shoulder",
+        "quadriceps": "quads",
+        "કાફ્સ": "calves", "કાફ": "calves", "કાલ્વ્સ": "calves",
+        "काफ्स": "calves", "काफ": "calves",
+    }
+    for wrong, right in sorted(_indic_routine_map.items(), key=lambda x: -len(x[0])):
+        clean_text = re.sub(r"(?i)\b" + re.escape(wrong) + r"\b", right, clean_text)
+
+    # Strip grouping characters like parentheses, brackets, colons so e.g. "(4 exercises x 12 reps)" matches cleanly
+    clean_text = re.sub(r"[\(\)\[\]\{\}:;]", " ", clean_text)
+    clean_text = re.sub(r"\s+", " ", clean_text).strip()
+
+    items: list[WorkoutExerciseItem] = []
+
+    # Muscle group vocabulary
+    muscles_re = (
+        r"chest|shoulders?|triceps?|biceps?|back|legs?|abs|core|glutes?|lats?|arms?|"
+        r"push|pull|quads?|hamstrings?|calves?|traps?|forearms?|delts?|squats?|rhomboids?"
+    )
+
+    # Check for a trailing or global reps amount (e.g. "... karyo 12 reps")
+    global_reps = None
+    glob_m = re.search(r"(\d+)\s*reps?\b(?:\s+(?:each|mara|karyo|karya|kiya|kiye))?", clean_text, re.I)
+    if glob_m:
+        global_reps = int(glob_m.group(1))
+
+    # Patterns to match muscle routines across word orders, connectives, and languages:
+    # 1. Muscle first with count: 'Chest: 4 exercises x 12 reps', 'Chest na 4 exercise 12 reps'
+    pat_muscle_first_with_count = re.compile(
+        rf"\b(?P<m>{muscles_re})\b(?:\s+(?:workout|training|session))?(?:\s+(?:na|ni|no|ne|ka|ke|ki|wali|of))?\s*:?\s*"
+        rf"(?P<c>\d+)\s*(?:exercises?|kasrat|types?|varieties|variations)\b"
+        rf"(?:\s*(?:x|of|,|-|sathe|with)?\s*(?:(?P<s>\d+)\s*sets?(?:\s*(?:of|x)\s*)?)?(?P<r>\d+)?\s*(?:reps?|each)?)?",
+        re.I
+    )
+    # 2. Muscle count first: '4 chest exercises 12 reps', '4 chest ki exercises'
+    pat_muscle_count_first = re.compile(
+        rf"\b(?P<c>\d+)\s+(?P<m>{muscles_re})(?:\s+(?:ki|ni|wali|ke|na))?\s+(?:exercises?|kasrat)\b"
+        rf"(?:\s*(?:x|of|,|-)?\s*(?:(?P<s>\d+)\s*sets?(?:\s*(?:of|x)\s*)?)?(?P<r>\d+)?\s*(?:reps?|each)?)?",
+        re.I
+    )
+    # 3. Count first: '4 exercises chest 12 reps', '4 exercises of chest 12 reps'
+    pat_count_first = re.compile(
+        rf"\b(?P<c>\d+)\s*(?:exercises?|kasrat)\s*(?:of\s+)?(?P<m>{muscles_re})\b"
+        rf"(?:\s*(?:x|of|,|-)?\s*(?:(?P<s>\d+)\s*sets?(?:\s*(?:of|x)\s*)?)?(?P<r>\d+)?\s*(?:reps?|each)?)?",
+        re.I
+    )
+    # 4. Muscle sets x reps: 'Chest 3 sets of 12 reps', 'Chest 3 sets x 12 reps'
+    pat_muscle_sets_reps = re.compile(
+        rf"\b(?P<m>{muscles_re})\b(?:\s+(?:workout|training|session))?(?:\s+(?:na|ni|no|ne|ka|ke|ki|wali|of))?\s*:?\s*"
+        rf"(?P<s>\d+)\s*sets?(?:\s*(?:of|x)\s*)(?P<r>\d+)\s*(?:reps?|each)?",
+        re.I
+    )
+    # 5. Muscle first count only: 'Chest na 4 exercise', 'Shoulder 2 kasrat'
+    pat_muscle_first_count_only = re.compile(
+        rf"\b(?P<m>{muscles_re})\b(?:\s+(?:na|ni|ka|ke))?\s+(?P<c>\d+)\s+(?:exercises?|kasrat)\b",
+        re.I
+    )
+    # 6. Muscle bare reps: 'Chest 12 reps', 'Chest 3 x 12 reps'
+    pat_muscle_bare_reps = re.compile(
+        rf"\b(?P<m>{muscles_re})\b(?:\s+(?:workout|training|session))?(?:\s+(?:na|ni|no|ne|ka|ke|ki|wali|of))?\s*:?\s*"
+        rf"(?:(?P<s>\d+)\s*(?:x)\s*)?(?P<r>\d+)\s*reps?\b",
+        re.I
+    )
+
+    matched_spans: list[tuple[int, int]] = []
+    def _overlaps(s: int, e: int) -> bool:
+        return any(max(s, ms) < min(e, me) for ms, me in matched_spans)
+
+    patterns = [
+        (pat_muscle_first_with_count, False),
+        (pat_muscle_count_first, False),
+        (pat_count_first, False),
+        (pat_muscle_sets_reps, True),
+        (pat_muscle_first_count_only, False),
+        (pat_muscle_bare_reps, True),
+    ]
+
+    for pat, is_sets_or_bare in patterns:
+        for m in pat.finditer(clean_text):
+            if _overlaps(m.start(), m.end()):
+                continue
+            matched_spans.append((m.start(), m.end()))
+            muscle = m.group("m").capitalize()
+            if is_sets_or_bare:
+                count = 1
+                sets_val = int(m.group("s")) if m.groupdict().get("s") and m.group("s") else None
+                reps_val = int(m.group("r")) if m.groupdict().get("r") and m.group("r") else global_reps
+            else:
+                c_str = m.groupdict().get("c")
+                count = int(c_str) if c_str else 1
+                sets_val = int(m.group("s")) if m.groupdict().get("s") and m.group("s") else None
+                reps_val = int(m.group("r")) if m.groupdict().get("r") and m.group("r") else global_reps
+            items.append(WorkoutExerciseItem(
+                muscle_group=muscle.lower(),
+                exercise_name=f"{muscle} exercises" if count > 1 else f"{muscle} exercise",
+                exercise_count=count,
+                sets=sets_val,
+                reps=reps_val,
+            ))
+
+    if items:
+        # Sort items by their order of appearance in the user input
+        items.sort(key=lambda it: clean_text.lower().find(it.muscle_group.lower()))
+
+    if not items:
+        # Pattern B: Specific exercise names with sets and reps:
+        # '3 sets of 12 reps bench press, 4 sets of 10 reps shoulder press'
+        pat_b = re.compile(
+            r"(\d+)\s*sets?(?:\s*(?:of|x)\s*)?(\d+)\s*reps?\s+([a-zA-Z\s\-]+?)(?:,|and|sathe|$)",
+            re.I
+        )
+        for m in pat_b.finditer(clean_text):
+            s_val = int(m.group(1))
+            r_val = int(m.group(2))
+            ex_name = m.group(3).strip()
+            items.append(WorkoutExerciseItem(
+                muscle_group="general",
+                exercise_name=ex_name,
+                exercise_count=1,
+                sets=s_val,
+                reps=r_val,
+            ))
+
+    if not items:
+        return None
+
+    tot_ex = sum(it.exercise_count for it in items)
+    tot_sets = sum((it.sets or 1) * it.exercise_count for it in items)
+    tot_reps = sum(
+        (it.reps or 0) * (it.sets or 1) * it.exercise_count
+        for it in items
+    )
+
+    return ParsedWorkoutRoutine(
+        items=items,
+        total_exercises=tot_ex,
+        total_sets=tot_sets,
+        total_reps=tot_reps,
+        duration_min=dur_min,
+        raw_input=raw,
     )
 
 
@@ -627,9 +963,18 @@ class ExerciseCalculator:
             except (TypeError, ValueError):
                 weight_factor = 1.0
 
-        cal_min = effective_amount * exercise["calories_per_unit_min"] * weight_factor
-        cal_avg = effective_amount * exercise["calories_per_unit_avg"] * weight_factor
-        cal_max = effective_amount * exercise["calories_per_unit_max"] * weight_factor
+        if effective_unit == "reps" and native_unit == "minutes":
+            # Resistance/strength training rep rate: standard ~0.35 - 0.55 kcal/rep
+            rep_rate_min = 0.35
+            rep_rate_avg = 0.45
+            rep_rate_max = 0.55
+            cal_min = effective_amount * rep_rate_min * weight_factor
+            cal_avg = effective_amount * rep_rate_avg * weight_factor
+            cal_max = effective_amount * rep_rate_max * weight_factor
+        else:
+            cal_min = effective_amount * exercise["calories_per_unit_min"] * weight_factor
+            cal_avg = effective_amount * exercise["calories_per_unit_avg"] * weight_factor
+            cal_max = effective_amount * exercise["calories_per_unit_max"] * weight_factor
 
         return ExerciseCalcResult(
             exercise_id=exercise["exercise_id"],
@@ -688,12 +1033,10 @@ class ExerciseCalculator:
                 )
             return amount, native_unit, f"Estimated {amount:.0f} reps from {amount:.0f} min"
 
-        # Reps → minutes-based exercise
+        # Reps → minutes-based exercise (e.g. user gave reps for generic workout or strength exercise)
+        # NEVER convert reps into minutes! Keep unit as reps and calculate via resistance rate.
         if input_unit == "reps" and native_unit == "minutes":
-            return amount, native_unit, (
-                f"Note: {exercise['exercise_name']} is measured in minutes. "
-                f"Using {amount:.0f} minutes."
-            )
+            return amount, "reps", f"{amount:.0f} reps (resistance training rate)"
 
         # Sets → reps (already handled in parser, but safety)
         if input_unit == "sets":
@@ -727,3 +1070,65 @@ class ExerciseCalculator:
 
         # Fallback: use as-is with the native unit
         return amount, native_unit, f"{amount:.0f} {input_unit} (treated as {native_unit})"
+
+
+def calculate_routine(
+    routine: ParsedWorkoutRoutine,
+    weight_kg: Optional[float] = None,
+) -> RoutineCalcResult:
+    """
+    Calculate calories burned for a structured workout routine.
+    If duration is provided, uses MET-based resistance training formula.
+    If duration is NOT provided, computes directly from reps/sets without inventing minutes.
+    """
+    w = float(weight_kg) if weight_kg and float(weight_kg) > 0 else REFERENCE_WEIGHT_KG
+    weight_factor = w / REFERENCE_WEIGHT_KG
+
+    if routine.duration_min is not None and routine.duration_min > 0:
+        # User explicitly stated a duration for the workout (e.g. 45 min)
+        # Moderate-vigorous resistance training MET ~ 5.0
+        dur = float(routine.duration_min)
+        cal_avg = 5.0 * 3.5 * w / 200.0 * dur
+        cal_min = cal_avg * 0.85
+        cal_max = cal_avg * 1.15
+    else:
+        # Rep-based calculation for resistance routine
+        # Weight training rate: ~0.45 kcal/rep average (at 70 kg)
+        tot_reps = routine.total_reps if routine.total_reps > 0 else (routine.total_exercises * 12)
+        cal_min = tot_reps * 0.35 * weight_factor
+        cal_avg = tot_reps * 0.45 * weight_factor
+        cal_max = tot_reps * 0.55 * weight_factor
+
+    # Build user-friendly summary description
+    # e.g., "Chest (4 exercises × 12 reps), Shoulder (2 exercises × 12 reps), Triceps (2 exercises × 12 reps)"
+    item_descs = []
+    for it in routine.items:
+        m_name = it.muscle_group.capitalize()
+        reps_str = f"{it.reps} reps" if it.reps else ""
+        sets_str = f"{it.sets} sets" if it.sets else ""
+        if it.exercise_count > 1:
+            cnt_str = f"{it.exercise_count} exercises"
+        else:
+            cnt_str = it.exercise_name if it.exercise_name and it.exercise_name.lower() != f"{it.muscle_group} exercise" else "1 exercise"
+
+        if reps_str and sets_str:
+            detail = f"{cnt_str} × {sets_str} × {reps_str}"
+        elif reps_str:
+            detail = f"{cnt_str} × {reps_str}"
+        elif sets_str:
+            detail = f"{cnt_str} × {sets_str}"
+        else:
+            detail = cnt_str
+
+        item_descs.append(f"{m_name} ({detail})")
+
+    summary_text = ", ".join(item_descs)
+    return RoutineCalcResult(
+        routine=routine,
+        calories_min=round(cal_min, 1),
+        calories_avg=round(cal_avg, 1),
+        calories_max=round(cal_max, 1),
+        summary_text=summary_text,
+        duration_min=routine.duration_min,
+        total_reps=routine.total_reps,
+    )

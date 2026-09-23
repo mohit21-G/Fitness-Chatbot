@@ -110,7 +110,7 @@ class ConversationStore:
             sort=[("created_at", -1)]
         ).limit(10)
         async for doc in cursor:
-            intent = doc.get("intent", "")
+            intent = doc.get("intent") or ""
             if "log_food" not in intent and "food_logged" not in intent:
                 continue
             content = doc.get("content", "")
@@ -267,6 +267,16 @@ RESPONSES = {
         "gu": "{exercise_emoji} **{exercise}** — **{amount:.0f} {unit}** = approx **{calories:.0f} kcal burned**.\nSave karu?",
         "hi": "{exercise_emoji} **{exercise}** — **{amount:.0f} {unit}** = approx **{calories:.0f} kcal burned**.\nSave karu?",
         "en": "{exercise_emoji} **{exercise}** — **{amount:.0f} {unit}** = approx **{calories:.0f} kcal burned**.\nShould I save this?",
+    },
+    "confirm_workout_routine": {
+        "gu": "{exercise_emoji} **Workout** — {routine_summary} = approx **{calories:.0f} kcal burned**.\nSave karu?",
+        "hi": "{exercise_emoji} **Workout** — {routine_summary} = approx **{calories:.0f} kcal burned**.\nSave karu?",
+        "en": "{exercise_emoji} **Workout** — {routine_summary} = approx **{calories:.0f} kcal burned**.\nShould I save this?",
+    },
+    "ask_routine_amount": {
+        "gu": "{exercise_emoji} **Workout** ma ketla reps ke ketli minutes kari? (e.g. 12 reps, 45 minutes)",
+        "hi": "{exercise_emoji} **Workout** me kitne reps ya kitne minutes kiye? (e.g. 12 reps, 45 minutes)",
+        "en": "How many reps or minutes did you do for your {exercise_emoji} **Workout**? (e.g. 12 reps, 45 minutes)",
     },
     "ask_exercise_amount": {
         "gu": "Ketla **{unit}** {exercise_emoji} **{exercise}** kara? (e.g. 15, 30, 50)",
@@ -463,8 +473,8 @@ def get_response(key: str, lang: str, **kwargs) -> str:
         if "meal_emoji" not in kwargs:
             kwargs["meal_emoji"] = get_meal_emoji(raw_meal)
         kwargs["meal"] = raw_meal.replace("_", " ").title()
-    if "exercise" in kwargs and "exercise_emoji" not in kwargs:
-        kwargs["exercise_emoji"] = get_exercise_emoji(str(kwargs.get("exercise", "")))
+    if "exercise_emoji" not in kwargs:
+        kwargs["exercise_emoji"] = get_exercise_emoji(str(kwargs.get("exercise", "workout")))
     if "meal_context" in kwargs and "food_emoji" not in kwargs:
         kwargs["food_emoji"] = get_food_emoji(str(kwargs.get("meal_context", "")))
 
